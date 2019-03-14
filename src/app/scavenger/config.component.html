@@ -1,0 +1,1243 @@
+<!doctype html>
+
+
+
+<div class="container-fluid">
+  <div class="btn-toolbar float-right" role="toolbar">
+    <div class="btn-group mr-2" role="group">
+      <button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">book</i>&nbsp;Gyra Guide</button>
+      <button type="button" class="btn btn-primary" (click)="loadConfig()"><i class="material-icons small" style="text-align: center">file_upload</i>&nbsp;Load last saved config</button>
+      <button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
+    </div>
+  </div>
+</div>
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+
+<br>
+<br>
+
+<div class="container col-12">
+
+
+  <!-- deck 1 -->
+<div class="card-deck">
+  <div class="card">
+
+    <div class="card-header bg-dark text-light">
+      Pool and wallet settings
+      <!-- Button to Open the Modal -->
+      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#poolWalletHelp">
+     ?
+      </button>
+    </div>
+    <div class="card-body">
+      <label for="url">Pool or wallet URL:</label>
+      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port" class="form-control col-12" (blur)="logValidationErrors()">
+    </p>
+    <div class="alert alert-danger" *ngIf="formErrors.url && url.touched">
+        {{ formErrors.url }}
+    </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-dark text-light">
+      Account settings for solo mining
+      <!-- Button to Open the Modal -->
+      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#soloAccount">
+        ?
+      </button>
+    </div>
+    <div class="card-body">
+      <!--Add counter to inputs -->
+      <label>Account ID and passphrase:</label><br>
+      <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+        <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+          <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID" formControlName="account_id"
+              class="form-control-sm col-4" (blur)="logValidationErrors()">
+            <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase" class="form-control-sm col-7"
+            (blur)="logValidationErrors()">
+
+            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+            </button><br>
+            </p>
+          </div>
+        <div class="alert alert-danger" *ngIf="formErrors.account_id && accountForms.touched && accountForms.dirty">
+            {{ formErrors.account_id }}
+
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.passphrase && accountForms.touched && accountForms.dirty">
+            {{ formErrors.passphrase }}
+        </div>
+      </div>
+      <button [disabled]="configForm.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header bg-dark text-light">
+      Plot directory settings
+      <!-- Button to Open the Modal -->
+      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#plotModal">
+        ?
+      </button>
+    </div>
+    <div class="card-body">
+      <label for="plot_dirs">Plot directories' paths:</label>
+
+   <div formArrayName="plot_dirs" style="margin-top: 2px">
+        <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
+          <div>
+            <p><input [id]="'plot_dirs'+i" type="text" placeholder="C://plotfolder" formControlName="plot_dirs" class="form-control-sm col-11"
+              (blur)="logValidationErrors()">
+              &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i class="material-icons small"
+                  style="text-align: right; font-weight: bolder;">remove</i></button>
+                  </p>
+          </div>
+          <div class="alert alert-danger" *ngIf="plotdirs.invalid && plotdirs.touched">
+              {{ formErrors.plot_dirs }}
+          </div>
+        </div>
+      </div>
+
+      <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add plot</button>
+      <!--End add counter to inputs -->
+    </div>
+  </div>
+</div>
+</div>
+
+<!--space-->
+<div>
+  <p></p>
+</div>
+
+<!--deck 2-->
+
+<div class="container col-12">
+  <div class="card-deck">
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        Miner settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#minerSettings">
+?
+        </button>
+      </div>
+      <div formGroupName="miner_settings" class="card-body">
+        <div class="form-group row">
+          <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader
+            thread count:</label>
+          <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text" placeholder="0"
+            class="form-control col-sm-2" (blur)="logValidationErrors()">
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count">
+              {{ formErrors.hdd_reader_thread_count }}
+          </div>
+        <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
+          <div class="form-check-inline">
+            <label for="hdd_use_direct_io" class="form-check-label">
+              <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
+                name="hdd_use_direct_io" value="true" checked>True
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label for="hdd_use_direct_io" class="form-check-label">
+              <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
+                name="hdd_use_direct_io" value="false">False
+            </label>
+          </div>
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io">
+            {{ formErrors.hdd_use_direct_io }}
+        </div>
+        <div class="form-group row">
+          <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
+        <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after">
+          {{ formErrors.hdd_wake_up_after }}
+      </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        CPU settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#cpuSettings">
+          ?
+        </button>
+      </div>
+      <div formGroupName="cpu_settings" class="card-body">
+        <div class="form-group row">
+        <label for="cpu_threads" class="col-sm-5 col-form-label">CPU threads:</label>
+        <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0" class="form-control col-2"
+        (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.cpu_threads">
+            {{ formErrors.cpu_threads }}
+        </div>
+        <div class="form-group row">
+        <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
+        <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.cpu_worker_task_count">
+          {{ formErrors.cpu_worker_task_count }}
+      </div>
+      <div class="form-group row">
+        <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
+        <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536" class="form-control col-4"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache">
+          {{ formErrors.cpu_nonces_per_cache }}
+      </div>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
+          <div class="form-check-inline">
+            <label for="cpu_thread_pinning" class="form-check-label">
+              <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning1" type="radio" class="form-check-input" name="cpu_thread_pinning" value="true" (blur)="logValidationErrors()">True
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label for="cpu_thread_pinning" class="form-check-label">
+              <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning2" type="radio" class="form-check-input" name="cpu_thread_pinning" value="false"
+                checked>False
+            </label>
+          </div>
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning">
+            {{ formErrors.cpu_thread_pinning }}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        GPU settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#gpuSettings">
+          ?
+        </button>
+      </div>
+      <div formGroupName="gpu_settings" class="card-body">
+        <div class="form-group row">
+        <label for="gpu_threads" class="col-sm-5 col-form-label">GPU threads:</label>
+        <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_threads">
+          {{ formErrors.gpu_threads }}
+      </div>
+      <div class="form-group row">
+        <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
+        <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_worker_task_count">
+          {{ formErrors.gpu_worker_task_count }}
+      </div>
+      <div class="form-group row">
+        <label for="gpu_platform"  class="col-sm-5 col-form-label">GPU platform:</label>
+        <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_platform">
+          {{ formErrors.gpu_platform }}
+      </div>
+      <div class="form-group row">
+        <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
+        <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0" class="form-control col-2"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_device">
+          {{ formErrors.gpu_device }}
+      </div>
+      <div class="form-group row">
+        <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
+        <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144" class="form-control col-4"
+        (blur)="logValidationErrors()">
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache">
+          {{ formErrors.gpu_nonces_per_cache }}
+      </div>
+      <div class="form-group row">
+          <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
+          <div class="form-check-inline">
+            <label for="gpu_mem_mapping" class="form-check-label">
+              <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping1" type="radio" class="form-check-input" name="gpu_mem_mapping" value="true"
+              (blur)="logValidationErrors()">True
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label for="gpu_mem_mapping" class="form-check-label">
+              <input  id="gpu_mem_mapping2" type="radio" class="form-check-input" name="gpu_mem_mapping" value="false"
+                checked>False
+            </label>
+          </div>
+      </div>
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping">
+          {{ formErrors.gpu_mem_mapping }}
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-5 col-form-label">GPU async: </label>
+          <div class="form-check-inline">
+            <label for="gpu_async" class="form-check-label">
+              <input formControlName="gpu_async" id="gpu_async1" type="radio" class="form-check-input" name="gpu_async" value="true" (blur)="logValidationErrors()">True
+            </label>
+          </div>
+
+          <div class="form-check-inline">
+            <label for="gpu_async" class="form-check-label">
+              <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input" name="gpu_async" value="false" checked>False
+            </label>
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.gpu_async">
+              {{ formErrors.gpu_async }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--space-->
+<div>
+  <p></p>
+</div>
+
+<!--deck 3-->
+
+<div class="container col-12">
+  <div class="card-deck">
+    <div class="card">
+      <div class="card-header bg-dark text-light">
+        Mining settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#miningSettings">
+         ?
+        </button>
+      </div>
+      <div class="card-body">
+      <!-- Add logic to hide/show specific forms and to copy solo IDs-->
+        <div class="btn-toolbar" role="toolbar">
+          <div class="btn-group mr-2" role="group">
+            <button type="button" class="btn btn-secondary disabled">Target deadline: </button>
+            <button type="button" class="btn btn-primary">Single ID</button>
+            <button type="button" class="btn btn-primary">Pool Multi-ID</button>
+            <button type="button" class="btn btn-primary">Solo Multi-ID</button>
+          </div>
+        </div>
+        <br>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
+          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="" class="form-control col-6"
+          (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.target_deadline">
+            {{ formErrors.target_deadline }}
+        </div>
+
+        <div formArrayName="account_id_to_target_deadline">
+          <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
+            <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID" formControlName="account_id_dl"
+                class="form-control-sm col-4" (blur)="logValidationErrors()">
+              <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline" formControlName="target_deadline_dl"
+                class="form-control-sm col-7" (blur)="logValidationErrors()">
+              &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
+                <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+              </button></p>
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched">
+            {{ formErrors.account_id_dl }}
+
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
+            {{ formErrors.target_deadline_dl }}
+        </div>
+          <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-primary">Add
+            target deadlines for multi-id mining</button>
+        </div><br>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
+          <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text" placeholder="3000"
+            class="form-control col-6" (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval">
+            {{ formErrors.get_mining_info_interval }}
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
+          <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
+          (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.timeout">
+            {{ formErrors.timeout }}
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label">Send proxy details:</label>
+          <div class="form-check-inline">
+            <label for="send_proxy_details" class="form-check-label">
+              <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio" class="form-check-input"
+                name="send_proxy_details" value="true" (blur)="logValidationErrors()">True
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label for="send_proxy_details" class="form-check-label">
+              <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio" class="form-check-input"
+                name="send_proxy_details" value="false" checked>False
+            </label>
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details">
+              {{ formErrors.send_proxy_details }}
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="card" formGroupName="logging_settings">
+      <div class="card-header bg-dark text-light">
+        Logging settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#loggingSettings">
+         ?
+        </button>
+      </div>
+<div class="card-body">
+  <div class="form-group row">
+    <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
+    <select formControlName="console_log_level" class="form- col-6" (blur)="logValidationErrors()">
+      <option name="console_log_level" value="off">Off</option>
+      <option name="console_log_level" value="error">Error</option>
+      <option name="console_log_level" value="warn">Warn</option>
+      <option name="console_log_level" value="info" selected>Info</option>
+      <option name="console_log_level" value="debug">Debug</option>
+      <option name="console_log_level" value="trace">Trace</option>
+    </select>
+  </div>
+  <div class="alert alert-danger" *ngIf="formErrors.console_log_level">
+      {{ formErrors.console_log_level }}
+  </div>
+
+  <div class="form-group row">
+    <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
+    <select formControlName="logfile_log_level" class="form- col-6" (blur)="logValidationErrors()">
+      <option name="logfile_log_level" value="off">Off</option>
+      <option name="logfile_log_level" value="error">Error</option>
+      <option name="logfile_log_level" value="warn" selected>Warn</option>
+      <option name="logfile_log_level" value="info">Info</option>
+      <option name="logfile_log_level" value="debug">Debug</option>
+      <option name="logfile_log_level" value="trace">Trace</option>
+    </select>
+  </div>
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level">
+      {{ formErrors.logfile_log_level }}
+  </div>
+
+
+  <div class="form-group row">
+    <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
+    <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10" class="form-control col-2"
+    (blur)="logValidationErrors()">
+  </div>
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count">
+      {{ formErrors.logfile_max_count }}
+  </div>
+  <div class="form-group row">
+    <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
+    <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20" class="form-control col-2"
+    (blur)="logValidationErrors()">
+  </div>
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size">
+      {{ formErrors.logfile_max_size }}
+  </div>
+</div>
+</div>
+<div class="card" formGroupName="display_settings">
+  <div class="card-header bg-dark text-light">
+    Display and benchmark settings
+    <!-- Button to Open the Modal -->
+    <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#displayBenchmark">
+     ?
+    </button>
+  </div>
+  <div class="card-body">
+
+
+
+<div class="form-group row">
+  <label class="col-sm-5 col-form-label">Show progress:</label>
+  <div class="form-check-inline">
+    <label for="show_progress" class="form-check-label">
+      <input formControlName="show_progress" id="show_progress1" type="radio" class="form-check-input" name="show_progress"
+        value="true" checked (blur)="logValidationErrors()">True
+    </label>
+  </div>
+
+  <div class="form-check-inline">
+    <label for="show_progress" class="form-check-label">
+      <input formControlName="show_progress" id="show_progress2" type="radio" class="form-check-input" name="show_progress"
+        value="false">False
+    </label>
+  </div>
+</div>
+<div class="alert alert-danger" *ngIf="formErrors.show_progress">
+    {{ formErrors.show_progress }}
+</div>
+
+<div class="form-group row">
+  <label class="col-sm-5 col-form-label">Show drive statistics:</label>
+  <div class="form-check-inline">
+    <label for="show_drive_stats" class="form-check-label">
+      <input formControlName="show_drive_stats" id="show_drive_stats1" type="radio" class="form-check-input" name="show_drive_stats"
+        value="true" (blur)="logValidationErrors()">True
+    </label>
+  </div>
+
+  <div class="form-check-inline">
+    <label for="show_drive_stats" class="form-check-label">
+      <input formControlName="show_drive_stats" id="show_drive_stats2" type="radio" class="form-check-input" name="show_drive_stats"
+        value="false" checked>False
+    </label>
+  </div>
+</div>
+<div class="alert alert-danger" *ngIf="formErrors.show_drive_stats">
+    {{ formErrors.show_drive_stats }}
+</div>
+
+<div class="form-group row">
+  <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
+  <div class="form-check-inline">
+    <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only1" type="radio" class="form-check-input" name="benchmark_only"
+        value="disabled" checked (blur)="logValidationErrors()">Disabled
+    </label>
+  </div>
+
+  <div class="form-check-inline">
+    <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only2" type="radio" class="form-check-input" name="benchmark_only"
+        value="I/O">I/O
+    </label>
+  </div>
+
+  <div class="form-check-inline">
+    <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only3" type="radio" class="form-check-input" name="benchmark_only"
+        value="XPU">XPU
+    </label>
+  </div>
+
+</div>
+<div class="alert alert-danger" *ngIf="formErrors.benchmark_only">
+    {{ formErrors.benchmark_only }}
+</div>
+</div>
+</div>
+
+  </div>
+<!-- Buttons -->
+<div id="buttons" class="float-right">
+  <br>
+
+<div class="btn-group" role="group">
+<button [disabled]="configForm.invalid" type="submit" class="btn btn-primary"><i class="material-icons small" style="text-align: center">done_all</i>&nbsp;Save</button>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i class="material-icons small"
+    style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
+<button type="button" class="btn btn-primary" (click)="exportConfig()"><i class="material-icons small" style="text-align: center">get_app</i>&nbsp;Export
+  .yaml</button>
+<button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">bolt</i>&nbsp;Start
+  Scavenger</button>
+</div>
+
+</div>
+</div>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+  <!--
+<table border="1">
+  <tr>
+    <th style="padding: 10px">Group/Control name</th>
+    <th style="padding: 10px">touched</th>
+    <th style="padding: 10px">dirty</th>
+    <th style="padding: 10px">valid</th>
+    <th style="padding: 10px">value</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      url
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('url').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('url').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('url').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('url').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px; background: #999;">
+      account_id_to_secret_phrase
+    </td>
+    <td style="padding: 10px; background: #999;">
+      touched: {{ configForm.get('account_id_to_secret_phrase').touched }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      dirty: {{ configForm.get('account_id_to_secret_phrase').dirty }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      valid: {{ configForm.get('account_id_to_secret_phrase').valid }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      value: {{ configForm.get('account_id_to_secret_phrase').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      account_id
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('account_id').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('account_id').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('account_id').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('account_id').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      passphrase
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('passphrase').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('passphrase').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('passphrase').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('passphrase').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      plot_dirs
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('plot_dirs').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('plot_dirs').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('plot_dirs').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('plot_dirs').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px; background: #999;">
+      miner_settings
+    </td>
+    <td style="padding: 10px; background: #999;">
+      touched: {{ configForm.get('miner_settings').touched }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      dirty: {{ configForm.get('miner_settings').dirty }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      valid: {{ configForm.get('miner_settings').valid }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      value: {{ configForm.get('miner_settings').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      hdd_reader_thread_count
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('hdd_reader_thread_count').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('hdd_reader_thread_count').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('hdd_reader_thread_count').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('hdd_reader_thread_count').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      hdd_use_direct_io
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('hdd_use_direct_io').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('hdd_use_direct_io').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('hdd_use_direct_io').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('hdd_use_direct_io').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      hdd_wake_up_after
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('hdd_wake_up_after').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('hdd_wake_up_after').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('hdd_wake_up_after').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('hdd_wake_up_after').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px; background: #999;">
+      cpu_settings
+    </td>
+    <td style="padding: 10px; background: #999;">
+      touched: {{ configForm.get('cpu_settings').touched }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      dirty: {{ configForm.get('cpu_settings').dirty }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      valid: {{ configForm.get('cpu_settings').valid }}
+    </td>
+    <td style="padding: 10px; background: #999;">
+      value: {{ configForm.get('cpu_settings').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      cpu_threads
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('cpu_threads').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('cpu_threads').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('cpu_threads').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('cpu_threads').value }}
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      cpu_worker_task_count
+    </td>
+    <td style="padding: 10px">
+      touched: {{ configForm.get('cpu_worker_task_count').touched }}
+    </td>
+    <td style="padding: 10px">
+      dirty: {{ configForm.get('cpu_worker_task_count').dirty }}
+    </td>
+    <td style="padding: 10px">
+      valid: {{ configForm.get('cpu_worker_task_count').valid }}
+    </td>
+    <td style="padding: 10px">
+      value: {{ configForm.get('cpu_worker_task_count').value }}
+    </td>
+  </tr>
+<tr>
+  <td style="padding: 10px">
+    cpu_nonces_per_cache
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('cpu_nonces_per_cache').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('cpu_nonces_per_cache').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('cpu_nonces_per_cache').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('cpu_nonces_per_cache').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    cpu_thread_pinning
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('cpu_thread_pinning').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('cpu_thread_pinning').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('cpu_thread_pinning').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('cpu_thread_pinning').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px; background: #999;">
+    gpu_settings
+  </td>
+  <td style="padding: 10px; background: #999;">
+    touched: {{ configForm.get('gpu_settings').touched }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    dirty: {{ configForm.get('gpu_settings').dirty }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    valid: {{ configForm.get('gpu_settings').valid }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    value: {{ configForm.get('gpu_settings').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_threads
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_threads').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_threads').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_threads').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_threads').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_worker_task_count
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_worker_task_count').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_worker_task_count').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_worker_task_count').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_worker_task_count').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_platform
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_platform').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_platform').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_platform').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_platform').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_device
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_device').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_device').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_device').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_device').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_nonces_per_cache
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_nonces_per_cache').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_nonces_per_cache').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_nonces_per_cache').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_nonces_per_cache').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_mem_mapping
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_mem_mapping').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_mem_mapping').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_mem_mapping').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_mem_mapping').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      gpu_async
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('gpu_async').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('gpu_async').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('gpu_async').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('gpu_async').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px; background: #999;">
+      mining_settings
+  </td>
+  <td style="padding: 10px; background: #999;">
+    touched: {{ configForm.get('mining_settings').touched }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    dirty: {{ configForm.get('mining_settings').dirty }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    valid: {{ configForm.get('mining_settings').valid }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    value: {{ configForm.get('mining_settings').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    target_deadline:
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('target_deadline:').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('target_deadline:').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('target_deadline:').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('target_deadline:').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px; background: #999;">
+    account_id_to_target_deadline
+  </td>
+  <td style="padding: 10px; background: #999;">
+    touched: {{ configForm.get('account_id_to_target_deadline').touched }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    dirty: {{ configForm.get('account_id_to_target_deadline').dirty }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    valid: {{ configForm.get('account_id_to_target_deadline').valid }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    value: {{ configForm.get('account_id_to_target_deadline').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    account_id_dl:
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('account_id_dl').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('account_id_dl').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('account_id_dl').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('account_id_dl').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      target_deadline_dl
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('target_deadline_dl').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('target_deadline_dl').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('target_deadline_dl').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('target_deadline_dl').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    get_mining_info_interval
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('get_mining_info_interval').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('get_mining_info_interval').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('get_mining_info_interval').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('get_mining_info_interval').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    timeout
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('timeout').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('timeout').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('timeout').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('timeout').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    send_proxy_details
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('send_proxy_details').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('send_proxy_details').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('send_proxy_details').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('send_proxy_details').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px; background: #999;">
+    logging_settings
+  </td>
+  <td style="padding: 10px; background: #999;">
+    touched: {{ configForm.get('logging_settings').touched }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    dirty: {{ configForm.get('logging_settings').dirty }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    valid: {{ configForm.get('logging_settings').valid }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    value: {{ configForm.get('logging_settings').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      console_log_level
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('console_log_level').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('console_log_level').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('console_log_level').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('console_log_level').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+      logfile_log_level
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('logfile_log_level').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('logfile_log_level').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('logfile_log_level').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('logfile_log_level').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    logfile_max_count
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('logfile_max_count').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('logfile_max_count').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('logfile_max_count').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('logfile_max_count').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    logfile_max_size
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('logfile_max_size').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('logfile_max_size').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('logfile_max_size').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('logfile_max_size').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px; background: #999;">
+    display_settings
+  </td>
+  <td style="padding: 10px; background: #999;">
+    touched: {{ configForm.get('display_settings').touched }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    dirty: {{ configForm.get('display_settings').dirty }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    valid: {{ configForm.get('display_settings').valid }}
+  </td>
+  <td style="padding: 10px; background: #999;">
+    value: {{ configForm.get('display_settings').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    show_progress
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('show_progress').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('show_progress').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('show_progress').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('show_progress').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    show_drive_stats
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('show_drive_stats').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('show_drive_stats').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('show_drive_stats').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('show_drive_stats').value }}
+  </td>
+</tr>
+<tr>
+  <td style="padding: 10px">
+    benchmark_only
+  </td>
+  <td style="padding: 10px">
+    touched: {{ configForm.get('benchmark_only').touched }}
+  </td>
+  <td style="padding: 10px">
+    dirty: {{ configForm.get('benchmark_only').dirty }}
+  </td>
+  <td style="padding: 10px">
+    valid: {{ configForm.get('benchmark_only').valid }}
+  </td>
+  <td style="padding: 10px">
+    value: {{ configForm.get('benchmark_only').value }}
+  </td>
+</tr>
+</table>
+-->
+<br><br>
+
+   Value: {{ configForm.value | json }}
+<br> <br>
+  Status: {{ configForm.status }}
+
+</div>
