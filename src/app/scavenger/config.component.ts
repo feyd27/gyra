@@ -316,9 +316,9 @@ export class ConfigComponent implements OnInit {
         benchmark_only: ['disabled', [Validators.required]] // disabled, I/O, XPU
       }),
       gui_settings: this.fb.group({
-        validator_messages: ['true', [Validators.required]],
-        info_messages: ['true', [Validators.required]],
-        warning_messages: ['true', [Validators.required]]
+        validator_messages: [true, [Validators.required]],
+        info_messages: [true, [Validators.required]],
+        warning_messages: [true, [Validators.required]]
       })
     });
 
@@ -412,26 +412,39 @@ export class ConfigComponent implements OnInit {
   // get gui settings on value change
 
   getGuiSettings() {
-    const guiValidator = this.gui_settings.get('validator_messages').value as string;
-    const guiInformation = this.gui_settings.get('info_messages').value as string;
-    const guiWarning = this.gui_settings.get('warning_messages').value as string;
+    const guiValidator = this.gui_settings.get('validator_messages').value;
+    const guiInformation = this.gui_settings.get('info_messages').value;
+    const guiWarning = this.gui_settings.get('warning_messages').value;
     console.log ('guiValidator: ' + guiValidator);
     console.log ('guiInformation: ' + guiInformation);
     console.log ('guiWarning: ' + guiWarning);
-    if (guiValidator == 'true') {
+// tslint:disable-next-line: triple-equals
+    if (guiValidator === true) {
       this.formErrors.display = 'true';
+      console.log('this.formErrors.display: ' + this.formErrors.display);
+      console.log('this.formErrors.url: ' + this.formErrors.url);
     } else {
-      this.formErrors.display = '';
+      this.formErrors.display = 'false';
+      console.log('this.formErrors.display: ' + this.formErrors.display);
+      console.log('this.formErrors.url: ' + this.formErrors.url);
     }
-    if (guiInformation == 'true') {
+    if (guiInformation === true) {
       this.formInfo.display = 'true';
+      console.log('this.formInfo.display: ' + this.formInfo.display);
+      console.log('this.formInfo.url: ' + this.formInfo.url);
     } else {
-      this.formInfo.display = '';
+      this.formInfo.display = 'false';
+      console.log('this.formInfo.display: ' + this.formInfo.display);
+      console.log('this.formInfo.url: ' + this.formInfo.url);
     }
-    if (guiWarning == 'true') {
+    if (guiWarning === true) {
       this.formWarning.display = 'true';
+      console.log('this.formWarning.display: ' + this.formWarning.display);
+      console.log('this.formWarning.url: ' + this.formWarning.url);
     } else {
-      this.formWarning.display = '';
+      this.formWarning.display = 'false';
+      console.log('this.formWarning.display: ' + this.formWarning.display);
+      console.log('this.formWarning.url: ' + this.formWarning.url);
     }
   }
 

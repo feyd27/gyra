@@ -18,15 +18,15 @@
 <br>
 <div class="float-right" formGroupName="gui_settings">
 <div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" id="validator_messages" value="true" checked formControlName="validator_messages">
+  <input class="form-check-input" type="checkbox" id="validator_messages" value="1" checked formControlName="validator_messages">
   <label class="form-check-label" for="validator_messages">Show validator messages</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" id="info_messages" value="true" checked formControlName="info_messages">
+  <input class="form-check-input" type="checkbox" id="info_messages" value="1" checked formControlName="info_messages">
   <label class="form-check-label" for="info_messages">Show info messages</label>
 </div>
 <div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" id="warning_messages" value="true" checked formControlName="warning_messages">
+  <input class="form-check-input" type="checkbox" id="warning_messages" value="1" checked formControlName="warning_messages">
   <label class="form-check-label" for="warning_messages">Show warnings</label>
 </div>
 </div>
@@ -48,12 +48,12 @@
     </div>
     <div class="card-body">
       <label for="url">Pool or wallet URL:</label>
-      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port" class="form-control col-12" (blur)="logValidationErrors()">
+      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port" class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
     </p>
-    <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (gui_settings.get('validator_messages').value == 'true')">
+    <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
         {{ formErrors.url }}
     </div>
-    <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.url && url.untouched">
+    <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.url && (formWarning.display == 'true')">
         {{ formWarning.url }}
     </div>
     </div>
@@ -81,11 +81,11 @@
             </button><br>
             </p>
           </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched">
+        <div class="alert alert-danger" *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
             {{ formErrors.account_id }}
 
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched">
+        <div class="alert alert-danger" *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
             {{ formErrors.passphrase }}
         </div>
       </div>
@@ -112,7 +112,7 @@
                   style="text-align: right; font-weight: bolder;">remove</i></button>
                   </p>
           </div>
-          <div class="alert alert-danger" *ngIf="plotdirs.invalid && plotdirs.touched">
+          <div class="alert alert-danger" *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
               {{ formErrors.plot_dirs }}
           </div>
         </div>
@@ -120,7 +120,7 @@
 
       <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add plot</button>
       <br><br>
-      <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.plot_dirs && plotDirs.valid">
+      <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
           {{ formWarning.plot_dirs }}
       </div>
       <!--End add counter to inputs -->
@@ -153,10 +153,10 @@
           <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text" placeholder="0"
             class="form-control col-sm-2" (blur)="logValidationErrors()">
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count">
+          <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
               {{ formErrors.hdd_reader_thread_count }}
           </div>
-          <div class="alert alert-info" *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid">
+          <div class="alert alert-info" *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
               {{ formInfo.hdd_reader_thread_count }}
           </div>
         <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
@@ -173,7 +173,7 @@
             </label>
           </div>
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io">
+        <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
             {{ formErrors.hdd_use_direct_io }}
         </div>
         <div class="form-group row">
@@ -181,7 +181,7 @@
         <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240" class="form-control col-2"
         (blur)="logValidationErrors()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after">
+      <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
           {{ formErrors.hdd_wake_up_after }}
       </div>
       </div>
@@ -201,10 +201,10 @@
         (blur)="logValidationErrors(); cpuNonces()">
         </div>
 
-        <div class="alert alert-danger" *ngIf="formErrors.cpu_threads">
+        <div class="alert alert-danger" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
             {{ formErrors.cpu_threads }}
         </div>
-        <div class="alert alert-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid">
+        <div class="alert alert-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
             {{ formInfo.cpu_threads }}
         </div>
 
@@ -213,10 +213,10 @@
         <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4" class="form-control col-2"
         (blur)="logValidationErrors(); cpuNonces()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.cpu_worker_task_count">
+      <div class="alert alert-danger" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
           {{ formErrors.cpu_worker_task_count }}
       </div>
-      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid">
+      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
           {{ formInfo.cpu_worker_task_count }}
       </div>
       <div class="form-group row">
@@ -224,11 +224,11 @@
         <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536" class="form-control col-4"
         (blur)="logValidationErrors(); cpuNonces()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache">
+      <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
           {{ formErrors.cpu_nonces_per_cache }}
       </div>
 
-      <div class="alert alert-info" *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid">
+      <div class="alert alert-info" *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
           {{ formInfo.cpu_nonces_per_cache }}
       </div>
 
@@ -246,10 +246,10 @@
             </label>
           </div>
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning">
+        <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
             {{ formErrors.cpu_thread_pinning }}
         </div>
-        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid">
+        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
             {{ formWarning.miners_off }}
         </div>
       </div>
@@ -269,7 +269,7 @@
         <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0" class="form-control col-2"
         (blur)="logValidationErrors(); gpuNonces()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_threads">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
           {{ formErrors.gpu_threads }}
       </div>
 
@@ -278,11 +278,11 @@
         <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0" class="form-control col-2"
         (blur)="logValidationErrors(); gpuNonces()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched)">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
           {{ formErrors.gpu_worker_task_count }}
       </div>
 
-      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid">
+      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
           {{ formInfo.gpu_worker_task_count }}
       </div>
 
@@ -291,7 +291,7 @@
         <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0" class="form-control col-2"
         (blur)="logValidationErrors()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_platform">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
           {{ formErrors.gpu_platform }}
       </div>
       <div class="form-group row">
@@ -299,7 +299,7 @@
         <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0" class="form-control col-2"
         (blur)="logValidationErrors()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_device">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
           {{ formErrors.gpu_device }}
       </div>
       <div class="form-group row">
@@ -307,11 +307,11 @@
         <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144" class="form-control col-4"
         (blur)="logValidationErrors(); gpuNonces()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
           {{ formErrors.gpu_nonces_per_cache }}
       </div>
 
-      <div class="alert alert-info" *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid">
+      <div class="alert alert-info" *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
           {{ formInfo.gpu_nonces_per_cache }}
       </div>
 
@@ -330,7 +330,7 @@
             </label>
           </div>
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping">
+      <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
           {{ formErrors.gpu_mem_mapping }}
       </div>
       <div class="form-group row">
@@ -346,12 +346,12 @@
               <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input" name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
             </label>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.gpu_async">
+          <div class="alert alert-danger" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
               {{ formErrors.gpu_async }}
           </div>
 
         </div>
-        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid">
+        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
             {{ formWarning.miners_off }}
         </div>
       </div>
@@ -382,7 +382,7 @@
           <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="" class="form-control col-6"
           (blur)="logValidationErrors()">
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.target_deadline">
+        <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
             {{ formErrors.target_deadline }}
         </div>
 
@@ -396,7 +396,7 @@
                 <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
               </button></p>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched">
+          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
             {{ formErrors.account_id_dl }}
 
         </div>
@@ -411,7 +411,7 @@
           <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text" placeholder="3000"
             class="form-control col-6" (blur)="logValidationErrors()">
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval">
+        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
             {{ formErrors.get_mining_info_interval }}
         </div>
         <div class="form-group row">
@@ -419,7 +419,7 @@
           <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
           (blur)="logValidationErrors()">
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.timeout">
+        <div class="alert alert-danger" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
             {{ formErrors.timeout }}
         </div>
         <div class="form-group row">
@@ -436,7 +436,7 @@
                 name="send_proxy_details" value="false" checked>No
             </label>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details">
+          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
               {{ formErrors.send_proxy_details }}
           </div>
         </div>
@@ -464,7 +464,7 @@
       <option name="console_log_level" value="trace">Trace</option>
     </select>
   </div>
-  <div class="alert alert-danger" *ngIf="formErrors.console_log_level">
+  <div class="alert alert-danger" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
       {{ formErrors.console_log_level }}
   </div>
 
@@ -479,7 +479,7 @@
       <option name="logfile_log_level" value="trace">Trace</option>
     </select>
   </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level">
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
       {{ formErrors.logfile_log_level }}
   </div>
 
@@ -489,7 +489,7 @@
     <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10" class="form-control col-2"
     (blur)="logValidationErrors()">
   </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count">
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
       {{ formErrors.logfile_max_count }}
   </div>
   <div class="form-group row">
@@ -497,11 +497,11 @@
     <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20" class="form-control col-2"
     (blur)="logValidationErrors()">
   </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size">
+  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
       {{ formErrors.logfile_max_size }}
   </div>
 
-  <div class="alert alert-info" *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched">
+  <div class="alert alert-info" *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
     {{ formInfo.logging_settings }}
   </div>
 
@@ -519,7 +519,7 @@
           name="console_log_pattern" value="detailed" checked>Detailed
       </label>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.console_log_pattern">
+    <div class="alert alert-danger" *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
         {{ formErrors.console_log_pattern }}
     </div>
   </div>
@@ -539,7 +539,7 @@
           name="logfile_log_pattern" value="detailed" checked>Detailed
       </label>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.logfile_log_pattern">
+    <div class="alert alert-danger" *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
         {{ formErrors.logfile_log_pattern }}
     </div>
   </div>
@@ -574,7 +574,7 @@
     </label>
   </div>
 </div>
-<div class="alert alert-danger" *ngIf="formErrors.show_progress">
+<div class="alert alert-danger" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
     {{ formErrors.show_progress }}
 </div>
 
@@ -594,7 +594,7 @@
     </label>
   </div>
 </div>
-<div class="alert alert-danger" *ngIf="formErrors.show_drive_stats">
+<div class="alert alert-danger" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
     {{ formErrors.show_drive_stats }}
 </div>
 
@@ -622,7 +622,7 @@
   </div>
 
 </div>
-<div class="alert alert-danger" *ngIf="formErrors.benchmark_only">
+<div class="alert alert-danger" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
     {{ formErrors.benchmark_only }}
 </div>
 </div>
