@@ -1,4 +1,4 @@
-#Gyra
+Gyra
 This project was generated with Angular CLI version 7.2.3.
 
 Development server
