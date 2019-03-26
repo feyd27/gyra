@@ -415,36 +415,21 @@ export class ConfigComponent implements OnInit {
     const guiValidator = this.gui_settings.get('validator_messages').value;
     const guiInformation = this.gui_settings.get('info_messages').value;
     const guiWarning = this.gui_settings.get('warning_messages').value;
-    console.log ('guiValidator: ' + guiValidator);
-    console.log ('guiInformation: ' + guiInformation);
-    console.log ('guiWarning: ' + guiWarning);
 // tslint:disable-next-line: triple-equals
     if (guiValidator === true) {
       this.formErrors.display = 'true';
-      console.log('this.formErrors.display: ' + this.formErrors.display);
-      console.log('this.formErrors.url: ' + this.formErrors.url);
     } else {
       this.formErrors.display = 'false';
-      console.log('this.formErrors.display: ' + this.formErrors.display);
-      console.log('this.formErrors.url: ' + this.formErrors.url);
     }
     if (guiInformation === true) {
       this.formInfo.display = 'true';
-      console.log('this.formInfo.display: ' + this.formInfo.display);
-      console.log('this.formInfo.url: ' + this.formInfo.url);
     } else {
       this.formInfo.display = 'false';
-      console.log('this.formInfo.display: ' + this.formInfo.display);
-      console.log('this.formInfo.url: ' + this.formInfo.url);
     }
     if (guiWarning === true) {
       this.formWarning.display = 'true';
-      console.log('this.formWarning.display: ' + this.formWarning.display);
-      console.log('this.formWarning.url: ' + this.formWarning.url);
     } else {
       this.formWarning.display = 'false';
-      console.log('this.formWarning.display: ' + this.formWarning.display);
-      console.log('this.formWarning.url: ' + this.formWarning.url);
     }
   }
 
@@ -704,7 +689,7 @@ logfileSize() {
   }
 
 
-// Add GUI messages display controls
+
 // Reset configuration to default values without triggering validators
   resetConfig() {
     this.configForm.patchValue({
