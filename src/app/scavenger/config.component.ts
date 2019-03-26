@@ -547,10 +547,11 @@ export class ConfigComponent implements OnInit {
       const gpuWorkersInfo = this.gpu_settings.get('gpu_worker_task_count').value as number;
       const gpuThreadsInfo = this.gpu_settings.get('gpu_threads').value as number;
       const gpuAsync = this.gpu_settings.get('gpu_async').value;
+      let gpuAsyncNo = 0;
       if (gpuAsync === 'true') {
-        const gpuAsyncNo = 2;
+          gpuAsyncNo = 2;
       } else {
-        const gpuAsyncNo = 1;
+          gpuAsyncNo = 1;
       }
       if (gpuNonces > 0) {
       const gpuRemainder = gpuNonces % 64;
@@ -590,8 +591,12 @@ minersOff() {
 logfileSize() {
   const logFileNumber = this.logging_settings.get('logfile_max_count').value as number;
   const logFileSizeConst = this.logging_settings.get('logfile_max_size').value as number;
+  if (this.logging_settings.get('logfile_log_level').value !== 'off') {
   const fileSizeOnDisk = logFileNumber * logFileSizeConst;
   this.formInfo.logging_settings = 'Logfiles size on disk estimate: ' + fileSizeOnDisk + ' MiB.';
+ } else {
+  this.formInfo.logging_settings = 'Logfiles size on disk estimate: 0 MiB.';
+ }
    }
 
    // Validation messages + Errors
