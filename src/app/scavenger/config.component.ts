@@ -14,6 +14,7 @@ import { url } from 'inspector';
 export class ConfigComponent implements OnInit {
 
   configForm: FormGroup;
+  savedConfigForm: FormGroup;
 
   validationMessages = {
     url: {
@@ -750,9 +751,32 @@ logfileSize() {
   }
 
   // Export Config
-  exportConfig(): void {
-    this.logKeyValuePairs(this.configForm);
-  }
+ //  exportConfig(): void {
+  //  this.logKeyValuePairs(this.configForm);
+  // }
+
+  // Preview config
+  previewConfig(): void {
+    let configYaml = '';
+    const urlYaml = this.configForm.get('url').value as string;
+    console.log('urlYaml = ' + urlYaml);
+    const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
+    if (accountPassphrase.length === 0) {
+      let accountPassphraseYaml = '';
+    } else {
+    let accountPassphraseYaml = 'account_id_to_secret_phrase:\\n';
+    for (let i = 0; i < (accountPassphrase.length); i++) {
+      // console.log('counter i:' + i + ' ' + accArray.at(i).get('account_id').value);
+       const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
+       const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
+       accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'' + '\\n';
+       console.log(' accountPassphraseYaml' + accountPassphraseYaml);
+      }
+    }
+    configYaml = urlYaml + '\\n' + accountPassphraseYaml;
+    console.log('configYaml: ' + configYaml);
+    }
+
 
   // Trigger validation
   loadConfig(): void {
@@ -808,6 +832,8 @@ deleteDeadline(i: number) {
   onSubmit(): void {
     console.log(JSON.stringify(this.configForm.value));
     console.log(this.configForm);
+    this.savedConfigForm = this.configForm;
+    console.log('saved: ' + this.savedConfigForm);
   }
 
 }
