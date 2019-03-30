@@ -262,6 +262,43 @@ export class ConfigComponent implements OnInit {
     benchmark_only: '',
   };
 
+  configYaml = {
+    url: '',
+    account_id: '',
+    passphrase: '',
+    plot_dirs: '',
+    hdd_reader_thread_count: '',
+    hdd_use_direct_io: '',
+    hdd_wake_up_after: '',
+    miners_off: '',
+    cpu_threads: '',
+    cpu_worker_task_count: '',
+    cpu_nonces_per_cache: '',
+    cpu_thread_pinning: '',
+    gpu_threads: '',
+    gpu_worker_task_count: '',
+    gpu_platform: '',
+    gpu_device: '',
+    gpu_nonces_per_cache: '',
+    gpu_mem_mapping: '',
+    gpu_async: '',
+    target_deadline: '',
+    account_id_dl: '',
+    target_deadline_dl: '',
+    get_mining_info_interval: '',
+    timeout: '',
+    send_proxy_details: '',
+    console_log_level: '',
+    logfile_log_level: '',
+    logfile_max_count: '',
+    logfile_max_size: '',
+    console_log_pattern: '',
+    logfile_log_pattern: '',
+    show_progress: '',
+    show_drive_stats: '',
+    benchmark_only: '',
+  };
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -757,10 +794,14 @@ logfileSize() {
 
   // Preview config
   previewConfig(): void {
+    // URL
     let configYaml = '';
     const urlYaml = this.configForm.get('url').value as string;
-    console.log('urlYaml = ' + urlYaml);
+    this.configYaml.url = 'url: ' + '\'' + urlYaml + '\'';
+    // console.log('urlYaml = ' + urlYaml);
+    // acc ID + passphrase
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
+    let accountPassphraseYaml = '';
     if (accountPassphrase.length === 0) {
       let accountPassphraseYaml = '';
     } else {
@@ -770,10 +811,18 @@ logfileSize() {
        const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
        const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
        accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'' + '\\n';
-       console.log(' accountPassphraseYaml' + accountPassphraseYaml);
+       // console.log('accountPassphraseYaml: ' + accountPassphraseYaml);
       }
-    }
     configYaml = urlYaml + '\\n' + accountPassphraseYaml;
+    }
+    // plot dirs
+    const plotDirs = this.configForm.get('plot_dirs') as FormArray;
+    let plotDirsYaml = 'plot_dirs: \\n';
+    for (let i = 0; i < (plotDirs.length); i++) {
+      const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
+      plotDirsYaml += '\'' + plotDirYaml + '\'';
+    }
+    configYaml = configYaml + '\\n' + plotDirsYaml;
     console.log('configYaml: ' + configYaml);
     }
 
