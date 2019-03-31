@@ -6,8 +6,13 @@
   <div class="btn-toolbar float-right" role="toolbar">
     <div class="btn-group mr-2" role="group">
       <button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">book</i>&nbsp;Gyra Guide</button>
-      <button type="button" class="btn btn-primary" (click)="loadConfig()"><i class="material-icons small" style="text-align: center">file_upload</i>&nbsp;Load last saved config</button>
       <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small" style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
+<button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs" type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i class="material-icons small"
+    style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
+<button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs" type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small" style="text-align: center">get_app</i>&nbsp;Export
+  .yaml</button>
+<button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">bolt</i>&nbsp;Start
+  Scavenger</button>
     </div>
   </div>
 
@@ -641,13 +646,7 @@
   <br>
 
 <div class="btn-group" role="group">
-<button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off" type="submit" class="btn btn-primary"><i class="material-icons small" style="text-align: center">done_all</i>&nbsp;Save</button>
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i class="material-icons small"
-    style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
-<button type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small" style="text-align: center">get_app</i>&nbsp;Export
-  .yaml</button>
-<button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">bolt</i>&nbsp;Start
-  Scavenger</button>
+
 </div>
 
 </div>
@@ -659,7 +658,7 @@
 <br>
 <br>
 <div>
-
+<!--
     <br><br>
 
     Errors: {{ formErrors | json}}
@@ -677,15 +676,12 @@ Warnings: {{ formWarning | json }}
    Value: {{ configForm.value | json }}
 <br> <br>
   Status: {{ configForm.status }}
-
-  <br><br>
-  Saved configuration: {{ savedConfigForm?.value | json }}
-
+-->
   <br> <br>
   Status plots: {{ plotDirs.status }}
 
   <br> <br>
-  Config: {{ configYaml.url }}
+  Config: <br>{{ configYaml.url }}<br>{{ configYaml.account_id_to_secret_phrase }}
 
 
 </div>

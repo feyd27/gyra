@@ -264,8 +264,7 @@ export class ConfigComponent implements OnInit {
 
   configYaml = {
     url: '',
-    account_id: '',
-    passphrase: '',
+    account_id_to_secret_phrase: '',
     plot_dirs: '',
     hdd_reader_thread_count: '',
     hdd_use_direct_io: '',
@@ -797,41 +796,48 @@ logfileSize() {
     // URL
     let configYaml = '';
     const urlYaml = this.configForm.get('url').value as string;
-    this.configYaml.url = 'url: ' + '\'' + urlYaml + '\'';
-    // console.log('urlYaml = ' + urlYaml);
-    // acc ID + passphrase
+    this.configYaml.url = 'url: ' + '\'' + urlYaml + '\''; // needs to be fixed
+    configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\n';
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     let accountPassphraseYaml = '';
+    let accountPassphraseYamlHtml = '';
     if (accountPassphrase.length === 0) {
       let accountPassphraseYaml = '';
     } else {
-    let accountPassphraseYaml = 'account_id_to_secret_phrase:\\n';
+    let accountPassphraseYaml = '\naccount_id_to_secret_phrase:\n';
     for (let i = 0; i < (accountPassphrase.length); i++) {
-      // console.log('counter i:' + i + ' ' + accArray.at(i).get('account_id').value);
        const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
        const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
-       accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'' + '\\n';
-       // console.log('accountPassphraseYaml: ' + accountPassphraseYaml);
+       accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'\n';
+       accountPassphraseYamlHtml += `
+       ${accountIDYaml}: '${passphraseYaml}'\
+       `;
+       // needs to be fixed
       }
-    configYaml = urlYaml + '\\n' + accountPassphraseYaml;
+    configYaml += accountPassphraseYaml;
+    this.configYaml.account_id_to_secret_phrase = accountPassphraseYamlHtml;
     }
     // plot dirs
     const plotDirs = this.configForm.get('plot_dirs') as FormArray;
-    let plotDirsYaml = 'plot_dirs: \\n';
+    let plotDirsYaml = 'plot_dirs: \n';
     for (let i = 0; i < (plotDirs.length); i++) {
       const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
-      plotDirsYaml += '\'' + plotDirYaml + '\'';
+      plotDirsYaml += '-\'' + plotDirYaml + '\'\n';
     }
-    configYaml = configYaml + '\\n' + plotDirsYaml;
+    configYaml += '\n' + plotDirsYaml;
+    this.configYaml.plot_dirs = plotDirsYaml; // needs to be fixed
+    const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
+    this.configYaml.hdd_reader_thread_count = hddReaderThreadCount; // needs to be fixed
+    configYaml += '\n#Miner settings \nhdd_reader_thread_count: ' + hddReaderThreadCount;
+    const hddUseDirectIO = this.miner_settings.get('hdd_use_direct_io').value;
+    this.configYaml.hdd_use_direct_io = hddUseDirectIO;
+    configYaml += '\nhdd_use_direct_io: ' + hddUseDirectIO;
+    const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
+    this.configYaml.hdd_wake_up_after = hddWakeUpAfter;
+    configYaml += '\nhdd_wakeup_after: ' + hddWakeUpAfter;
     console.log('configYaml: ' + configYaml);
     }
-
-
-  // Trigger validation
-  loadConfig(): void {
-  //
-  }
-  // Add account ID and passphrase
+    // Add account ID and passphrase
   addAccount(i: number) {
     const regnumber = '[0-9]*$';
     const account = this.fb.group({
@@ -881,8 +887,6 @@ deleteDeadline(i: number) {
   onSubmit(): void {
     console.log(JSON.stringify(this.configForm.value));
     console.log(this.configForm);
-    this.savedConfigForm = this.configForm;
-    console.log('saved: ' + this.savedConfigForm);
   }
 
 }
