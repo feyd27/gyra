@@ -833,7 +833,7 @@ logfileSize() {
     this.configYaml.hdd_use_direct_io = hddUseDirectIO;
     configYaml += '\nhdd_use_direct_io: ' + hddUseDirectIO;
     const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
-    this.configYaml.hdd_wake_up_after = hddWakeUpAfter;
+    this.configYaml.hdd_wake_up_after = hddWakeUpAfter; // needs to be fixed
     configYaml += '\nhdd_wakeup_after: ' + hddWakeUpAfter;
     console.log('configYaml: ' + configYaml);
     }
