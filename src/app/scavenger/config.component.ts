@@ -352,6 +352,7 @@ export class ConfigComponent implements OnInit {
         show_drive_stats: ['false', [Validators.required]],
         benchmark_only: ['disabled', [Validators.required]] // disabled, I/O, XPU
       }),
+      additional_headers: this.fb.array([]),
       gui_settings: this.fb.group({
         validator_messages: [true, [Validators.required]],
         info_messages: [true, [Validators.required]],
@@ -387,6 +388,11 @@ export class ConfigComponent implements OnInit {
 
   get accountForms() {
     return this.configForm.get('account_id_to_secret_phrase') as FormArray;
+
+  }
+
+  get additionalHeaderForms() {
+    return this.configForm.get('additional_headers') as FormArray;
 
   }
 
@@ -851,6 +857,20 @@ logfileSize() {
   }
   deleteAccount(i: number) {
     this.accountForms.removeAt(i);
+  }
+
+  // Add additional information key:value pairs
+  addAdditionalHeader(i: number) {
+    const additionaHeader = this.fb.group({
+      header_key: [[], [Validators.minLength(1),]],
+      header_value: [[], [Validators.minLength(1)]],
+    });
+    this.additionalHeaderForms.push(additionaHeader);
+    this.additionalHeaderForms.markAsUntouched();
+
+  }
+  deleteAdditionalHeader(i: number) {
+    this.additionalHeaderForms.removeAt(i);
   }
 
 // Add plot

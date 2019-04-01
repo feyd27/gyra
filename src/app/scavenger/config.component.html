@@ -38,10 +38,10 @@
 <br>
 <br>
 <div class="container col-12">
+<div class="alert alert-primary"><h3>Basic mining options</h3></div>
 
-
-  <!-- deck 1 -->
-<div class="card-deck">
+ <!-- deck 0 -->
+ <div class="card-deck">
   <div class="card">
 
     <div class="card-header bg-dark text-light">
@@ -63,40 +63,7 @@
     </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header bg-dark text-light">
-      Account settings for solo mining
-      <!-- Button to Open the Modal -->
-      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#soloAccount">
-        ?
-      </button>
-    </div>
-    <div class="card-body">
-      <!--Add counter to inputs -->
-      <label>Account ID and passphrase:</label><br>
-      <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
-        <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
-          <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID" formControlName="account_id"
-              class="form-control-sm col-4" (blur)="logValidationErrors()">
-            <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase" class="form-control-sm col-7"
-            (blur)="logValidationErrors()">
 
-            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
-              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-            </button><br>
-            </p>
-          </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.account_id }}
-
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.passphrase }}
-        </div>
-      </div>
-      <button [disabled]="accountForms.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
-    </div>
-  </div>
   <div class="card">
     <div class="card-header bg-dark text-light">
       Plot directory settings
@@ -131,7 +98,139 @@
       <!--End add counter to inputs -->
     </div>
   </div>
+
 </div>
+</div>
+
+<!--space-->
+<div>
+  <p></p>
+</div>
+
+<!-- deck 1 -->
+
+<div class="container col-12">
+    <div class="alert alert-primary"><h3>Expert mining options</h3><div class="float-right">Insert checkbox to disable all forms below</div> </div>
+
+<div class="card-deck">
+
+  <div class="card">
+    <div class="card-header bg-dark text-light">
+      Account settings for solo mining
+      <!-- Button to Open the Modal -->
+      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#soloAccount">
+        ?
+      </button>
+    </div>
+    <div class="card-body">
+      <label>Account ID and passphrase:</label><br>
+      <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+        <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+          <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID" formControlName="account_id"
+              class="form-control-sm col-4" (blur)="logValidationErrors()">
+            <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase" class="form-control-sm col-7"
+            (blur)="logValidationErrors()">
+
+            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+            </button><br>
+            </p>
+          </div>
+        <div class="alert alert-danger" *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+            {{ formErrors.account_id }}
+
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+            {{ formErrors.passphrase }}
+        </div>
+      </div>
+      <button [disabled]="accountForms.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
+    </div>
+  </div>
+
+
+
+  <div class="card">
+      <div class="card-header bg-dark text-light">
+        Mining settings
+        <!-- Button to Open the Modal -->
+        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#miningSettings">
+         ?
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
+          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="" class="form-control col-6"
+          (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
+            {{ formErrors.target_deadline }}
+        </div>
+
+        <div formArrayName="account_id_to_target_deadline">
+          <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
+            <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID" formControlName="account_id_dl"
+                class="form-control-sm col-4" (blur)="logValidationErrors()">
+              <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline" formControlName="target_deadline_dl"
+                class="form-control-sm col-7" (blur)="logValidationErrors()">
+              &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
+                <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+              </button></p>
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
+            {{ formErrors.account_id_dl }}
+
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
+            {{ formErrors.target_deadline_dl }}
+        </div>
+          <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-primary">Add
+            target deadlines for multi-id mining</button>
+        </div><br>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
+          <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text" placeholder="3000"
+            class="form-control col-6" (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
+            {{ formErrors.get_mining_info_interval }}
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
+          <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
+          (blur)="logValidationErrors()">
+        </div>
+        <div class="alert alert-danger" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
+            {{ formErrors.timeout }}
+        </div>
+        <div class="form-group row">
+          <label class="col-sm-5 col-form-label">Send proxy details:</label>
+          <div class="form-check-inline">
+            <label for="send_proxy_details" class="form-check-label">
+              <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio" class="form-check-input"
+                name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label for="send_proxy_details" class="form-check-label">
+              <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio" class="form-check-input"
+                name="send_proxy_details" value="false" checked>No
+            </label>
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
+              {{ formErrors.send_proxy_details }}
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+
+
+</div>
+
 </div>
 
 <!--space-->
@@ -143,54 +242,58 @@
 
 <div class="container col-12">
   <div class="card-deck">
-    <div class="card">
-      <div class="card-header bg-dark text-light">
-        Miner settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#minerSettings">
-?
-        </button>
-      </div>
-      <div formGroupName="miner_settings" class="card-body">
-        <div class="form-group row">
-          <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader
-            thread count:</label>
-          <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text" placeholder="0"
-            class="form-control col-sm-2" (blur)="logValidationErrors()">
+
+      <div class="card">
+          <div class="card-header bg-dark text-light">
+            Miner settings
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#minerSettings">
+      ?
+            </button>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
-              {{ formErrors.hdd_reader_thread_count }}
+          <div formGroupName="miner_settings" class="card-body">
+            <div class="form-group row">
+              <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader
+                thread count:</label>
+              <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text" placeholder="0"
+                class="form-control col-sm-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
+                  {{ formErrors.hdd_reader_thread_count }}
+              </div>
+              <div class="alert alert-info" *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
+                  {{ formInfo.hdd_reader_thread_count }}
+              </div>
+            <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
+              <div class="form-check-inline">
+                <label for="hdd_use_direct_io" class="form-check-label">
+                  <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
+                    name="hdd_use_direct_io" value="true" checked>Yes
+                </label>
+              </div>
+              <div class="form-check-inline">
+                <label for="hdd_use_direct_io" class="form-check-label">
+                  <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
+                    name="hdd_use_direct_io" value="false">No
+                </label>
+              </div>
+            </div>
+            <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
+                {{ formErrors.hdd_use_direct_io }}
+            </div>
+            <div class="form-group row">
+              <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
+            <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240" class="form-control col-2"
+            (blur)="logValidationErrors()">
           </div>
-          <div class="alert alert-info" *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
-              {{ formInfo.hdd_reader_thread_count }}
+          <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
+              {{ formErrors.hdd_wake_up_after }}
           </div>
-        <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
-          <div class="form-check-inline">
-            <label for="hdd_use_direct_io" class="form-check-label">
-              <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
-                name="hdd_use_direct_io" value="true" checked>Yes
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label for="hdd_use_direct_io" class="form-check-label">
-              <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
-                name="hdd_use_direct_io" value="false">No
-            </label>
           </div>
         </div>
-        <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
-            {{ formErrors.hdd_use_direct_io }}
-        </div>
-        <div class="form-group row">
-          <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
-        <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240" class="form-control col-2"
-        (blur)="logValidationErrors()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
-          {{ formErrors.hdd_wake_up_after }}
-      </div>
-      </div>
-    </div>
+
+
+
     <div class="card">
       <div class="card-header bg-dark text-light">
         CPU settings
@@ -361,6 +464,9 @@
         </div>
       </div>
     </div>
+
+    <d
+
   </div>
 </div>
 
@@ -373,82 +479,7 @@
 
 <div class="container col-12">
   <div class="card-deck">
-    <div class="card">
-      <div class="card-header bg-dark text-light">
-        Mining settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#miningSettings">
-         ?
-        </button>
-      </div>
-      <div class="card-body">
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
-          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="" class="form-control col-6"
-          (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
-            {{ formErrors.target_deadline }}
-        </div>
 
-        <div formArrayName="account_id_to_target_deadline">
-          <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
-            <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID" formControlName="account_id_dl"
-                class="form-control-sm col-4" (blur)="logValidationErrors()">
-              <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline" formControlName="target_deadline_dl"
-                class="form-control-sm col-7" (blur)="logValidationErrors()">
-              &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
-                <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-              </button></p>
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.account_id_dl }}
-
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
-            {{ formErrors.target_deadline_dl }}
-        </div>
-          <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-primary">Add
-            target deadlines for multi-id mining</button>
-        </div><br>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
-          <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text" placeholder="3000"
-            class="form-control col-6" (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
-            {{ formErrors.get_mining_info_interval }}
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
-          <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
-          (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
-            {{ formErrors.timeout }}
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label">Send proxy details:</label>
-          <div class="form-check-inline">
-            <label for="send_proxy_details" class="form-check-label">
-              <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio" class="form-check-input"
-                name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label for="send_proxy_details" class="form-check-label">
-              <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio" class="form-check-input"
-                name="send_proxy_details" value="false" checked>No
-            </label>
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
-              {{ formErrors.send_proxy_details }}
-          </div>
-        </div>
-
-
-      </div>
-    </div>
     <div class="card" formGroupName="logging_settings">
       <div class="card-header bg-dark text-light">
         Logging settings
@@ -633,25 +664,44 @@
 </div>
 </div>
 
+<div class="card">
+    <div class="card-header bg-dark text-light">
+      Additional headers
+      <!-- Button to Open the Modal -->
+      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#additionalHeaders">
+        ?
+      </button>
+    </div>
+    <div class="card-body">
+      <!--Add counter to inputs -->
+      <label>Additional headers:</label><br>
+      <div formArrayName="additional_headers" style="margin-top: 2px">
+        <div *ngFor="let additionaHeader of additionalHeaderForms.controls; let i=index" [formGroupName]="i">
+          <p><input [id]="'header_key'+i" type="text" placeholder="Key" formControlName="header_key"
+              class="form-control-sm col-4" (blur)="logValidationErrors()">
+            <input [id]="'header_value'+i" type="text" placeholder="Value" formControlName="header_value" class="form-control-sm col-7"
+            (blur)="logValidationErrors()">
+
+            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAdditionalHeader(i)">
+              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+            </button><br>
+            </p>
+          </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
+    </div>
   </div>
 
+  </div>
+</div>
+</form>
 
 <!--space-->
 <div>
   <p></p>
 </div>
 
-<!-- Buttons -->
-<div id="buttons" class="float-right">
-  <br>
 
-<div class="btn-group" role="group">
-
-</div>
-
-</div>
-</div>
-</form>
 <br>
 <br>
 <br>
