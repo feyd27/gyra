@@ -148,7 +148,7 @@
             {{ formErrors.passphrase }}
         </div>
       </div>
-      <button [disabled]="accountForms.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
+      <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
     </div>
   </div>
 
