@@ -797,6 +797,10 @@ logfileSize() {
     for ((dl = this.deadlineForms.length); dl >= 0  ; dl--) {
       this.deadlineForms.removeAt(dl);
     }
+    let ah = this.additionalHeaderForms.length;
+    for ((ah = this.additionalHeaderForms.length); ah >= 0  ; ah--) {
+      this.additionalHeaderForms.removeAt(ah);
+    }
     this.configForm.markAsUntouched();
   }
 
