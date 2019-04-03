@@ -37,7 +37,7 @@
 </div>
 <br>
 <br>
-<div class="container col-12">
+<div class="container col-sm-12">
 <div class="alert alert-success"><h3 class="text-capitalize">Basic setup</h3></div>
 
  <!-- deck 0 -->
@@ -108,11 +108,15 @@
 </div>
 
 <!-- deck 1 -->
+<div class="container col-sm-12">
+  <div class="alert alert-success"><h3>Expert Setup<div class="float-right">
+    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo"><i class="material-icons" style="text-align: center">visibility</i></button>
+  </div></h3></div> <!-- RESET OR NO RESET THAT IS THE QUESTION -->
 
+</div>
+<div id="demo" class="collapse">
 <div class="container col-12">
-    <div class="alert alert-success"><h3 class="text-capitalize">Expert Settings</h3><div class="float-right">Insert checkbox to disable all forms below</div> </div>
-
-<div class="card-deck">
+    <div class="card-deck">
 
   <div class="card">
     <div class="card-header bg-dark text-light">
@@ -683,13 +687,23 @@
               <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
             </button><br>
             </p>
+
+
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.header_key && additionalHeaderForms.touched && (formErrors.display == 'true')">
+              {{ formErrors.header_key }}
+
+          </div>
+          <div class="alert alert-danger" *ngIf="formErrors.header_value && additionalHeaderForms.touched">
+              {{ formErrors.header_value }}
           </div>
       </div>
-      <button type="button" class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
+      <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button" class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
     </div>
   </div>
 
   </div>
+</div>
 </div>
 </form>
 
@@ -697,8 +711,6 @@
 <div>
   <p></p>
 </div>
-
-
 <br>
 <br>
 <br>

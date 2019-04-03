@@ -146,6 +146,12 @@ export class ConfigComponent implements OnInit {
     benchmark_only: {
       required: 'The setting is required.',
     },
+    header_key: {
+      required: 'The additional header key value is required.'
+    },
+    header_value: {
+      required: 'The additional header value is required.'
+    }
   };
 
   formErrors = {
@@ -183,6 +189,8 @@ export class ConfigComponent implements OnInit {
     show_progress: '',
     show_drive_stats: '',
     benchmark_only: '',
+    header_key: '',
+    header_value: ''
   };
 
   formInfo = {
@@ -862,8 +870,8 @@ logfileSize() {
   // Add additional information key:value pairs
   addAdditionalHeader(i: number) {
     const additionaHeader = this.fb.group({
-      header_key: [[], [Validators.minLength(1),]],
-      header_value: [[], [Validators.minLength(1)]],
+      header_key: [[], [Validators.required]],
+      header_value: [[], [Validators.required]],
     });
     this.additionalHeaderForms.push(additionaHeader);
     this.additionalHeaderForms.markAsUntouched();
@@ -877,7 +885,7 @@ logfileSize() {
   addPlots() {
     const plotdirs = this.fb.group({
     plot_dirs: [[], [
-    Validators.required,
+    Validators.required, // add validator to detect invalid characters in paths
     ]]
    });
     this.plotDirs.push(plotdirs);
