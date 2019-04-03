@@ -380,7 +380,6 @@ export class ConfigComponent implements OnInit {
       this.plotNumberInfo();
       this.hddNumberInfo();
       this.gpuWorkerInfo();
-      this.gpuWorkerInfo();
       this.minersOff();
       this.logfileSize();
       this.getGuiSettings();
