@@ -79,7 +79,7 @@
         <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
           <div>
             <p><input [id]="'plot_dirs'+i" type="text" placeholder="C://plotfolder" formControlName="plot_dirs" class="form-control-sm col-11"
-              (blur)="logValidationErrors()">
+              (blur)="logValidationErrors(); validatePath()">
               &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i class="material-icons small"
                   style="text-align: right; font-weight: bolder;">remove</i></button>
                   </p>
@@ -717,10 +717,12 @@
 <br>
 <br>
 <div>
-<!--
+
     <br><br>
 
     Errors: {{ formErrors | json}}
+
+    <!--
 
 <br><br>
 

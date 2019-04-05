@@ -5,6 +5,7 @@ import { __values } from 'tslib';
 import { forEach } from '@angular/router/src/utils/collection';
 import { concat } from 'rxjs';
 import { url } from 'inspector';
+import { isString } from 'util';
 
 @Component({
   selector: 'app-config',
@@ -37,6 +38,7 @@ export class ConfigComponent implements OnInit {
     plot_dirs: {
       required: 'Directories containing plot files have to be provided.',
       duplicates: 'Duplicate plot directories are not allowed.',
+      allspace: 'Blank entries are not allowed.'
     },
     hdd_reader_thread_count: {
       required: 'The number of HDD reader threads has to be provided.',
@@ -712,15 +714,18 @@ logfileSize() {
       }
     }
   }
-// Find duplicate plots
+// Find duplicate plots and trim leading and trailing spaces
   findDuplicatePlot(array: FormArray) {
     const plotArray = this.configForm.get('plot_dirs') as FormArray;
     for (let i = 0; i < (plotArray.length); i++) {
-    //  console.log('counter i:' + i + ' ' + plotArray.at(i).get('plot_dirs').value);
+      const plotAsStringI = plotArray.at(i).get('plot_dirs').value as string;
+      const plotAsStringICasted = plotAsStringI.toString();
+      const plotAsStringITrimmed = plotAsStringICasted.trim();
       for (let j = i + 1; j < plotArray.length; j++) {
-     //   console.log('counter j:' + j + ' ' + plotArray.at(j).get('plot_dirs').value);
-        if (plotArray.at(i).get('plot_dirs').value === plotArray.at(j).get('plot_dirs').value) {
-      //    console.log(plotArray.at(i).get('plot_dirs').value + 'duplicates are not allowed' + 'i: ' + i + ', j: ' + j);
+        const plotAsStringJ = plotArray.at(j).get('plot_dirs').value as string;
+        const plotAsStringJCasted = plotAsStringJ.toString();
+        const plotAsStringJTrimmed = plotAsStringJCasted.trim();
+        if (plotAsStringITrimmed === plotAsStringJTrimmed) {
           plotArray.at(j).get('plot_dirs').setErrors({ duplicates: true});
         }
       }
@@ -737,6 +742,31 @@ logfileSize() {
       }
     }
   }
+
+// Pseudo-validators for plot file paths
+// including leading and trailing spaces trimming
+// and patchValue() with trimmed path
+validatePath(array: FormArray) {
+  const plotArray = this.configForm.get('plot_dirs') as FormArray;
+  for (let i = 0; i < (plotArray.length); i++) {
+    const plotString = plotArray.at(i).get('plot_dirs').value as string;
+    const plotStringCasted = plotString.toString();
+    const trimmedPlot = plotStringCasted.trim();
+    const trimmedPlotLength = trimmedPlot.length;
+    if (trimmedPlotLength === 0) {
+      this.plotDirs.removeAt(i);
+    } else {
+// tslint:disable-next-line: max-line-length
+        const regexWin = RegExp('^([A-Z]:[^\<\>\:\"\|\?\*]+)'); // check for better
+        const regexNix = RegExp('^\/$|(^(?=\/)|^\.|^\.\.|^\~|^\~(?=\/))(\/(?=[^/\0])[^/\0]+)*\/?$');
+        const pathValidWin = regexWin.test(trimmedPlot);
+        const pathValidNix = regexNix.test(trimmedPlot);
+        console.log('pathValidWin: ' + pathValidWin);
+        console.log('pathValidNix: ' + pathValidNix);
+    }
+  }
+}
+
 
 
 
