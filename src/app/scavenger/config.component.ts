@@ -293,6 +293,7 @@ export class ConfigComponent implements OnInit {
     gpu_mem_mapping: '',
     gpu_async: '',
     target_deadline: '',
+    account_id_to_target_deadline: '',
     account_id_dl: '',
     target_deadline_dl: '',
     get_mining_info_interval: '',
@@ -307,6 +308,7 @@ export class ConfigComponent implements OnInit {
     show_progress: '',
     show_drive_stats: '',
     benchmark_only: '',
+    additional_headers: '',
   };
 
 
@@ -345,7 +347,7 @@ export class ConfigComponent implements OnInit {
         gpu_async: ['false'],
         memory_usage: [''],
       }),
-        target_deadline: ['', [Validators.pattern(regnumber)]],
+        target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['3000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -691,11 +693,8 @@ logfileSize() {
   findDuplicateAccount(array: FormArray) {
     const accArray = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     for (let i = 0; i < (accArray.length - 1); i++) {
-     // console.log('counter i:' + i + ' ' + accArray.at(i).get('account_id').value);
       for (let j = i + 1; j < accArray.length; j++) {
-       // console.log('counter j:' + j + ' ' + accArray.at(j).get('account_id').value);
         if (accArray.at(i).get('account_id').value === accArray.at(j).get('account_id').value) {
-         // console.log(accArray.at(i).get('account_id').value + 'duplicates are not allowed' + 'i: ' + i + ', j: ' + j);
           accArray.at(j).get('account_id').setErrors({ duplicates: true});
         }
       }
@@ -705,11 +704,8 @@ logfileSize() {
   findDuplicatePassphrase(array: FormArray) {
     const passArray = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     for (let i = 0; i < (passArray.length - 1); i++) {
-   //   console.log('counter i:' + i + ' ' + passArray.at(i).get('passphrase').value);
       for (let j = i + 1; j < passArray.length; j++) {
-     //   console.log('counter j:' + j + ' ' + passArray.at(j).get('passphrase').value);
         if (passArray.at(i).get('passphrase').value === passArray.at(j).get('passphrase').value) {
-       //   console.log(passArray.at(i).get('passphrase').value + 'duplicates are not allowed' + 'i: ' + i + ', j: ' + j);
           passArray.at(j).get('passphrase').setErrors({ duplicates: true});
         }
       }
@@ -787,7 +783,7 @@ logfileSize() {
         gpu_async: 'false',
         memory_usage: '',
       },
-      target_deadline: '',
+      target_deadline: '31536000',
       get_mining_info_interval: '3000',
       timeout: '5000',
       send_proxy_details: 'false',
@@ -836,6 +832,7 @@ logfileSize() {
     const urlYaml = this.configForm.get('url').value as string;
     this.configYaml.url = 'url: ' + '\'' + urlYaml + '\''; // needs to be fixed
     configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\n';
+    // account id + passphrase
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     let accountPassphraseYaml = '';
     let accountPassphraseYamlHtml = '';
@@ -866,6 +863,7 @@ logfileSize() {
     }
     configYaml += '\n' + plotDirsYaml;
     this.configYaml.plot_dirs = plotDirsYaml; // needs to be fixed
+    // miner settings
     const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
     this.configYaml.hdd_reader_thread_count = hddReaderThreadCount; // needs to be fixed
     configYaml += '\n#Miner settings \nhdd_reader_thread_count: ' + hddReaderThreadCount;
@@ -875,7 +873,64 @@ logfileSize() {
     const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
     this.configYaml.hdd_wake_up_after = hddWakeUpAfter; // needs to be fixed
     configYaml += '\nhdd_wakeup_after: ' + hddWakeUpAfter;
+    // mining settings
+    const targetDeadline = this.configForm.get('target_deadline').value;
+    this.configYaml.target_deadline = targetDeadline; // needs to be fixed
+    configYaml += '\n\n#Mining settings \ntarget_deadline: ' + targetDeadline;
+    // account ID + target deathline
+    const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
+    let accountDeadlineYaml = '';
+    let accountDeadlineYamlHtml = '';
+    if (accountDeadline.length === 0) {
+      let accountDeadlineYaml = '';
+    } else {
+    let accountDeadlineYaml = '\naccount_id_to_target_deadline:\n';
+    for (let i = 0; i < (accountDeadline.length); i++) {
+       const accountIDDLYaml = accountDeadline.at(i).get('account_id_dl').value as string;
+       const deadlineYaml = accountDeadline.at(i).get('target_deadline_dl').value as string;
+       accountDeadlineYaml += accountIDDLYaml + ': ' + '' + deadlineYaml + '\n';
+       accountDeadlineYamlHtml += `
+       ${accountIDDLYaml}: '${deadlineYaml}'\
+       `;
+       // needs to be fixed
+      }
+    configYaml += accountDeadlineYaml;
+    this.configYaml.account_id_to_target_deadline = accountDeadlineYamlHtml;
+    }
+    const getMinigInfoInterval = this.configForm.get('get_mining_info_interval').value;
+    this.configYaml.get_mining_info_interval = getMinigInfoInterval; // needs to be fixed
+    configYaml += '\nget_mining_info_interval: ' + getMinigInfoInterval;
+    const timeout = this.configForm.get('timeout').value;
+    this.configYaml.timeout = timeout; // needs to be fixed
+    configYaml += '\ntimeout: ' + timeout;
+    const sendProxyDetails = this.configForm.get('send_proxy_details').value;
+    this.configYaml.send_proxy_details = sendProxyDetails; // needs to be fixed
+    configYaml += '\nsend_proxy_details: ' + sendProxyDetails;
+    // Additional headers
+    const additionalHeader = this.configForm.get('additional_headers') as FormArray;
+    let additionalHeaderYaml = '';
+    let additionalHeaderYamlHtml = '';
+    if (additionalHeader.length === 0) {
+      let additionalHeaderYaml = '';
+    } else {
+    let additionalHeaderYaml = '\nadditional_headers:\n';
+    for (let i = 0; i < (additionalHeader.length); i++) {
+       const headerKeyYaml = additionalHeader.at(i).get('header_key').value as string;
+       const headerValueYaml = additionalHeader.at(i).get('header_value').value as string;
+       additionalHeaderYaml += '\"' + headerKeyYaml + '\"' + ': ' + '\"' + headerValueYaml + '\"' + '\n';
+       additionalHeaderYamlHtml += `
+       ${headerKeyYaml}: '${headerValueYaml}'\
+       `;
+       // needs to be fixed
+      }
+    configYaml += additionalHeaderYaml;
+    this.configYaml.additional_headers = additionalHeaderYamlHtml;
+    }
     console.log('configYaml: ' + configYaml);
+    // CPU settings
+    // GPU settings
+    // Logging settings
+    // Display and benchmark settings
     }
     // Add account ID and passphrase
   addAccount(i: number) {

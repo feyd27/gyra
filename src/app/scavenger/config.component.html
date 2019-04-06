@@ -165,7 +165,7 @@
       <div class="card-body">
         <div class="form-group row">
           <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
-          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="" class="form-control col-6"
+          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="31536000" class="form-control col-6"
           (blur)="logValidationErrors()">
         </div>
         <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
