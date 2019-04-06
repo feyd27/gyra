@@ -78,8 +78,8 @@
    <div formArrayName="plot_dirs" style="margin-top: 2px">
         <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
           <div>
-            <p><input [id]="'plot_dirs'+i" type="text" placeholder="C://plotfolder" formControlName="plot_dirs" class="form-control-sm col-11"
-              (blur)="logValidationErrors(); validatePath()">
+            <p><input [id]="'plot_dirs'+i" type="text" placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir" formControlName="plot_dirs" class="form-control-sm col-11"
+              (blur)="logValidationErrors()">
               &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i class="material-icons small"
                   style="text-align: right; font-weight: bolder;">remove</i></button>
                   </p>

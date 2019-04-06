@@ -38,7 +38,8 @@ export class ConfigComponent implements OnInit {
     plot_dirs: {
       required: 'Directories containing plot files have to be provided.',
       duplicates: 'Duplicate plot directories are not allowed.',
-      allspace: 'Blank entries are not allowed.'
+      allspace: 'Blank entries are not allowed.',
+      invalidpath: 'The provided path is invalid.'
     },
     hdd_reader_thread_count: {
       required: 'The number of HDD reader threads has to be provided.',
@@ -714,13 +715,16 @@ logfileSize() {
       }
     }
   }
-// Find duplicate plots and trim leading and trailing spaces
+// Find duplicate and invalid plots and trim leading and trailing spaces before comparing for duplicates
   findDuplicatePlot(array: FormArray) {
     const plotArray = this.configForm.get('plot_dirs') as FormArray;
     for (let i = 0; i < (plotArray.length); i++) {
       const plotAsStringI = plotArray.at(i).get('plot_dirs').value as string;
       const plotAsStringICasted = plotAsStringI.toString();
       const plotAsStringITrimmed = plotAsStringICasted.trim();
+      if (plotAsStringITrimmed === '') {
+        plotArray.at(i).get('plot_dirs').setErrors({ allspace: true});
+      }
       for (let j = i + 1; j < plotArray.length; j++) {
         const plotAsStringJ = plotArray.at(j).get('plot_dirs').value as string;
         const plotAsStringJCasted = plotAsStringJ.toString();
@@ -728,6 +732,19 @@ logfileSize() {
         if (plotAsStringITrimmed === plotAsStringJTrimmed) {
           plotArray.at(j).get('plot_dirs').setErrors({ duplicates: true});
         }
+      }
+    }
+    const plotArrayInv = this.configForm.get('plot_dirs') as FormArray;
+    for (let i = 0; i < (plotArray.length); i++) {
+      const plotString = plotArrayInv.at(i).get('plot_dirs').value as string;
+      const plotStringCasted = plotString.toString();
+      const trimmedPlot = plotStringCasted.trim();
+      const regexWin = RegExp('^([A-Z]:[^\<\>\:\"\|\?\*]+)'); // check for better
+      const regexNix = RegExp('^\/$|(^(?=\/)|^\.|^\.\.|^\~|^\~(?=\/))(\/(?=[^/\0])[^/\0]+)*\/?$');
+      const pathValidWin = regexWin.test(trimmedPlot);
+      const pathValidNix = regexNix.test(trimmedPlot);
+      if (pathValidWin === false && pathValidNix === false) {
+        plotArrayInv.at(i).get('plot_dirs').setErrors({ invalidpath: true });
       }
     }
   }
@@ -742,32 +759,6 @@ logfileSize() {
       }
     }
   }
-
-// Pseudo-validators for plot file paths
-// including leading and trailing spaces trimming
-// and patchValue() with trimmed path
-validatePath(array: FormArray) {
-  const plotArray = this.configForm.get('plot_dirs') as FormArray;
-  for (let i = 0; i < (plotArray.length); i++) {
-    const plotString = plotArray.at(i).get('plot_dirs').value as string;
-    const plotStringCasted = plotString.toString();
-    const trimmedPlot = plotStringCasted.trim();
-    const trimmedPlotLength = trimmedPlot.length;
-    if (trimmedPlotLength === 0) {
-      this.plotDirs.removeAt(i);
-    } else {
-// tslint:disable-next-line: max-line-length
-        const regexWin = RegExp('^([A-Z]:[^\<\>\:\"\|\?\*]+)'); // check for better
-        const regexNix = RegExp('^\/$|(^(?=\/)|^\.|^\.\.|^\~|^\~(?=\/))(\/(?=[^/\0])[^/\0]+)*\/?$');
-        const pathValidWin = regexWin.test(trimmedPlot);
-        const pathValidNix = regexNix.test(trimmedPlot);
-        console.log('pathValidWin: ' + pathValidWin);
-        console.log('pathValidNix: ' + pathValidNix);
-    }
-  }
-}
-
-
 
 
 // Reset configuration to default values without triggering validators
@@ -869,7 +860,9 @@ validatePath(array: FormArray) {
     let plotDirsYaml = 'plot_dirs: \n';
     for (let i = 0; i < (plotDirs.length); i++) {
       const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
-      plotDirsYaml += '-\'' + plotDirYaml + '\'\n';
+      const plotDirYamlString = plotDirYaml.toString();
+      const plotDirYamlTrimmed = plotDirYamlString.trim();
+      plotDirsYaml += '-\'' + plotDirYamlTrimmed + '\'\n';
     }
     configYaml += '\n' + plotDirsYaml;
     this.configYaml.plot_dirs = plotDirsYaml; // needs to be fixed
