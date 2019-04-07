@@ -1,22 +1,26 @@
 <!doctype html>
 <div class="card">
   <div class="card-header bg-dark text-white">
-   Welcome to <h1>{{ title }}</h1>!
+  <h1 class="align-bottom" style="padding-bottom: 5px">Gyra for Scavenger
+    <div>
+    <div class="float-left"><img src="./assets/gyra.jpg"></div>
+  <div class="float-right"><img src="./assets/scavenger.png" width="120px"><h5><span class="badge badge-info">v1.7.2</span>&nbsp;
+    <span class="badge badge-info align-items-center">v1.7.4</span></h5></div>
   </div>
-  <div class="card-body">
-    <div class="row">
-    <div class="col-6">
-      <h3><a routerLinkActive="active" routerLink="config" class="text-decoration-none"><p class="text-body">Scavenger Configuration</p></a></h3>
-      <span class="badge badge-info">v1.7.2</span>&nbsp;
-      <span class="badge badge-info">v1.7.4</span>
+  </h1>
+</div>
+  <div class="col-6">
+      <a routerLinkActive="active" routerLink="config" class="text-decoration-none"></a>
+
     </div>
 
+
+      <a routerLinkActive="active" routerLink="config" class="text-decoration-none"></a>
    <!-- <div class="col-6">
       <h3><a routerLinkActive="active" routerLink="confige"><p class="text-body">Engraver</p></a></h3>
     </div> -->
   </div>
-  </div>
-
+  <br>
 <router-outlet></router-outlet>
-</div>
+
 
