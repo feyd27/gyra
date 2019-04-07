@@ -6,6 +6,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { concat } from 'rxjs';
 import { url } from 'inspector';
 import { isString } from 'util';
+import { release } from 'os';
 
 @Component({
   selector: 'app-config',
@@ -827,8 +828,41 @@ logfileSize() {
 
   // Preview config
   previewConfig(): void {
-    // URL
+    // reset text and object config
     let configYaml = '';
+    this.configYaml.url = '';
+    this.configYaml.account_id_to_secret_phrase = '';
+    this.configYaml.account_id_to_target_deadline = '';
+    this.configYaml.additional_headers = '';
+    this.configYaml.benchmark_only = '';
+    this.configYaml.console_log_level = '';
+    this.configYaml.console_log_pattern = '';
+    this.configYaml.cpu_nonces_per_cache = '';
+    this.configYaml.cpu_thread_pinning = '';
+    this.configYaml.cpu_threads = '';
+    this.configYaml.cpu_worker_task_count = '';
+    this.configYaml.get_mining_info_interval = '';
+    this.configYaml.gpu_async = '';
+    this.configYaml.gpu_device = '';
+    this.configYaml.gpu_mem_mapping = '';
+    this.configYaml.gpu_platform = '';
+    this.configYaml.gpu_nonces_per_cache = '';
+    this.configYaml.gpu_threads = '';
+    this.configYaml.gpu_worker_task_count = '';
+    this.configYaml.hdd_reader_thread_count = '';
+    this.configYaml.hdd_use_direct_io = '';
+    this.configYaml.hdd_wake_up_after = '';
+    this.configYaml.logfile_log_level = '';
+    this.configYaml.logfile_log_pattern = '';
+    this.configYaml.logfile_max_count = '';
+    this.configYaml.logfile_max_size = '';
+    this.configYaml.plot_dirs = '';
+    this.configYaml.send_proxy_details = '';
+    this.configYaml.show_drive_stats = '';
+    this.configYaml.show_progress = '';
+    this.configYaml.target_deadline = '';
+    this.configYaml.timeout = '';
+    // URL
     const urlYaml = this.configForm.get('url').value as string;
     this.configYaml.url = 'url: ' + '\'' + urlYaml + '\''; // needs to be fixed
     configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\n';
