@@ -1,731 +1,780 @@
 <!doctype html>
 
-
-
-<div class="container-fluid">
-  <div class="btn-toolbar float-left"  role="toolbar">
-    <div class="btn-group mr-2" role="group">
-      <button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">book</i>&nbsp;Gyra Guide</button>
-      <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small" style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
-<button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs" type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i class="material-icons small"
-    style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
-<button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs" type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small" style="text-align: center">get_app</i>&nbsp;Export
-  .yaml</button>
-<button type="button" class="btn btn-primary"><i class="material-icons small" style="text-align: center">bolt</i>&nbsp;Start
-  Scavenger</button>
-    </div>
-  </div>
-
-</div>
-<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-
-<br>
-<br>
-<div class="float-right" formGroupName="gui_settings">
-  <div class="form-check form-check-inline">
-    <button type="button" class="alert-danger" style="border: 1px solid red; margin: 1px">
-      <input class="form-check-input" type="checkbox" id="validator_messages" value="1" checked
-        formControlName="validator_messages">
-      <label class="form-check-label" for="validator_messages">&nbsp;Show validation messages&nbsp;</label>
-    </button>
-  </div>
-  <div class="form-check form-check-inline">
-    <button type="button" class="alert-info" style="border: 1px solid navy; margin: 1px">
-      <input class="form-check-input" type="checkbox" id="info_messages" value="1" checked
-        formControlName="info_messages">
-      <label class="form-check-label" for="info_messages">&nbsp;Show info messages&nbsp;</label>
-    </button>
-  </div>
-  <div class="form-check form-check-inline">
-    <button type="button" class="alert-warning" style="border: 1px solid orange; margin: 1px">
-      <input class="form-check-input" type="checkbox" id="warning_messages" value="1" checked
-       formControlName="warning_messages">
-      <label class="form-check-label" for="warning_messages">&nbsp;Show warnings&nbsp;</label>
-    </button>
-  </div>
-</div>
-<br>
-<br>
-<div class="container col-sm-12">
-<div class="alert alert-success" style="border: 1px solid green"><h3 class="text-capitalize">Basic setup</h3></div>
-
- <!-- deck 0 -->
- <div class="card-deck">
-  <div class="card">
-
-    <div class="card-header bg-dark text-light">
-      Pool and wallet settings
-      <!-- Button to Open the Modal -->
-      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#poolWalletHelp">
-     ?
-      </button>
-    </div>
-    <div class="card-body">
-      <label for="url">Pool or wallet URL:</label>
-      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port" class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
-    </p>
-    <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
-        {{ formErrors.url }}
-    </div>
-    <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.url && (formWarning.display == 'true')">
-        {{ formWarning.url }}
-    </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header bg-dark text-light">
-      Plot directory settings
-      <!-- Button to Open the Modal -->
-      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#plotModal">
-        ?
-      </button>
-    </div>
-    <div class="card-body">
-      <label for="plot_dirs">Plot directories' paths:</label>
-
-   <div formArrayName="plot_dirs" style="margin-top: 2px">
-        <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
-          <div>
-            <p><input [id]="'plot_dirs'+i" type="text" placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir" formControlName="plot_dirs" class="form-control-sm col-11"
-              (blur)="logValidationErrors()">
-              &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i class="material-icons small"
-                  style="text-align: right; font-weight: bolder;">remove</i></button>
-                  </p>
-          </div>
-          <div class="alert alert-danger" *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
-              {{ formErrors.plot_dirs }}
-          </div>
-        </div>
+<div class="col-12">
+  <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    <div class="btn-toolbar float-left" role="toolbar">
+      <div class="btn-group mr-2" role="group">
+        <button type="button" class="btn btn-primary"><i class="material-icons small"
+            style="text-align: center">book</i>&nbsp;Gyra Guide</button>
+        <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small"
+            style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
+        <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+          type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i
+            class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
+        <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+          type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small"
+            style="text-align: center">get_app</i>&nbsp;Export
+          .yaml</button>
+        <button type="button" class="btn btn-primary"><i class="material-icons small"
+            style="text-align: center">bolt</i>&nbsp;Start
+          Scavenger</button>
       </div>
-
-      <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add plot</button>
-      <br><br>
-      <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
-          {{ formWarning.plot_dirs }}
-      </div>
-      <!--End add counter to inputs -->
     </div>
-  </div>
 
-</div>
-</div>
-
-<!--space-->
-<div>
-  <p></p>
-</div>
-
-<!-- deck 1 -->
-<div class="container col-sm-12">
-  <div class="alert alert-success" style="border: 1px solid green"><h3>Expert Setup<div class="float-right">
-    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo"><i class="material-icons" style="text-align: center">visibility</i></button>
-  </div></h3></div>
-
-</div>
-<div id="demo" class="collapse">
-<div class="container col-12">
-    <div class="card-deck">
-
-  <div class="card">
-    <div class="card-header bg-dark text-light">
-      Account settings for solo mining
-      <!-- Button to Open the Modal -->
-      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#soloAccount">
-        ?
-      </button>
-    </div>
-    <div class="card-body">
-      <label>Account ID and passphrase:</label><br>
-      <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
-        <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
-          <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID" formControlName="account_id"
-              class="form-control-sm col-4" (blur)="logValidationErrors()">
-            <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase" class="form-control-sm col-7"
-            (blur)="logValidationErrors()">
-
-            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
-              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-            </button><br>
-            </p>
-          </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.account_id }}
-
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.passphrase }}
-        </div>
-      </div>
-      <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary" (click)="addAccount()">Add account</button>
-    </div>
-  </div>
-
-
-
-  <div class="card">
-      <div class="card-header bg-dark text-light">
-        Mining settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#miningSettings">
-         ?
+    <div class="float-right" formGroupName="gui_settings">
+      <div class="form-check form-check-inline">
+        <button type="button" class="alert-danger" style="border: 1px solid red; margin: 1px">
+          <input class="form-check-input" type="checkbox" id="validator_messages" value="1" checked
+            formControlName="validator_messages">
+          <label class="form-check-label" for="validator_messages">&nbsp;Show validation messages&nbsp;</label>
         </button>
       </div>
-      <div class="card-body">
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
-          <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="31536000" class="form-control col-6"
-          (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
-            {{ formErrors.target_deadline }}
-        </div>
-
-        <div formArrayName="account_id_to_target_deadline">
-          <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
-            <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID" formControlName="account_id_dl"
-                class="form-control-sm col-4" (blur)="logValidationErrors()">
-              <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline" formControlName="target_deadline_dl"
-                class="form-control-sm col-7" (blur)="logValidationErrors()">
-              &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
-                <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-              </button></p>
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
-            {{ formErrors.account_id_dl }}
-
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
-            {{ formErrors.target_deadline_dl }}
-        </div>
-          <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-primary">Add
-            target deadlines for multi-id mining</button>
-        </div><br>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
-          <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text" placeholder="3000"
-            class="form-control col-6" (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
-            {{ formErrors.get_mining_info_interval }}
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
-          <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
-          (blur)="logValidationErrors()">
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
-            {{ formErrors.timeout }}
-        </div>
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label">Send proxy details:</label>
-          <div class="form-check-inline">
-            <label for="send_proxy_details" class="form-check-label">
-              <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio" class="form-check-input"
-                name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label for="send_proxy_details" class="form-check-label">
-              <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio" class="form-check-input"
-                name="send_proxy_details" value="false" checked>No
-            </label>
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
-              {{ formErrors.send_proxy_details }}
-          </div>
-        </div>
-
-
+      <div class="form-check form-check-inline">
+        <button type="button" class="alert-info" style="border: 1px solid navy; margin: 1px">
+          <input class="form-check-input" type="checkbox" id="info_messages" value="1" checked
+            formControlName="info_messages">
+          <label class="form-check-label" for="info_messages">&nbsp;Show info messages&nbsp;</label>
+        </button>
+      </div>
+      <div class="form-check form-check-inline">
+        <button type="button" class="alert-warning" style="border: 1px solid orange; margin: 1px">
+          <input class="form-check-input" type="checkbox" id="warning_messages" value="1" checked
+            formControlName="warning_messages">
+          <label class="form-check-label" for="warning_messages">&nbsp;Show warnings&nbsp;</label>
+        </button>
       </div>
     </div>
+    <br>
+    <br>
+    <div class="container col-sm-12">
+      <div class="alert alert-success" style="border: 1px solid green">
+        <h3 class="text-capitalize">Basic setup</h3>
+      </div>
 
+      <!-- deck 0 -->
+      <div class="card-deck">
+        <div class="card">
 
-
-</div>
-
-</div>
-
-<!--space-->
-<div>
-  <p></p>
-</div>
-
-<!--deck 2-->
-
-<div class="container col-12">
-  <div class="card-deck">
-
-      <div class="card">
           <div class="card-header bg-dark text-light">
-            Miner settings
+            Pool and wallet settings
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#minerSettings">
-      ?
+            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+              data-target="#poolWalletHelp">
+              ?
             </button>
           </div>
-          <div formGroupName="miner_settings" class="card-body">
-            <div class="form-group row">
-              <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader
-                thread count:</label>
-              <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text" placeholder="0"
-                class="form-control col-sm-2" (blur)="logValidationErrors()">
-              </div>
-              <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
-                  {{ formErrors.hdd_reader_thread_count }}
-              </div>
-              <div class="alert alert-info" *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
-                  {{ formInfo.hdd_reader_thread_count }}
-              </div>
-            <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
-              <div class="form-check-inline">
-                <label for="hdd_use_direct_io" class="form-check-label">
-                  <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
-                    name="hdd_use_direct_io" value="true" checked>Yes
-                </label>
-              </div>
-              <div class="form-check-inline">
-                <label for="hdd_use_direct_io" class="form-check-label">
-                  <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio" class="form-check-input"
-                    name="hdd_use_direct_io" value="false">No
-                </label>
-              </div>
-            </div>
-            <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
-                {{ formErrors.hdd_use_direct_io }}
-            </div>
-            <div class="form-group row">
-              <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
-            <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240" class="form-control col-2"
-            (blur)="logValidationErrors()">
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
-              {{ formErrors.hdd_wake_up_after }}
-          </div>
-          </div>
-        </div>
-
-
-
-    <div class="card">
-      <div class="card-header bg-dark text-light">
-        CPU settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#cpuSettings">
-          ?
-        </button>
-      </div>
-      <div formGroupName="cpu_settings" class="card-body">
-        <div class="form-group row">
-        <label for="cpu_threads" class="col-sm-5 col-form-label">CPU threads:</label>
-        <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0" class="form-control col-2"
-        (blur)="logValidationErrors(); cpuNonces()">
-        </div>
-
-        <div class="alert alert-danger" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
-            {{ formErrors.cpu_threads }}
-        </div>
-        <div class="alert alert-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
-            {{ formInfo.cpu_threads }}
-        </div>
-
-        <div class="form-group row">
-        <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
-        <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4" class="form-control col-2"
-        (blur)="logValidationErrors(); cpuNonces()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
-          {{ formErrors.cpu_worker_task_count }}
-      </div>
-      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-          {{ formInfo.cpu_worker_task_count }}
-      </div>
-      <div class="form-group row">
-        <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
-        <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536" class="form-control col-4"
-        (blur)="logValidationErrors(); cpuNonces()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
-          {{ formErrors.cpu_nonces_per_cache }}
-      </div>
-
-      <div class="alert alert-info" *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-          {{ formInfo.cpu_nonces_per_cache }}
-      </div>
-
-        <div class="form-group row">
-          <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
-          <div class="form-check-inline">
-            <label for="cpu_thread_pinning" class="form-check-label">
-              <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning1" type="radio" class="form-check-input" name="cpu_thread_pinning" value="true" (blur)="logValidationErrors()">Yes
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label for="cpu_thread_pinning" class="form-check-label">
-              <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning2" type="radio" class="form-check-input" name="cpu_thread_pinning" value="false"
-                checked>No
-            </label>
-          </div>
-        </div>
-        <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
-            {{ formErrors.cpu_thread_pinning }}
-        </div>
-        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-            {{ formWarning.miners_off }}
-        </div>
-      </div>
-
-    </div>
-    <div class="card">
-      <div class="card-header bg-dark text-light">
-        GPU settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#gpuSettings">
-          ?
-        </button>
-      </div>
-      <div formGroupName="gpu_settings" class="card-body">
-        <div class="form-group row">
-        <label for="gpu_threads" class="col-sm-5 col-form-label">GPU threads:</label>
-        <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0" class="form-control col-2"
-        (blur)="logValidationErrors(); gpuNonces()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
-          {{ formErrors.gpu_threads }}
-      </div>
-
-      <div class="form-group row">
-        <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
-        <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0" class="form-control col-2"
-        (blur)="logValidationErrors(); gpuNonces()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
-          {{ formErrors.gpu_worker_task_count }}
-      </div>
-
-      <div class="alert alert-info font-weight-bold" *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
-          {{ formInfo.gpu_worker_task_count }}
-      </div>
-
-      <div class="form-group row">
-        <label for="gpu_platform"  class="col-sm-5 col-form-label">GPU platform:</label>
-        <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0" class="form-control col-2"
-        (blur)="logValidationErrors()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
-          {{ formErrors.gpu_platform }}
-      </div>
-      <div class="form-group row">
-        <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
-        <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0" class="form-control col-2"
-        (blur)="logValidationErrors()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
-          {{ formErrors.gpu_device }}
-      </div>
-      <div class="form-group row">
-        <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
-        <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144" class="form-control col-4"
-        (blur)="logValidationErrors(); gpuNonces()">
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
-          {{ formErrors.gpu_nonces_per_cache }}
-      </div>
-
-      <div class="alert alert-info" *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
-          {{ formInfo.gpu_nonces_per_cache }}
-      </div>
-
-      <div class="form-group row">
-          <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
-          <div class="form-check-inline">
-            <label for="gpu_mem_mapping" class="form-check-label">
-              <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping1" type="radio" class="form-check-input" name="gpu_mem_mapping" value="true"
-              (blur)="logValidationErrors()">Yes
-            </label>
-          </div>
-          <div class="form-check-inline">
-            <label for="gpu_mem_mapping" class="form-check-label">
-              <input  id="gpu_mem_mapping2" type="radio" class="form-check-input" name="gpu_mem_mapping" value="false"
-                checked>No
-            </label>
-          </div>
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
-          {{ formErrors.gpu_mem_mapping }}
-      </div>
-      <div class="form-group row">
-        <label class="col-sm-5 col-form-label">GPU async: </label>
-          <div class="form-check-inline">
-            <label for="gpu_async" class="form-check-label">
-              <input formControlName="gpu_async" id="gpu_async1" type="radio" class="form-check-input" name="gpu_async" value="true" (blur)="logValidationErrors(); gpuNonces()">Yes
-            </label>
-          </div>
-
-          <div class="form-check-inline">
-            <label for="gpu_async" class="form-check-label">
-              <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input" name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
-            </label>
-          </div>
-          <div class="alert alert-danger" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
-              {{ formErrors.gpu_async }}
-          </div>
-
-        </div>
-        <div class="alert alert-warning font-weight-bold" *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-            {{ formWarning.miners_off }}
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!--space-->
-<div>
-  <p></p>
-</div>
-
-<!--deck 3-->
-
-<div class="container col-12">
-  <div class="card-deck">
-
-    <div class="card" formGroupName="logging_settings">
-      <div class="card-header bg-dark text-light">
-        Logging settings
-        <!-- Button to Open the Modal -->
-        <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#loggingSettings">
-         ?
-        </button>
-      </div>
-<div class="card-body">
-  <div class="form-group row">
-    <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
-    <select formControlName="console_log_level" class="form- col-6" (blur)="logValidationErrors()">
-      <option name="console_log_level" value="off">Off</option>
-      <option name="console_log_level" value="error">Error</option>
-      <option name="console_log_level" value="warn">Warn</option>
-      <option name="console_log_level" value="info" selected>Info</option>
-      <option name="console_log_level" value="debug">Debug</option>
-      <option name="console_log_level" value="trace">Trace</option>
-    </select>
-  </div>
-  <div class="alert alert-danger" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
-      {{ formErrors.console_log_level }}
-  </div>
-
-  <div class="form-group row">
-    <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
-    <select formControlName="logfile_log_level" class="form- col-6" (blur)="logValidationErrors()">
-      <option name="logfile_log_level" value="off">Off</option>
-      <option name="logfile_log_level" value="error">Error</option>
-      <option name="logfile_log_level" value="warn" selected>Warn</option>
-      <option name="logfile_log_level" value="info">Info</option>
-      <option name="logfile_log_level" value="debug">Debug</option>
-      <option name="logfile_log_level" value="trace">Trace</option>
-    </select>
-  </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
-      {{ formErrors.logfile_log_level }}
-  </div>
-
-
-  <div class="form-group row">
-    <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
-    <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10" class="form-control col-2"
-    (blur)="logValidationErrors()">
-  </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
-      {{ formErrors.logfile_max_count }}
-  </div>
-  <div class="form-group row">
-    <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
-    <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20" class="form-control col-2"
-    (blur)="logValidationErrors()">
-  </div>
-  <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
-      {{ formErrors.logfile_max_size }}
-  </div>
-
-  <div class="alert alert-info" *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
-    {{ formInfo.logging_settings }}
-  </div>
-
-  <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Console log pattern:</label>
-    <div class="form-check-inline">
-      <label for="console_log_pattern" class="form-check-label">
-        <input formControlName="console_log_pattern" id="console_log_pattern1" type="radio" class="form-check-input"
-          name="console_log_pattern" value="low_noise" (blur)="logValidationErrors()">Low noise
-      </label>
-    </div>
-    <div class="form-check-inline">
-      <label for="console_log_pattern" class="form-check-label">
-        <input formControlName="console_log_pattern" id="console_log_pattern2" type="radio" class="form-check-input"
-          name="console_log_pattern" value="detailed" checked>Detailed
-      </label>
-    </div>
-    <div class="alert alert-danger" *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
-        {{ formErrors.console_log_pattern }}
-    </div>
-  </div>
-
-
-  <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Logfile log pattern:</label>
-    <div class="form-check-inline">
-      <label for="logfile_log_pattern" class="form-check-label">
-        <input formControlName="logfile_log_pattern" id="logfile_log_pattern1" type="radio" class="form-check-input"
-          name="logfile_log_pattern" value="low_noise" (blur)="logValidationErrors()">Low noise
-      </label>
-    </div>
-    <div class="form-check-inline">
-      <label for="logfile_log_pattern" class="form-check-label">
-        <input formControlName="logfile_log_pattern" id="logfile_log_pattern2" type="radio" class="form-check-input"
-          name="logfile_log_pattern" value="detailed" checked>Detailed
-      </label>
-    </div>
-    <div class="alert alert-danger" *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
-        {{ formErrors.logfile_log_pattern }}
-    </div>
-  </div>
-
-</div>
-</div>
-<div class="card" formGroupName="display_settings">
-  <div class="card-header bg-dark text-light">
-    Display and benchmark settings
-    <!-- Button to Open the Modal -->
-    <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#displayBenchmark">
-     ?
-    </button>
-  </div>
-  <div class="card-body">
-
-
-
-<div class="form-group row">
-  <label class="col-sm-5 col-form-label">Show progress:</label>
-  <div class="form-check-inline">
-    <label for="show_progress" class="form-check-label">
-      <input formControlName="show_progress" id="show_progress1" type="radio" class="form-check-input" name="show_progress"
-        value="true" checked (blur)="logValidationErrors()">Yes
-    </label>
-  </div>
-
-  <div class="form-check-inline">
-    <label for="show_progress" class="form-check-label">
-      <input formControlName="show_progress" id="show_progress2" type="radio" class="form-check-input" name="show_progress"
-        value="false">No
-    </label>
-  </div>
-</div>
-<div class="alert alert-danger" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
-    {{ formErrors.show_progress }}
-</div>
-
-<div class="form-group row">
-  <label class="col-sm-5 col-form-label">Show drive statistics:</label>
-  <div class="form-check-inline">
-    <label for="show_drive_stats" class="form-check-label">
-      <input formControlName="show_drive_stats" id="show_drive_stats1" type="radio" class="form-check-input" name="show_drive_stats"
-        value="true" (blur)="logValidationErrors()">Yes
-    </label>
-  </div>
-
-  <div class="form-check-inline">
-    <label for="show_drive_stats" class="form-check-label">
-      <input formControlName="show_drive_stats" id="show_drive_stats2" type="radio" class="form-check-input" name="show_drive_stats"
-        value="false" checked>No
-    </label>
-  </div>
-</div>
-<div class="alert alert-danger" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
-    {{ formErrors.show_drive_stats }}
-</div>
-
-<div class="form-group row">
-  <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
-  <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-      <input formControlName="benchmark_only" id="benchmark_only1" type="radio" class="form-check-input" name="benchmark_only"
-        value="disabled" checked (blur)="logValidationErrors()">Disabled
-    </label>
-  </div>
-
-  <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-      <input formControlName="benchmark_only" id="benchmark_only2" type="radio" class="form-check-input" name="benchmark_only"
-        value="I/O">I/O
-    </label>
-  </div>
-
-  <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-      <input formControlName="benchmark_only" id="benchmark_only3" type="radio" class="form-check-input" name="benchmark_only"
-        value="XPU">XPU
-    </label>
-  </div>
-
-</div>
-<div class="alert alert-danger" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
-    {{ formErrors.benchmark_only }}
-</div>
-</div>
-</div>
-
-<div class="card">
-    <div class="card-header bg-dark text-light">
-      Additional headers
-      <!-- Button to Open the Modal -->
-      <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal" data-target="#additionalHeaders">
-        ?
-      </button>
-    </div>
-    <div class="card-body">
-      <!--Add counter to inputs -->
-      <label>Additional headers:</label><br>
-      <div formArrayName="additional_headers" style="margin-top: 2px">
-        <div *ngFor="let additionaHeader of additionalHeaderForms.controls; let i=index" [formGroupName]="i">
-          <p><input [id]="'header_key'+i" type="text" placeholder="Key" formControlName="header_key"
-              class="form-control-sm col-4" (blur)="logValidationErrors()">
-            <input [id]="'header_value'+i" type="text" placeholder="Value" formControlName="header_value" class="form-control-sm col-7"
-            (blur)="logValidationErrors()">
-
-            &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAdditionalHeader(i)">
-              <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-            </button><br>
+          <div class="card-body">
+            <label for="url">Pool or wallet URL:</label>
+            <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
+                class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
             </p>
-
-
+            <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
+              {{ formErrors.url }}
+            </div>
+            <div class="alert alert-warning font-weight-bold"
+              *ngIf="formWarning.url && (formWarning.display == 'true')">
+              {{ formWarning.url }}
+            </div>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.header_key && additionalHeaderForms.touched && (formErrors.display == 'true')">
-              {{ formErrors.header_key }}
+        </div>
 
+        <div class="card">
+          <div class="card-header bg-dark text-light">
+            Plot directory settings
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+              data-target="#plotModal">
+              ?
+            </button>
           </div>
-          <div class="alert alert-danger" *ngIf="formErrors.header_value && additionalHeaderForms.touched">
-              {{ formErrors.header_value }}
+          <div class="card-body">
+            <label for="plot_dirs">Plot directories' paths:</label>
+
+            <div formArrayName="plot_dirs" style="margin-top: 2px">
+              <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
+                <div>
+                  <p><input [id]="'plot_dirs'+i" type="text"
+                      placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
+                      formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
+                    &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
+                        class="material-icons small" style="text-align: right; font-weight: bolder;">remove</i></button>
+                  </p>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
+                  {{ formErrors.plot_dirs }}
+                </div>
+              </div>
+            </div>
+
+            <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
+              plot</button>
+            <br><br>
+            <div class="alert alert-warning font-weight-bold"
+              *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
+              {{ formWarning.plot_dirs }}
+            </div>
           </div>
+        </div>
+
       </div>
-      <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button" class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
     </div>
-  </div>
 
-  </div>
-</div>
-</div>
-</form>
+    <!--space-->
+    <div>
+      <p></p>
+    </div>
 
-<!--space-->
-<div>
-  <p></p>
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
-<div>
+    <!-- deck 1 -->
+    <div class="container col-sm-12">
+      <div class="alert alert-success" style="border: 1px solid green">
+        <h3>Expert Setup<div class="float-right">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo"><i
+                class="material-icons" style="text-align: center">visibility</i></button>
+          </div>
+        </h3>
+      </div>
+
+    </div>
+    <div id="demo" class="collapse">
+      <div class="container col-12">
+        <div class="card-deck">
+
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              Account settings for solo mining
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#soloAccount">
+                ?
+              </button>
+            </div>
+            <div class="card-body">
+              <label>Account ID and passphrase:</label><br>
+              <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+                <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+                  <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
+                      formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
+                    <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
+                      class="form-control-sm col-7" (blur)="logValidationErrors()">
+
+                    &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+                      <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+                    </button><br>
+                  </p>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                  {{ formErrors.account_id }}
+
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                  {{ formErrors.passphrase }}
+                </div>
+              </div>
+              <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary"
+                (click)="addAccount()">Add account</button>
+            </div>
+          </div>
+
+
+
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              Mining settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#miningSettings">
+                ?
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
+                <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="31536000"
+                  class="form-control col-6" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
+                {{ formErrors.target_deadline }}
+              </div>
+
+              <div formArrayName="account_id_to_target_deadline">
+                <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
+                  <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID"
+                      formControlName="account_id_dl" class="form-control-sm col-4" (blur)="logValidationErrors()">
+                    <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline"
+                      formControlName="target_deadline_dl" class="form-control-sm col-7" (blur)="logValidationErrors()">
+                    &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
+                      <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+                    </button></p>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
+                  {{ formErrors.account_id_dl }}
+
+                </div>
+                <div class="alert alert-danger" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
+                  {{ formErrors.target_deadline_dl }}
+                </div>
+                <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()"
+                  class="btn btn-primary">Add
+                  target deadlines for multi-id mining</button>
+              </div><br>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval
+                  [ms]:</label>
+                <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text"
+                  placeholder="3000" class="form-control col-6" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger"
+                *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
+                {{ formErrors.get_mining_info_interval }}
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
+                <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
+                  (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
+                {{ formErrors.timeout }}
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Send proxy details:</label>
+                <div class="form-check-inline">
+                  <label for="send_proxy_details" class="form-check-label">
+                    <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio"
+                      class="form-check-input" name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="send_proxy_details" class="form-check-label">
+                    <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio"
+                      class="form-check-input" name="send_proxy_details" value="false" checked>No
+                  </label>
+                </div>
+                <div class="alert alert-danger" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
+                  {{ formErrors.send_proxy_details }}
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+
+
+        </div>
+
+      </div>
+
+      <!--space-->
+      <div>
+        <p></p>
+      </div>
+
+      <!--deck 2-->
+
+      <div class="container col-12">
+        <div class="card-deck">
+
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              Miner settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#minerSettings">
+                ?
+              </button>
+            </div>
+            <div formGroupName="miner_settings" class="card-body">
+              <div class="form-group row">
+                <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader
+                  thread count:</label>
+                <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text"
+                  placeholder="0" class="form-control col-sm-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger"
+                *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
+                {{ formErrors.hdd_reader_thread_count }}
+              </div>
+              <div class="alert alert-info"
+                *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
+                {{ formInfo.hdd_reader_thread_count }}
+              </div>
+              <div class="form-group row"><label class="col-sm-5 col-form-label">Use direct I/O:</label>
+                <div class="form-check-inline">
+                  <label for="hdd_use_direct_io" class="form-check-label">
+                    <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio"
+                      class="form-check-input" name="hdd_use_direct_io" value="true" checked>Yes
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="hdd_use_direct_io" class="form-check-label">
+                    <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio"
+                      class="form-check-input" name="hdd_use_direct_io" value="false">No
+                  </label>
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
+                {{ formErrors.hdd_use_direct_io }}
+              </div>
+              <div class="form-group row">
+                <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
+                <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240"
+                  class="form-control col-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
+                {{ formErrors.hdd_wake_up_after }}
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              CPU settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#cpuSettings">
+                ?
+              </button>
+            </div>
+            <div formGroupName="cpu_settings" class="card-body">
+              <div class="form-group row">
+                <label for="cpu_threads" class="col-sm-5 col-form-label">CPU threads:</label>
+                <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0"
+                  class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
+              </div>
+
+              <div class="alert alert-danger" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
+                {{ formErrors.cpu_threads }}
+              </div>
+              <div class="alert alert-info"
+                *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
+                {{ formInfo.cpu_threads }}
+              </div>
+
+              <div class="form-group row">
+                <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
+                <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4"
+                  class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
+              </div>
+              <div class="alert alert-danger"
+                *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
+                {{ formErrors.cpu_worker_task_count }}
+              </div>
+              <div class="alert alert-info font-weight-bold"
+                *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
+                {{ formInfo.cpu_worker_task_count }}
+              </div>
+              <div class="form-group row">
+                <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
+                <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536"
+                  class="form-control col-4" (blur)="logValidationErrors(); cpuNonces()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
+                {{ formErrors.cpu_nonces_per_cache }}
+              </div>
+
+              <div class="alert alert-info"
+                *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
+                {{ formInfo.cpu_nonces_per_cache }}
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
+                <div class="form-check-inline">
+                  <label for="cpu_thread_pinning" class="form-check-label">
+                    <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning1" type="radio"
+                      class="form-check-input" name="cpu_thread_pinning" value="true" (blur)="logValidationErrors()">Yes
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="cpu_thread_pinning" class="form-check-label">
+                    <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning2" type="radio"
+                      class="form-check-input" name="cpu_thread_pinning" value="false" checked>No
+                  </label>
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
+                {{ formErrors.cpu_thread_pinning }}
+              </div>
+              <div class="alert alert-warning font-weight-bold"
+                *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
+                {{ formWarning.miners_off }}
+              </div>
+            </div>
+
+          </div>
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              GPU settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#gpuSettings">
+                ?
+              </button>
+            </div>
+            <div formGroupName="gpu_settings" class="card-body">
+              <div class="form-group row">
+                <label for="gpu_threads" class="col-sm-5 col-form-label">GPU threads:</label>
+                <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0"
+                  class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
+                {{ formErrors.gpu_threads }}
+              </div>
+
+              <div class="form-group row">
+                <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
+                <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0"
+                  class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
+              </div>
+              <div class="alert alert-danger"
+                *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
+                {{ formErrors.gpu_worker_task_count }}
+              </div>
+
+              <div class="alert alert-info font-weight-bold"
+                *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
+                {{ formInfo.gpu_worker_task_count }}
+              </div>
+
+              <div class="form-group row">
+                <label for="gpu_platform" class="col-sm-5 col-form-label">GPU platform:</label>
+                <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0"
+                  class="form-control col-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
+                {{ formErrors.gpu_platform }}
+              </div>
+              <div class="form-group row">
+                <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
+                <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0"
+                  class="form-control col-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
+                {{ formErrors.gpu_device }}
+              </div>
+              <div class="form-group row">
+                <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
+                <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144"
+                  class="form-control col-4" (blur)="logValidationErrors(); gpuNonces()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
+                {{ formErrors.gpu_nonces_per_cache }}
+              </div>
+
+              <div class="alert alert-info"
+                *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
+                {{ formInfo.gpu_nonces_per_cache }}
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
+                <div class="form-check-inline">
+                  <label for="gpu_mem_mapping" class="form-check-label">
+                    <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping1" type="radio" class="form-check-input"
+                      name="gpu_mem_mapping" value="true" (blur)="logValidationErrors()">Yes
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="gpu_mem_mapping" class="form-check-label">
+                    <input id="gpu_mem_mapping2" type="radio" class="form-check-input" name="gpu_mem_mapping"
+                      value="false" checked>No
+                  </label>
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
+                {{ formErrors.gpu_mem_mapping }}
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">GPU async: </label>
+                <div class="form-check-inline">
+                  <label for="gpu_async" class="form-check-label">
+                    <input formControlName="gpu_async" id="gpu_async1" type="radio" class="form-check-input"
+                      name="gpu_async" value="true" (blur)="logValidationErrors(); gpuNonces()">Yes
+                  </label>
+                </div>
+
+                <div class="form-check-inline">
+                  <label for="gpu_async" class="form-check-label">
+                    <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input"
+                      name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
+                  </label>
+                </div>
+                <div class="alert alert-danger" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
+                  {{ formErrors.gpu_async }}
+                </div>
+
+              </div>
+              <div class="alert alert-warning font-weight-bold"
+                *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
+                {{ formWarning.miners_off }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--space-->
+      <div>
+        <p></p>
+      </div>
+
+      <!--deck 3-->
+
+      <div class="container col-12">
+        <div class="card-deck">
+
+          <div class="card" formGroupName="logging_settings">
+            <div class="card-header bg-dark text-light">
+              Logging settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#loggingSettings">
+                ?
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="form-group row">
+                <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
+                <select formControlName="console_log_level" class="form- col-6" (blur)="logValidationErrors()">
+                  <option name="console_log_level" value="off">Off</option>
+                  <option name="console_log_level" value="error">Error</option>
+                  <option name="console_log_level" value="warn">Warn</option>
+                  <option name="console_log_level" value="info" selected>Info</option>
+                  <option name="console_log_level" value="debug">Debug</option>
+                  <option name="console_log_level" value="trace">Trace</option>
+                </select>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
+                {{ formErrors.console_log_level }}
+              </div>
+
+              <div class="form-group row">
+                <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
+                <select formControlName="logfile_log_level" class="form- col-6" (blur)="logValidationErrors()">
+                  <option name="logfile_log_level" value="off">Off</option>
+                  <option name="logfile_log_level" value="error">Error</option>
+                  <option name="logfile_log_level" value="warn" selected>Warn</option>
+                  <option name="logfile_log_level" value="info">Info</option>
+                  <option name="logfile_log_level" value="debug">Debug</option>
+                  <option name="logfile_log_level" value="trace">Trace</option>
+                </select>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
+                {{ formErrors.logfile_log_level }}
+              </div>
+
+
+              <div class="form-group row">
+                <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
+                <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10"
+                  class="form-control col-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
+                {{ formErrors.logfile_max_count }}
+              </div>
+              <div class="form-group row">
+                <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
+                <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20"
+                  class="form-control col-2" (blur)="logValidationErrors()">
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
+                {{ formErrors.logfile_max_size }}
+              </div>
+
+              <div class="alert alert-info"
+                *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
+                {{ formInfo.logging_settings }}
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Console log pattern:</label>
+                <div class="form-check-inline">
+                  <label for="console_log_pattern" class="form-check-label">
+                    <input formControlName="console_log_pattern" id="console_log_pattern1" type="radio"
+                      class="form-check-input" name="console_log_pattern" value="low_noise"
+                      (blur)="logValidationErrors()">Low noise
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="console_log_pattern" class="form-check-label">
+                    <input formControlName="console_log_pattern" id="console_log_pattern2" type="radio"
+                      class="form-check-input" name="console_log_pattern" value="detailed" checked>Detailed
+                  </label>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
+                  {{ formErrors.console_log_pattern }}
+                </div>
+              </div>
+
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Logfile log pattern:</label>
+                <div class="form-check-inline">
+                  <label for="logfile_log_pattern" class="form-check-label">
+                    <input formControlName="logfile_log_pattern" id="logfile_log_pattern1" type="radio"
+                      class="form-check-input" name="logfile_log_pattern" value="low_noise"
+                      (blur)="logValidationErrors()">Low noise
+                  </label>
+                </div>
+                <div class="form-check-inline">
+                  <label for="logfile_log_pattern" class="form-check-label">
+                    <input formControlName="logfile_log_pattern" id="logfile_log_pattern2" type="radio"
+                      class="form-check-input" name="logfile_log_pattern" value="detailed" checked>Detailed
+                  </label>
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
+                  {{ formErrors.logfile_log_pattern }}
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="card" formGroupName="display_settings">
+            <div class="card-header bg-dark text-light">
+              Display and benchmark settings
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#displayBenchmark">
+                ?
+              </button>
+            </div>
+            <div class="card-body">
+
+
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Show progress:</label>
+                <div class="form-check-inline">
+                  <label for="show_progress" class="form-check-label">
+                    <input formControlName="show_progress" id="show_progress1" type="radio" class="form-check-input"
+                      name="show_progress" value="true" checked (blur)="logValidationErrors()">Yes
+                  </label>
+                </div>
+
+                <div class="form-check-inline">
+                  <label for="show_progress" class="form-check-label">
+                    <input formControlName="show_progress" id="show_progress2" type="radio" class="form-check-input"
+                      name="show_progress" value="false">No
+                  </label>
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
+                {{ formErrors.show_progress }}
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label">Show drive statistics:</label>
+                <div class="form-check-inline">
+                  <label for="show_drive_stats" class="form-check-label">
+                    <input formControlName="show_drive_stats" id="show_drive_stats1" type="radio"
+                      class="form-check-input" name="show_drive_stats" value="true" (blur)="logValidationErrors()">Yes
+                  </label>
+                </div>
+
+                <div class="form-check-inline">
+                  <label for="show_drive_stats" class="form-check-label">
+                    <input formControlName="show_drive_stats" id="show_drive_stats2" type="radio"
+                      class="form-check-input" name="show_drive_stats" value="false" checked>No
+                  </label>
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
+                {{ formErrors.show_drive_stats }}
+              </div>
+
+              <div class="form-group row">
+                <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
+                <div class="form-check-inline">
+                  <label for="benchmark_only" class="form-check-label">
+                    <input formControlName="benchmark_only" id="benchmark_only1" type="radio" class="form-check-input"
+                      name="benchmark_only" value="disabled" checked (blur)="logValidationErrors()">Disabled
+                  </label>
+                </div>
+
+                <div class="form-check-inline">
+                  <label for="benchmark_only" class="form-check-label">
+                    <input formControlName="benchmark_only" id="benchmark_only2" type="radio" class="form-check-input"
+                      name="benchmark_only" value="I/O">I/O
+                  </label>
+                </div>
+
+                <div class="form-check-inline">
+                  <label for="benchmark_only" class="form-check-label">
+                    <input formControlName="benchmark_only" id="benchmark_only3" type="radio" class="form-check-input"
+                      name="benchmark_only" value="XPU">XPU
+                  </label>
+                </div>
+
+              </div>
+              <div class="alert alert-danger" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
+                {{ formErrors.benchmark_only }}
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header bg-dark text-light">
+              Additional headers
+              <!-- Button to Open the Modal -->
+              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
+                data-target="#additionalHeaders">
+                ?
+              </button>
+            </div>
+            <div class="card-body">
+              <!--Add counter to inputs -->
+              <label>Additional headers:</label><br>
+              <div formArrayName="additional_headers" style="margin-top: 2px">
+                <div *ngFor="let additionaHeader of additionalHeaderForms.controls; let i=index" [formGroupName]="i">
+                  <p><input [id]="'header_key'+i" type="text" placeholder="Key" formControlName="header_key"
+                      class="form-control-sm col-4" (blur)="logValidationErrors()">
+                    <input [id]="'header_value'+i" type="text" placeholder="Value" formControlName="header_value"
+                      class="form-control-sm col-7" (blur)="logValidationErrors()">
+
+                    &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAdditionalHeader(i)">
+                      <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+                    </button><br>
+                  </p>
+
+
+                </div>
+                <div class="alert alert-danger"
+                  *ngIf="formErrors.header_key && additionalHeaderForms.touched && (formErrors.display == 'true')">
+                  {{ formErrors.header_key }}
+
+                </div>
+                <div class="alert alert-danger" *ngIf="formErrors.header_value && additionalHeaderForms.touched">
+                  {{ formErrors.header_value }}
+                </div>
+              </div>
+              <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
+                class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!--space-->
+  <div>
+    <p></p>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <div>
 
     <br><br>
 
@@ -747,11 +796,11 @@ Warnings: {{ formWarning | json }}
 <br> <br>
   Status: {{ configForm.status }}
 -->
-  <br> <br>
-  Status plots: {{ plotDirs.status }}
+    <br> <br>
+    Status plots: {{ plotDirs.status }}
 
-  <br> <br>
-  Config: <br>{{ configYaml.url }}<br>{{ configYaml.account_id_to_secret_phrase }}
+    <br> <br>
+    Config: <br>{{ configYaml.url }}<br>{{ configYaml.account_id_to_secret_phrase }}
 
 
-</div>
+  </div>
