@@ -996,13 +996,13 @@ logfileSize() {
     }
     // Display and benchmark settings
     const showProgress = this.display_settings.get('show_progress').value;
-    this.configYaml.show_progress = showProgress;
+    this.configYaml.show_progress = showProgress; // needs to be fixed
     configYaml += '\n\n#Display and benchmark settings\nshow_progress: ' + showProgress;
     const showDriveStats = this.display_settings.get('show_drive_stats').value;
-    this.configYaml.show_drive_stats = showDriveStats;
+    this.configYaml.show_drive_stats = showDriveStats; // needs to be fixed
     configYaml += '\nshow_drive_stats: ' + showDriveStats;
     const benchmarkOnly = this.display_settings.get('benchmark_only').value;
-    this.configYaml.benchmark_only = benchmarkOnly;
+    this.configYaml.benchmark_only = benchmarkOnly; // needs to be fixed
     configYaml += '\nbenchmark_only: ' + benchmarkOnly + '\n\n#Config created with Gyra.';
     console.log('configYaml: ' + configYaml);
     }
