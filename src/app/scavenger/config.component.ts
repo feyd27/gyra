@@ -926,11 +926,85 @@ logfileSize() {
     configYaml += additionalHeaderYaml;
     this.configYaml.additional_headers = additionalHeaderYamlHtml;
     }
-    console.log('configYaml: ' + configYaml);
     // CPU settings
+    const cpuThreads = this.cpu_settings.get('cpu_threads').value;
+    this.configYaml.cpu_threads = cpuThreads; // needs to be fixed
+    configYaml += '\n\n#CPU settings\ncpu_threads: ' + cpuThreads;
+    const cpuWorkerTaskCount = this.cpu_settings.get('cpu_worker_task_count').value;
+    this.configYaml.cpu_worker_task_count = cpuWorkerTaskCount; // needs to be fixed
+    configYaml += '\ncpu_worker_task_count: ' + cpuWorkerTaskCount;
+    const cpuNoncesPerCache = this.cpu_settings.get('cpu_nonces_per_cache').value;
+    this.configYaml.cpu_nonces_per_cache = cpuNoncesPerCache; // needs to be fixed
+    configYaml += '\ncpu_nonces_per_cache: ' + cpuNoncesPerCache;
+    const cpuThreadPinning = this.cpu_settings.get('cpu_thread_pinning').value;
+    this.configYaml.cpu_thread_pinning = cpuThreadPinning; // needs to be fixed
+    configYaml += '\ncpu_thread_pinning: ' + cpuThreadPinning;
     // GPU settings
+    const gpuThreads = this.gpu_settings.get('gpu_threads').value;
+    this.configYaml.gpu_threads = gpuThreads; // needs to be fixed
+    configYaml += '\n\n#GPU settings\ngpu_threads: ' + gpuThreads;
+    const gpuWorkerTaskCount = this.gpu_settings.get('gpu_worker_task_count').value;
+    this.configYaml.gpu_worker_task_count = gpuWorkerTaskCount; // needs to be fixed
+    configYaml += '\ngpu_worker_task_count: ' + gpuWorkerTaskCount;
+    const gpuPlatform = this.gpu_settings.get('gpu_platform').value;
+    this.configYaml.gpu_platform = gpuPlatform; // needs to be fixed
+    configYaml += '\ngpu_platform: ' + gpuPlatform;
+    const gpuDevice = this.gpu_settings.get('gpu_device').value;
+    this.configYaml.gpu_device = gpuDevice; // needs to be fixed
+    configYaml += '\ngpu_device: ' + gpuDevice;
+    const gpuNoncesPercache = this.gpu_settings.get('gpu_nonces_per_cache').value;
+    this.configYaml.gpu_nonces_per_cache = gpuNoncesPercache; // needs to be fixed
+    configYaml += '\ngpu_nonces_per_cache: ' + gpuNoncesPercache;
+    const gpuMemoryMapping = this.gpu_settings.get('gpu_mem_mapping').value;
+    this.configYaml.gpu_mem_mapping = gpuMemoryMapping; // needs to be fixed
+    configYaml += '\ngpu_mem_mapping: ' + gpuMemoryMapping;
+    const gpuAsync = this.gpu_settings.get('gpu_async').value;
+    this.configYaml.gpu_async = gpuAsync; // needs to be fixed
+    configYaml += '\ngpu_async: ' + gpuAsync;
     // Logging settings
+    const consoleLogLevel = this.logging_settings.get('console_log_level').value;
+    this.configYaml.console_log_level = consoleLogLevel; // needs to be fixed
+    configYaml += '\n\n#Logging settings\nconsole_log_level: ' + consoleLogLevel;
+    const logfileLogLevel = this.logging_settings.get('logfile_log_level').value;
+    this.configYaml.logfile_log_level = logfileLogLevel; // needs to be fixed
+    configYaml += '\nlogfile_log_level: ' + logfileLogLevel;
+    const logfileMaxCount = this.logging_settings.get('logfile_max_count').value;
+    this.configYaml.logfile_max_count = logfileMaxCount; // needs to be fixed
+    configYaml += '\nlogfile_max_count: ' + logfileMaxCount;
+    const logfileMaxSize = this.logging_settings.get('logfile_max_size').value;
+    this.configYaml.logfile_max_size = logfileMaxSize; // needs to be fixed
+    configYaml += '\nlogfile_max_size: ' + logfileMaxSize;
+    const lowNoiseConsole = '\"{({d(%H:%M:%S)} [{l}]):16.16} {m}{n}\"';
+    const lowNoiseLogfile = '\"{({d(%Y-%m-%d %H:%M:%S)} [{l}]):26.26} {m}{n}\"';
+    const detailedConsole = '\"{d(%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}] [{t}] - {M}:{m}{n}\"';
+    const detailedLogfile = '\"{d(%Y-%m-%dT%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}]-[{t}] [{f}:{L}] - {M}:{m}{n}\"';
+    const consoleLogPattern = this.logging_settings.get('console_log_pattern').value;
+    if (consoleLogPattern === 'low_noise') {
+      this.configYaml.console_log_level = lowNoiseConsole; // needs to be fixed
+      configYaml += '\nconsole_log_pattern: ' + lowNoiseConsole;
+    } else {
+      this.configYaml.console_log_level = detailedConsole; // needs to be fixed
+      configYaml += '\nconsole_log_pattern: ' + detailedConsole;
+    }
+    const logfileLogPattern = this.logging_settings.get('logfile_log_pattern').value;
+    if (logfileLogPattern === 'low_noise') {
+      this.configYaml.logfile_log_level = lowNoiseLogfile; // needs to be fixed
+      configYaml += '\nlogfile_log_pattern: ' + lowNoiseLogfile;
+    } else {
+      this.configYaml.console_log_level = detailedLogfile; // needs to be fixed
+      configYaml += '\nlogfile_log_pattern: ' + detailedLogfile;
+    }
     // Display and benchmark settings
+    const showProgress = this.display_settings.get('show_progress').value;
+    this.configYaml.show_progress = showProgress;
+    configYaml += '\n\n#Display and benchmark settings\nshow_progress: ' + showProgress;
+    const showDriveStats = this.display_settings.get('show_drive_stats').value;
+    this.configYaml.show_drive_stats = showDriveStats;
+    configYaml += '\nshow_drive_stats: ' + showDriveStats;
+    const benchmarkOnly = this.display_settings.get('benchmark_only').value;
+    this.configYaml.benchmark_only = benchmarkOnly;
+    configYaml += '\nbenchmark_only: ' + benchmarkOnly + '\n\n#Config created with Gyra.';
+    console.log('configYaml: ' + configYaml);
     }
     // Add account ID and passphrase
   addAccount(i: number) {
