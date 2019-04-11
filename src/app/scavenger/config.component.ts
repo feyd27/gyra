@@ -1,12 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
-import { Key } from 'protractor';
 import { __values } from 'tslib';
-import { forEach } from '@angular/router/src/utils/collection';
-import { concat } from 'rxjs';
-import { url } from 'inspector';
-import { isString } from 'util';
-import { release } from 'os';
 
 @Component({
   selector: 'app-config',
@@ -16,7 +10,6 @@ import { release } from 'os';
 export class ConfigComponent implements OnInit {
 
   configForm: FormGroup;
-  savedConfigForm: FormGroup;
 
   validationMessages = {
     url: {
@@ -295,8 +288,6 @@ export class ConfigComponent implements OnInit {
     gpu_async: '',
     target_deadline: '',
     account_id_to_target_deadline: '',
-    account_id_dl: '',
-    target_deadline_dl: '',
     get_mining_info_interval: '',
     timeout: '',
     send_proxy_details: '',
@@ -879,7 +870,7 @@ logfileSize() {
        const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
        accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'\n';
        accountPassphraseYamlHtml += `
-       ${accountIDYaml}: '${passphraseYaml}'\
+       ${accountIDYaml}:'${passphraseYaml}'
        `;
        // needs to be fixed
       }

@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small"
             style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
         <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-          type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig"><i
+          type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
             class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
         <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
           type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small"
@@ -766,7 +766,7 @@
   </form>
 
   <!--space-->
-  <div>
+ <!-- <div>
     <p></p>
   </div>
   <br>
@@ -780,7 +780,7 @@
 
     Errors: {{ formErrors | json}}
 
-    <!--
+
 
 <br><br>
 
@@ -795,7 +795,7 @@ Warnings: {{ formWarning | json }}
    Value: {{ configForm.value | json }}
 <br> <br>
   Status: {{ configForm.status }}
--->
+
     <br> <br>
     Status plots: {{ plotDirs.status }}
 
@@ -804,6 +804,7 @@ Warnings: {{ formWarning | json }}
 
 
   </div>
+  -->
 
   <div class="container">
 
@@ -1116,8 +1117,8 @@ Warnings: {{ formWarning | json }}
     <!-- Modal end -->
 
     <!-- The provisional preview Modal -->
-    <div class="modal" id="previewConfig">
-        <div class="modal-dialog">
+    <div class="modal fade" id="previewConfig">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
 
             <!-- Modal Header -->
@@ -1128,9 +1129,9 @@ Warnings: {{ formWarning | json }}
 
             <!-- Modal body -->
             <div class="modal-body text-monospace">
-              <p> {{previewConfig()}}</p>
-              Config: <br>{{ configYaml.url }}<br>{{ configYaml.account_id_to_secret_phrase }}
-
+              <div *ngFor="let item of configYaml | keyvalue ">
+                {{item.key}}: {{item?.value}}
+              </div>
             </div>
 
             <!-- Modal footer -->
