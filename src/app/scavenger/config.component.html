@@ -809,7 +809,7 @@ Warnings: {{ formWarning | json }}
   <div class="container">
 
       <!-- The Pool and Wallet Modal -->
-      <div class="modal" id="poolWalletHelp">
+      <div class="modal fade" id="poolWalletHelp">
         <div class="modal-dialog">
           <div class="modal-content">
 
@@ -846,7 +846,7 @@ Warnings: {{ formWarning | json }}
       </div>
 
       <!-- The Solo Account Modal -->
-      <div class="modal" id="soloAccount">
+      <div class="modal fade" id="soloAccount">
         <div class="modal-dialog">
           <div class="modal-content">
 
@@ -881,7 +881,7 @@ Warnings: {{ formWarning | json }}
       <!-- Modal end -->
 
   <!-- The Plot Modal -->
-  <div class="modal" id="plotModal">
+  <div class="modal fade" id="plotModal">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -915,7 +915,7 @@ Warnings: {{ formWarning | json }}
 
 
     <!-- The Miner Settings Modal -->
-  <div class="modal" id="minerSettings">
+  <div class="modal fade" id="minerSettings">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -948,7 +948,7 @@ Warnings: {{ formWarning | json }}
     <!-- Modal end -->
 
     <!-- The CPU Settings Modal -->
-  <div class="modal" id="cpuSettings">
+  <div class="modal fade" id="cpuSettings">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -982,7 +982,7 @@ Warnings: {{ formWarning | json }}
 
 
      <!-- The GPU Settings Modal -->
-  <div class="modal" id="gpuSettings">
+  <div class="modal fade" id="gpuSettings">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -1016,7 +1016,7 @@ Warnings: {{ formWarning | json }}
 
 
      <!-- The Mining Settings Modal -->
-  <div class="modal" id="miningSettings">
+  <div class="modal fade" id="miningSettings">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -1050,7 +1050,7 @@ Warnings: {{ formWarning | json }}
 
 
      <!-- The Logging Settings Modal -->
-  <div class="modal" id="loggingSettings">
+  <div class="modal fade" id="loggingSettings">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -1084,7 +1084,7 @@ Warnings: {{ formWarning | json }}
 
 
      <!-- The Display and Benchmark Settings Modal -->
-  <div class="modal" id="displayBenchmark">
+  <div class="modal fade" id="displayBenchmark">
       <div class="modal-dialog">
         <div class="modal-content">
 
@@ -1130,8 +1130,10 @@ Warnings: {{ formWarning | json }}
             <!-- Modal body -->
             <div class="modal-body text-monospace">
               <div *ngFor="let item of configYaml | keyvalue ">
-                {{item.key}}: {{item?.value}}
+                <div *ngIf="item.value !== ''">
+                {{item.key}}: {{item.value}}
               </div>
+            </div>
             </div>
 
             <!-- Modal footer -->
