@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
+import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-config',
@@ -268,39 +269,39 @@ export class ConfigComponent implements OnInit {
   };
 
   configYaml = {
-    url: '',
-    account_id_to_secret_phrase: '',
-    plot_dirs: '',
-    hdd_reader_thread_count: '',
-    hdd_use_direct_io: '',
-    hdd_wake_up_after: '',
+    a_url: '',
+    c_account_id_to_secret_phrase: '',
+    b_plot_dirs: '',
+    i_hdd_reader_thread_count: '',
+    j_hdd_use_direct_io: '',
+    k_hdd_wake_up_after: '',
     miners_off: '',
-    cpu_threads: '',
-    cpu_worker_task_count: '',
-    cpu_nonces_per_cache: '',
-    cpu_thread_pinning: '',
-    gpu_threads: '',
-    gpu_worker_task_count: '',
-    gpu_platform: '',
-    gpu_device: '',
-    gpu_nonces_per_cache: '',
-    gpu_mem_mapping: '',
-    gpu_async: '',
-    target_deadline: '',
-    account_id_to_target_deadline: '',
-    get_mining_info_interval: '',
-    timeout: '',
-    send_proxy_details: '',
-    console_log_level: '',
-    logfile_log_level: '',
-    logfile_max_count: '',
-    logfile_max_size: '',
-    console_log_pattern: '',
-    logfile_log_pattern: '',
-    show_progress: '',
-    show_drive_stats: '',
-    benchmark_only: '',
-    additional_headers: '',
+    l_cpu_threads: '',
+    m_cpu_worker_task_count: '',
+    n_cpu_nonces_per_cache: '',
+    o_cpu_thread_pinning: '',
+    p_gpu_threads: '',
+    r_gpu_worker_task_count: '',
+    q_gpu_platform: '',
+    s_gpu_device: '',
+    t_gpu_nonces_per_cache: '',
+    u_gpu_mem_mapping: '',
+    v_gpu_async: '',
+    d_target_deadline: '',
+    e_account_id_to_target_deadline: '',
+    f_get_mining_info_interval: '',
+    g_timeout: '',
+    h_send_proxy_details: '',
+    w_console_log_level: '',
+    x_logfile_log_level: '',
+    y_logfile_max_count: '',
+    z_logfile_max_size: '',
+    zaconsole_log_pattern: '',
+    zblogfile_log_pattern: '',
+    zcshow_progress: '',
+    zdshow_drive_stats: '',
+    zebenchmark_only: '',
+    zfadditional_headers: '',
   };
 
 
@@ -821,41 +822,41 @@ logfileSize() {
   previewConfig(): void {
     // reset text and object config
     let configYaml = '';
-    this.configYaml.url = '';
-    this.configYaml.account_id_to_secret_phrase = '';
-    this.configYaml.account_id_to_target_deadline = '';
-    this.configYaml.additional_headers = '';
-    this.configYaml.benchmark_only = '';
-    this.configYaml.console_log_level = '';
-    this.configYaml.console_log_pattern = '';
-    this.configYaml.cpu_nonces_per_cache = '';
-    this.configYaml.cpu_thread_pinning = '';
-    this.configYaml.cpu_threads = '';
-    this.configYaml.cpu_worker_task_count = '';
-    this.configYaml.get_mining_info_interval = '';
-    this.configYaml.gpu_async = '';
-    this.configYaml.gpu_device = '';
-    this.configYaml.gpu_mem_mapping = '';
-    this.configYaml.gpu_platform = '';
-    this.configYaml.gpu_nonces_per_cache = '';
-    this.configYaml.gpu_threads = '';
-    this.configYaml.gpu_worker_task_count = '';
-    this.configYaml.hdd_reader_thread_count = '';
-    this.configYaml.hdd_use_direct_io = '';
-    this.configYaml.hdd_wake_up_after = '';
-    this.configYaml.logfile_log_level = '';
-    this.configYaml.logfile_log_pattern = '';
-    this.configYaml.logfile_max_count = '';
-    this.configYaml.logfile_max_size = '';
-    this.configYaml.plot_dirs = '';
-    this.configYaml.send_proxy_details = '';
-    this.configYaml.show_drive_stats = '';
-    this.configYaml.show_progress = '';
-    this.configYaml.target_deadline = '';
-    this.configYaml.timeout = '';
+    this.configYaml.a_url = '';
+    this.configYaml.c_account_id_to_secret_phrase = '';
+    this.configYaml.e_account_id_to_target_deadline = '';
+    this.configYaml.zfadditional_headers = '';
+    this.configYaml.zebenchmark_only = '';
+    this.configYaml.w_console_log_level = '';
+    this.configYaml.zaconsole_log_pattern = '';
+    this.configYaml.n_cpu_nonces_per_cache = '';
+    this.configYaml.o_cpu_thread_pinning = '';
+    this.configYaml.l_cpu_threads = '';
+    this.configYaml.m_cpu_worker_task_count = '';
+    this.configYaml.f_get_mining_info_interval = '';
+    this.configYaml.v_gpu_async = '';
+    this.configYaml.s_gpu_device = '';
+    this.configYaml.u_gpu_mem_mapping = '';
+    this.configYaml.q_gpu_platform = '';
+    this.configYaml.t_gpu_nonces_per_cache = '';
+    this.configYaml.p_gpu_threads = '';
+    this.configYaml.r_gpu_worker_task_count = '';
+    this.configYaml.i_hdd_reader_thread_count = '';
+    this.configYaml.j_hdd_use_direct_io = '';
+    this.configYaml.k_hdd_wake_up_after = '';
+    this.configYaml.x_logfile_log_level = '';
+    this.configYaml.zblogfile_log_pattern = '';
+    this.configYaml.y_logfile_max_count = '';
+    this.configYaml.z_logfile_max_size = '';
+    this.configYaml.b_plot_dirs = '';
+    this.configYaml.h_send_proxy_details = '';
+    this.configYaml.zdshow_drive_stats = '';
+    this.configYaml.zcshow_progress = '';
+    this.configYaml.d_target_deadline = '';
+    this.configYaml.g_timeout = '';
     // URL
     const urlYaml = this.configForm.get('url').value as string;
-    this.configYaml.url = 'url: ' + '\'' + urlYaml + '\''; // needs to be fixed
+    this.configYaml.a_url = '\'' + urlYaml + '\'';
     configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\n';
     // account id + passphrase
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
@@ -869,38 +870,36 @@ logfileSize() {
        const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
        const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
        accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'\n';
-       accountPassphraseYamlHtml += `
-       ${accountIDYaml}:'${passphraseYaml}'
-       `;
-       // needs to be fixed
+       accountPassphraseYamlHtml += `${accountIDYaml}:'${passphraseYaml}'`; // works, try to add a \n
       }
     configYaml += accountPassphraseYaml;
-    this.configYaml.account_id_to_secret_phrase = accountPassphraseYamlHtml;
+    this.configYaml.c_account_id_to_secret_phrase = accountPassphraseYamlHtml;
     }
     // plot dirs
     const plotDirs = this.configForm.get('plot_dirs') as FormArray;
-    let plotDirsYaml = 'plot_dirs: \n';
+    let plotDirsYaml = '';
+    // let plotDirsYaml = 'plot_dirs: \n';
     for (let i = 0; i < (plotDirs.length); i++) {
       const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
       const plotDirYamlString = plotDirYaml.toString();
       const plotDirYamlTrimmed = plotDirYamlString.trim();
       plotDirsYaml += '-\'' + plotDirYamlTrimmed + '\'\n';
     }
-    configYaml += '\n' + plotDirsYaml;
-    this.configYaml.plot_dirs = plotDirsYaml; // needs to be fixed
+    configYaml += 'plot_dirs: \n' + plotDirsYaml;
+    this.configYaml.b_plot_dirs = plotDirsYaml; // needs to be fixed
     // miner settings
     const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
-    this.configYaml.hdd_reader_thread_count = hddReaderThreadCount; // needs to be fixed
+    this.configYaml.i_hdd_reader_thread_count = hddReaderThreadCount;
     configYaml += '\n#Miner settings \nhdd_reader_thread_count: ' + hddReaderThreadCount;
     const hddUseDirectIO = this.miner_settings.get('hdd_use_direct_io').value;
-    this.configYaml.hdd_use_direct_io = hddUseDirectIO;
+    this.configYaml.j_hdd_use_direct_io = hddUseDirectIO;
     configYaml += '\nhdd_use_direct_io: ' + hddUseDirectIO;
     const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
-    this.configYaml.hdd_wake_up_after = hddWakeUpAfter; // needs to be fixed
+    this.configYaml.k_hdd_wake_up_after = hddWakeUpAfter;
     configYaml += '\nhdd_wakeup_after: ' + hddWakeUpAfter;
     // mining settings
     const targetDeadline = this.configForm.get('target_deadline').value;
-    this.configYaml.target_deadline = targetDeadline; // needs to be fixed
+    this.configYaml.d_target_deadline = targetDeadline;
     configYaml += '\n\n#Mining settings \ntarget_deadline: ' + targetDeadline;
     // account ID + target deathline
     const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
@@ -909,27 +908,27 @@ logfileSize() {
     if (accountDeadline.length === 0) {
       let accountDeadlineYaml = '';
     } else {
-    let accountDeadlineYaml = '\naccount_id_to_target_deadline:\n';
+    let accountDeadlineYaml = '';
     for (let i = 0; i < (accountDeadline.length); i++) {
        const accountIDDLYaml = accountDeadline.at(i).get('account_id_dl').value as string;
        const deadlineYaml = accountDeadline.at(i).get('target_deadline_dl').value as string;
        accountDeadlineYaml += accountIDDLYaml + ': ' + '' + deadlineYaml + '\n';
        accountDeadlineYamlHtml += `
-       ${accountIDDLYaml}: '${deadlineYaml}'\
+       ${accountIDDLYaml}: '${deadlineYaml}'
        `;
        // needs to be fixed
       }
-    configYaml += accountDeadlineYaml;
-    this.configYaml.account_id_to_target_deadline = accountDeadlineYamlHtml;
+    configYaml += '\naccount_id_to_target_deadline:\n' + accountDeadlineYaml;
+    this.configYaml.e_account_id_to_target_deadline = accountDeadlineYamlHtml;
     }
     const getMinigInfoInterval = this.configForm.get('get_mining_info_interval').value;
-    this.configYaml.get_mining_info_interval = getMinigInfoInterval; // needs to be fixed
+    this.configYaml.f_get_mining_info_interval = getMinigInfoInterval;
     configYaml += '\nget_mining_info_interval: ' + getMinigInfoInterval;
     const timeout = this.configForm.get('timeout').value;
-    this.configYaml.timeout = timeout; // needs to be fixed
+    this.configYaml.g_timeout = timeout;
     configYaml += '\ntimeout: ' + timeout;
     const sendProxyDetails = this.configForm.get('send_proxy_details').value;
-    this.configYaml.send_proxy_details = sendProxyDetails; // needs to be fixed
+    this.configYaml.h_send_proxy_details = sendProxyDetails;
     configYaml += '\nsend_proxy_details: ' + sendProxyDetails;
     // Additional headers
     const additionalHeader = this.configForm.get('additional_headers') as FormArray;
@@ -949,55 +948,55 @@ logfileSize() {
        // needs to be fixed
       }
     configYaml += additionalHeaderYaml;
-    this.configYaml.additional_headers = additionalHeaderYamlHtml;
+    this.configYaml.zfadditional_headers = additionalHeaderYamlHtml;
     }
     // CPU settings
     const cpuThreads = this.cpu_settings.get('cpu_threads').value;
-    this.configYaml.cpu_threads = cpuThreads; // needs to be fixed
+    this.configYaml.l_cpu_threads = cpuThreads;
     configYaml += '\n\n#CPU settings\ncpu_threads: ' + cpuThreads;
     const cpuWorkerTaskCount = this.cpu_settings.get('cpu_worker_task_count').value;
-    this.configYaml.cpu_worker_task_count = cpuWorkerTaskCount; // needs to be fixed
+    this.configYaml.m_cpu_worker_task_count = cpuWorkerTaskCount;
     configYaml += '\ncpu_worker_task_count: ' + cpuWorkerTaskCount;
     const cpuNoncesPerCache = this.cpu_settings.get('cpu_nonces_per_cache').value;
-    this.configYaml.cpu_nonces_per_cache = cpuNoncesPerCache; // needs to be fixed
+    this.configYaml.n_cpu_nonces_per_cache = cpuNoncesPerCache;
     configYaml += '\ncpu_nonces_per_cache: ' + cpuNoncesPerCache;
     const cpuThreadPinning = this.cpu_settings.get('cpu_thread_pinning').value;
-    this.configYaml.cpu_thread_pinning = cpuThreadPinning; // needs to be fixed
+    this.configYaml.o_cpu_thread_pinning = cpuThreadPinning;
     configYaml += '\ncpu_thread_pinning: ' + cpuThreadPinning;
     // GPU settings
     const gpuThreads = this.gpu_settings.get('gpu_threads').value;
-    this.configYaml.gpu_threads = gpuThreads; // needs to be fixed
+    this.configYaml.p_gpu_threads = gpuThreads;
     configYaml += '\n\n#GPU settings\ngpu_threads: ' + gpuThreads;
     const gpuWorkerTaskCount = this.gpu_settings.get('gpu_worker_task_count').value;
-    this.configYaml.gpu_worker_task_count = gpuWorkerTaskCount; // needs to be fixed
+    this.configYaml.r_gpu_worker_task_count = gpuWorkerTaskCount;
     configYaml += '\ngpu_worker_task_count: ' + gpuWorkerTaskCount;
     const gpuPlatform = this.gpu_settings.get('gpu_platform').value;
-    this.configYaml.gpu_platform = gpuPlatform; // needs to be fixed
+    this.configYaml.q_gpu_platform = gpuPlatform;
     configYaml += '\ngpu_platform: ' + gpuPlatform;
     const gpuDevice = this.gpu_settings.get('gpu_device').value;
-    this.configYaml.gpu_device = gpuDevice; // needs to be fixed
+    this.configYaml.s_gpu_device = gpuDevice;
     configYaml += '\ngpu_device: ' + gpuDevice;
     const gpuNoncesPercache = this.gpu_settings.get('gpu_nonces_per_cache').value;
-    this.configYaml.gpu_nonces_per_cache = gpuNoncesPercache; // needs to be fixed
+    this.configYaml.t_gpu_nonces_per_cache = gpuNoncesPercache;
     configYaml += '\ngpu_nonces_per_cache: ' + gpuNoncesPercache;
     const gpuMemoryMapping = this.gpu_settings.get('gpu_mem_mapping').value;
-    this.configYaml.gpu_mem_mapping = gpuMemoryMapping; // needs to be fixed
+    this.configYaml.u_gpu_mem_mapping = gpuMemoryMapping;
     configYaml += '\ngpu_mem_mapping: ' + gpuMemoryMapping;
     const gpuAsync = this.gpu_settings.get('gpu_async').value;
-    this.configYaml.gpu_async = gpuAsync; // needs to be fixed
+    this.configYaml.v_gpu_async = gpuAsync;
     configYaml += '\ngpu_async: ' + gpuAsync;
     // Logging settings
     const consoleLogLevel = this.logging_settings.get('console_log_level').value;
-    this.configYaml.console_log_level = consoleLogLevel; // needs to be fixed
+    this.configYaml.w_console_log_level = consoleLogLevel;
     configYaml += '\n\n#Logging settings\nconsole_log_level: ' + consoleLogLevel;
     const logfileLogLevel = this.logging_settings.get('logfile_log_level').value;
-    this.configYaml.logfile_log_level = logfileLogLevel; // needs to be fixed
+    this.configYaml.x_logfile_log_level = logfileLogLevel;
     configYaml += '\nlogfile_log_level: ' + logfileLogLevel;
     const logfileMaxCount = this.logging_settings.get('logfile_max_count').value;
-    this.configYaml.logfile_max_count = logfileMaxCount; // needs to be fixed
+    this.configYaml.y_logfile_max_count = logfileMaxCount;
     configYaml += '\nlogfile_max_count: ' + logfileMaxCount;
     const logfileMaxSize = this.logging_settings.get('logfile_max_size').value;
-    this.configYaml.logfile_max_size = logfileMaxSize; // needs to be fixed
+    this.configYaml.z_logfile_max_size = logfileMaxSize;
     configYaml += '\nlogfile_max_size: ' + logfileMaxSize;
     const lowNoiseConsole = '\"{({d(%H:%M:%S)} [{l}]):16.16} {m}{n}\"';
     const lowNoiseLogfile = '\"{({d(%Y-%m-%d %H:%M:%S)} [{l}]):26.26} {m}{n}\"';
@@ -1005,29 +1004,29 @@ logfileSize() {
     const detailedLogfile = '\"{d(%Y-%m-%dT%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}]-[{t}] [{f}:{L}] - {M}:{m}{n}\"';
     const consoleLogPattern = this.logging_settings.get('console_log_pattern').value;
     if (consoleLogPattern === 'low_noise') {
-      this.configYaml.console_log_level = lowNoiseConsole; // needs to be fixed
+      this.configYaml.zaconsole_log_pattern = lowNoiseConsole;
       configYaml += '\nconsole_log_pattern: ' + lowNoiseConsole;
     } else {
-      this.configYaml.console_log_level = detailedConsole; // needs to be fixed
+      this.configYaml.zaconsole_log_pattern = detailedConsole;
       configYaml += '\nconsole_log_pattern: ' + detailedConsole;
     }
     const logfileLogPattern = this.logging_settings.get('logfile_log_pattern').value;
     if (logfileLogPattern === 'low_noise') {
-      this.configYaml.logfile_log_level = lowNoiseLogfile; // needs to be fixed
+      this.configYaml.zblogfile_log_pattern = lowNoiseLogfile;
       configYaml += '\nlogfile_log_pattern: ' + lowNoiseLogfile;
     } else {
-      this.configYaml.console_log_level = detailedLogfile; // needs to be fixed
+      this.configYaml.zblogfile_log_pattern = detailedLogfile;
       configYaml += '\nlogfile_log_pattern: ' + detailedLogfile;
     }
     // Display and benchmark settings
     const showProgress = this.display_settings.get('show_progress').value;
-    this.configYaml.show_progress = showProgress; // needs to be fixed
+    this.configYaml.zcshow_progress = showProgress; // needs to be fixed
     configYaml += '\n\n#Display and benchmark settings\nshow_progress: ' + showProgress;
     const showDriveStats = this.display_settings.get('show_drive_stats').value;
-    this.configYaml.show_drive_stats = showDriveStats; // needs to be fixed
+    this.configYaml.zdshow_drive_stats = showDriveStats; // needs to be fixed
     configYaml += '\nshow_drive_stats: ' + showDriveStats;
     const benchmarkOnly = this.display_settings.get('benchmark_only').value;
-    this.configYaml.benchmark_only = benchmarkOnly; // needs to be fixed
+    this.configYaml.zebenchmark_only = benchmarkOnly; // needs to be fixed
     configYaml += '\nbenchmark_only: ' + benchmarkOnly + '\n\n#Config created with Gyra.';
     console.log('configYaml: ' + configYaml);
     }
