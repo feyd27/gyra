@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
-import { stringify } from '@angular/compiler/src/util';
 
 @Component({
   selector: 'app-config',
@@ -943,7 +942,7 @@ logfileSize() {
        const headerValueYaml = additionalHeader.at(i).get('header_value').value as string;
        additionalHeaderYaml += '\"' + headerKeyYaml + '\"' + ': ' + '\"' + headerValueYaml + '\"' + '\n';
        additionalHeaderYamlHtml += `
-       ${headerKeyYaml}: '${headerValueYaml}'\
+       "${headerKeyYaml}":"${headerValueYaml}"\
        `;
        // needs to be fixed
       }
@@ -987,11 +986,11 @@ logfileSize() {
     configYaml += '\ngpu_async: ' + gpuAsync;
     // Logging settings
     const consoleLogLevel = this.logging_settings.get('console_log_level').value;
-    this.configYaml.w_console_log_level = consoleLogLevel;
-    configYaml += '\n\n#Logging settings\nconsole_log_level: ' + consoleLogLevel;
+    this.configYaml.w_console_log_level = '\'' + consoleLogLevel + '\'';
+    configYaml += '\n\n#Logging settings\nconsole_log_level: ' + '\'' + consoleLogLevel + '\'';
     const logfileLogLevel = this.logging_settings.get('logfile_log_level').value;
-    this.configYaml.x_logfile_log_level = logfileLogLevel;
-    configYaml += '\nlogfile_log_level: ' + logfileLogLevel;
+    this.configYaml.x_logfile_log_level = '\'' + logfileLogLevel + '\'';
+    configYaml += '\nlogfile_log_level: ' + '\'' + logfileLogLevel + '\'';
     const logfileMaxCount = this.logging_settings.get('logfile_max_count').value;
     this.configYaml.y_logfile_max_count = logfileMaxCount;
     configYaml += '\nlogfile_max_count: ' + logfileMaxCount;
@@ -1026,10 +1025,11 @@ logfileSize() {
     this.configYaml.zdshow_drive_stats = showDriveStats; // needs to be fixed
     configYaml += '\nshow_drive_stats: ' + showDriveStats;
     const benchmarkOnly = this.display_settings.get('benchmark_only').value;
-    this.configYaml.zebenchmark_only = benchmarkOnly; // needs to be fixed
-    configYaml += '\nbenchmark_only: ' + benchmarkOnly + '\n\n#Config created with Gyra.';
+    this.configYaml.zebenchmark_only = '\'' + benchmarkOnly + '\''; // needs to be fixed
+    configYaml += '\nbenchmark_only: ' + '\'' + benchmarkOnly + '\'' + '\n\n#Config created with Gyra.';
     console.log('configYaml: ' + configYaml);
     }
+
     // Add account ID and passphrase
   addAccount(i: number) {
     const regnumber = '[0-9]*$';
