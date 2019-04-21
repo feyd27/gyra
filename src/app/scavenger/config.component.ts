@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
+import { utf8Encode } from '@angular/compiler/src/util';
+import { stringify } from '@angular/core/src/util';
 
 @Component({
   selector: 'app-config',
@@ -854,9 +856,11 @@ logfileSize() {
     this.configYaml.d_target_deadline = '';
     this.configYaml.g_timeout = '';
     // URL
+    let hiddenElement = document.createElement('a');
     const urlYaml = this.configForm.get('url').value as string;
     this.configYaml.a_url = '\'' + urlYaml + '\'';
-    configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\n';
+    configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\r\n';
+   // hiddenElement.href = 'data:application/yaml,' + encodeURI(configYaml) + '\n';
     // account id + passphrase
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     let accountPassphraseYaml = '';
@@ -873,6 +877,7 @@ logfileSize() {
       }
     configYaml += accountPassphraseYaml;
     this.configYaml.c_account_id_to_secret_phrase = accountPassphraseYamlHtml;
+    // hiddenElement.href += 'data:application/yaml,' + encodeURI(configYaml);
     }
     // plot dirs
     const plotDirs = this.configForm.get('plot_dirs') as FormArray;
@@ -882,10 +887,11 @@ logfileSize() {
       const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
       const plotDirYamlString = plotDirYaml.toString();
       const plotDirYamlTrimmed = plotDirYamlString.trim();
-      plotDirsYaml += '-\'' + plotDirYamlTrimmed + '\'\n';
+      plotDirsYaml += '-\'' + plotDirYamlTrimmed + '\'\r\n';
     }
-    configYaml += 'plot_dirs: \n' + plotDirsYaml;
+    configYaml += 'plot_dirs: \r\n' + plotDirsYaml + '\r\n';
     this.configYaml.b_plot_dirs = plotDirsYaml; // needs to be fixed
+    hiddenElement.href += 'data:application/yaml,' + String(configYaml);
     // miner settings
     const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
     this.configYaml.i_hdd_reader_thread_count = hddReaderThreadCount;
@@ -1028,6 +1034,13 @@ logfileSize() {
     this.configYaml.zebenchmark_only = '\'' + benchmarkOnly + '\''; // needs to be fixed
     configYaml += '\nbenchmark_only: ' + '\'' + benchmarkOnly + '\'' + '\n\n#Config created with Gyra.';
     console.log('configYaml: ' + configYaml);
+
+
+
+    console.log('coMfig' + configYaml);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'config.yaml';
+    hiddenElement.click();
     }
 
     // Add account ID and passphrase
