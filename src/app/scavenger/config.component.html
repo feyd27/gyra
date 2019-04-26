@@ -12,7 +12,7 @@
           type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
             class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
         <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-          type="button" class="btn btn-primary" (click)="previewConfig()"><i class="material-icons small"
+          type="button" class="btn btn-primary" (click)="exportConfig()"><i class="material-icons small"
             style="text-align: center">get_app</i>&nbsp;Export
           .yaml</button>
         <button type="button" class="btn btn-primary"><i class="material-icons small"

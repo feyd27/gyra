@@ -814,15 +814,10 @@ logfileSize() {
     this.configForm.markAsUntouched();
   }
 
-  // Export Config
- //  exportConfig(): void {
-  //  this.logKeyValuePairs(this.configForm);
-  // }
 
   // Preview config
   previewConfig(): void {
-    // reset text and object config
-    let configYaml = '';
+    // reset object config
     this.configYaml.a_url = '';
     this.configYaml.c_account_id_to_secret_phrase = '';
     this.configYaml.e_account_id_to_target_deadline = '';
@@ -856,10 +851,8 @@ logfileSize() {
     this.configYaml.d_target_deadline = '';
     this.configYaml.g_timeout = '';
     // URL
-    let hiddenElement = document.createElement('a');
     const urlYaml = this.configForm.get('url').value as string;
     this.configYaml.a_url = '\'' + urlYaml + '\'';
-    configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\r\n';
     // account id + passphrase
     const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
     let accountPassphraseYaml = '';
@@ -874,7 +867,6 @@ logfileSize() {
        accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'\r\n';
        accountPassphraseYamlHtml += `${accountIDYaml}:'${passphraseYaml}'`; // works, try to add a \n
       }
-    configYaml += accountPassphraseYaml;
     this.configYaml.c_account_id_to_secret_phrase = accountPassphraseYamlHtml;
     }
     // plot dirs
@@ -886,22 +878,17 @@ logfileSize() {
       const plotDirYamlTrimmed = plotDirYamlString.trim();
       plotDirsYaml += '   -\'' + plotDirYamlTrimmed + '\'\r\n';
     }
-    configYaml += '\r\nplot_dirs: \r\n' + plotDirsYaml + '\r\n';
     this.configYaml.b_plot_dirs = plotDirsYaml; // needs to be fixed
     // miner settings
     const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
-    configYaml += 'hdd_reader_thread_count: ' + hddReaderThreadCount;
     this.configYaml.i_hdd_reader_thread_count = hddReaderThreadCount;
     const hddUseDirectIO = this.miner_settings.get('hdd_use_direct_io').value;
     this.configYaml.j_hdd_use_direct_io = hddUseDirectIO;
-    configYaml += '\r\nhdd_use_direct_io: ' + hddUseDirectIO.toString();
     const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
     this.configYaml.k_hdd_wake_up_after = hddWakeUpAfter;
-    configYaml += '\r\nhdd_wakeup_after: ' + hddWakeUpAfter.toString() + '\r\n';
     // mining settings
     const targetDeadline = this.configForm.get('target_deadline').value;
     this.configYaml.d_target_deadline = targetDeadline;
-    configYaml += '\r\ntarget_deadline: ' + targetDeadline;
     // account ID + target deathline
     const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
     let accountDeadlineYaml = '';
@@ -919,18 +906,14 @@ logfileSize() {
        `;
        // needs to be fixed
       }
-    configYaml += '\r\naccount_id_to_target_deadline:\r\n' + accountDeadlineYaml;
     this.configYaml.e_account_id_to_target_deadline = accountDeadlineYamlHtml;
     }
     const getMinigInfoInterval = this.configForm.get('get_mining_info_interval').value;
     this.configYaml.f_get_mining_info_interval = getMinigInfoInterval;
-    configYaml += '\r\nget_mining_info_interval: ' + getMinigInfoInterval;
     const timeout = this.configForm.get('timeout').value;
     this.configYaml.g_timeout = timeout;
-    configYaml += '\r\ntimeout: ' + timeout;
     const sendProxyDetails = this.configForm.get('send_proxy_details').value;
     this.configYaml.h_send_proxy_details = sendProxyDetails;
-    configYaml += '\r\nsend_proxy_details: ' + sendProxyDetails;
     // Additional headers
     const additionalHeader = this.configForm.get('additional_headers') as FormArray;
     let additionalHeaderYaml = '';
@@ -948,58 +931,41 @@ logfileSize() {
        `;
        // needs to be fixed
       }
-    configYaml += additionalHeaderYaml;
-
     this.configYaml.zfadditional_headers = additionalHeaderYamlHtml;
     }
     // CPU settings
     const cpuThreads = this.cpu_settings.get('cpu_threads').value;
     this.configYaml.l_cpu_threads = cpuThreads;
-    configYaml += '\r\ncpu_threads: ' + cpuThreads;
     const cpuWorkerTaskCount = this.cpu_settings.get('cpu_worker_task_count').value;
     this.configYaml.m_cpu_worker_task_count = cpuWorkerTaskCount;
-    configYaml += '\r\ncpu_worker_task_count: ' + cpuWorkerTaskCount;
     const cpuNoncesPerCache = this.cpu_settings.get('cpu_nonces_per_cache').value;
     this.configYaml.n_cpu_nonces_per_cache = cpuNoncesPerCache;
-    configYaml += '\r\ncpu_nonces_per_cache: ' + cpuNoncesPerCache;
     const cpuThreadPinning = this.cpu_settings.get('cpu_thread_pinning').value;
     this.configYaml.o_cpu_thread_pinning = cpuThreadPinning;
-    configYaml += '\r\ncpu_thread_pinning: ' + cpuThreadPinning;
     // GPU settings
     const gpuThreads = this.gpu_settings.get('gpu_threads').value;
     this.configYaml.p_gpu_threads = gpuThreads;
-    configYaml += '\r\n' + '\r\ngpu_threads: ' + gpuThreads;
     const gpuWorkerTaskCount = this.gpu_settings.get('gpu_worker_task_count').value;
     this.configYaml.r_gpu_worker_task_count = gpuWorkerTaskCount;
-    configYaml += '\r\ngpu_worker_task_count: ' + gpuWorkerTaskCount;
     const gpuPlatform = this.gpu_settings.get('gpu_platform').value;
     this.configYaml.q_gpu_platform = gpuPlatform;
-    configYaml += '\r\ngpu_platform: ' + gpuPlatform;
     const gpuDevice = this.gpu_settings.get('gpu_device').value;
     this.configYaml.s_gpu_device = gpuDevice;
-    configYaml += '\r\ngpu_device: ' + gpuDevice;
     const gpuNoncesPercache = this.gpu_settings.get('gpu_nonces_per_cache').value;
     this.configYaml.t_gpu_nonces_per_cache = gpuNoncesPercache;
-    configYaml += '\r\ngpu_nonces_per_cache: ' + gpuNoncesPercache;
     const gpuMemoryMapping = this.gpu_settings.get('gpu_mem_mapping').value;
     this.configYaml.u_gpu_mem_mapping = gpuMemoryMapping;
-    configYaml += '\r\ngpu_mem_mapping: ' + gpuMemoryMapping;
     const gpuAsync = this.gpu_settings.get('gpu_async').value;
     this.configYaml.v_gpu_async = gpuAsync;
-    configYaml += '\r\ngpu_async: ' + gpuAsync;
     // Logging settings
     const consoleLogLevel = this.logging_settings.get('console_log_level').value;
     this.configYaml.w_console_log_level = '\'' + consoleLogLevel + '\'';
-    configYaml += '\r\n' + '\r\nconsole_log_level: ' + '\'' + consoleLogLevel + '\'';
     const logfileLogLevel = this.logging_settings.get('logfile_log_level').value;
     this.configYaml.x_logfile_log_level = '\'' + logfileLogLevel + '\'';
-    configYaml += '\r\nlogfile_log_level: ' + '\'' + logfileLogLevel + '\'';
     const logfileMaxCount = this.logging_settings.get('logfile_max_count').value;
     this.configYaml.y_logfile_max_count = logfileMaxCount;
-    configYaml += '\r\nlogfile_max_count: ' + logfileMaxCount;
     const logfileMaxSize = this.logging_settings.get('logfile_max_size').value;
     this.configYaml.z_logfile_max_size = logfileMaxSize;
-    configYaml += '\r\nlogfile_max_size: ' + logfileMaxSize;
     const lowNoiseConsole = '\"{({d(%H:%M:%S)} [{l}]):16.16} {m}{n}\"';
     const lowNoiseLogfile = '\"{({d(%Y-%m-%d %H:%M:%S)} [{l}]):26.26} {m}{n}\"';
     const detailedConsole = '\"{d(%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}] [{t}] - {M}:{m}{n}\"';
@@ -1007,35 +973,175 @@ logfileSize() {
     const consoleLogPattern = this.logging_settings.get('console_log_pattern').value;
     if (consoleLogPattern === 'low_noise') {
       this.configYaml.zaconsole_log_pattern = lowNoiseConsole;
-      configYaml += '\r\nconsole_log_pattern: ' + lowNoiseConsole;
     } else {
       this.configYaml.zaconsole_log_pattern = detailedConsole;
-      configYaml += '\r\nconsole_log_pattern: ' + detailedConsole;
     }
     const logfileLogPattern = this.logging_settings.get('logfile_log_pattern').value;
     if (logfileLogPattern === 'low_noise') {
       this.configYaml.zblogfile_log_pattern = lowNoiseLogfile;
-      configYaml += '\r\nlogfile_log_pattern: ' + lowNoiseLogfile;
     } else {
       this.configYaml.zblogfile_log_pattern = detailedLogfile;
-      configYaml += '\r\nlogfile_log_pattern: ' + detailedLogfile;
     }
     // Display and benchmark settings
     const showProgress = this.display_settings.get('show_progress').value;
     this.configYaml.zcshow_progress = showProgress; // needs to be fixed
-    configYaml += '\r\n' + '\r\nshow_progress: ' + showProgress;
     const showDriveStats = this.display_settings.get('show_drive_stats').value;
     this.configYaml.zdshow_drive_stats = showDriveStats; // needs to be fixed
-    configYaml += '\r\nshow_drive_stats: ' + showDriveStats;
     const benchmarkOnly = this.display_settings.get('benchmark_only').value;
     this.configYaml.zebenchmark_only = '\'' + benchmarkOnly + '\''; // needs to be fixed
-    configYaml += '\r\nbenchmark_only: ' + '\'' + benchmarkOnly + '\'';
-    hiddenElement.href = 'data:application/yaml,' + encodeURI(configYaml);
-    // console.log('configYaml: ' + configYaml);
-    hiddenElement.target = '_blank';
-    hiddenElement.download = 'config.yaml';
-    hiddenElement.click();
     }
+// *****
+// Export config
+exportConfig(): void {
+  // reset text config
+  let configYaml = '';
+  let hiddenElement = document.createElement('a');
+  // URL
+  const urlYaml = this.configForm.get('url').value as string;
+  configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\r\n';
+  // account id + passphrase
+  const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
+  let accountPassphraseYaml = '';
+  if (accountPassphrase.length === 0) {
+    let accountPassphraseYaml = '';
+  } else {
+  let accountPassphraseYaml = '\r\naccount_id_to_secret_phrase:\r\n';
+  for (let i = 0; i < (accountPassphrase.length); i++) {
+     const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
+     const passphraseYaml = accountPassphrase.at(i).get('passphrase').value as string;
+     accountPassphraseYaml += accountIDYaml + ':' + '\'' + passphraseYaml + '\'\r\n';
+    }
+  configYaml += accountPassphraseYaml;
+  }
+  // plot dirs
+  const plotDirs = this.configForm.get('plot_dirs') as FormArray;
+  let plotDirsYaml = '';
+  for (let i = 0; i < (plotDirs.length); i++) {
+    const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
+    const plotDirYamlString = plotDirYaml.toString();
+    const plotDirYamlTrimmed = plotDirYamlString.trim();
+    plotDirsYaml += '   -\'' + plotDirYamlTrimmed + '\'\r\n';
+  }
+  configYaml += '\r\nplot_dirs: \r\n' + plotDirsYaml + '\r\n';
+  // miner settings
+  const hddReaderThreadCount = this.miner_settings.get('hdd_reader_thread_count').value;
+  configYaml += 'hdd_reader_thread_count: ' + hddReaderThreadCount;
+  const hddUseDirectIO = this.miner_settings.get('hdd_use_direct_io').value;
+  configYaml += '\r\nhdd_use_direct_io: ' + hddUseDirectIO.toString();
+  const hddWakeUpAfter = this.miner_settings.get('hdd_wake_up_after').value;
+  configYaml += '\r\nhdd_wakeup_after: ' + hddWakeUpAfter.toString() + '\r\n';
+  // mining settings
+  const targetDeadline = this.configForm.get('target_deadline').value;
+  configYaml += '\r\ntarget_deadline: ' + targetDeadline;
+  // account ID + target deathline
+  const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
+  let accountDeadlineYaml = '';
+  if (accountDeadline.length === 0) {
+    let accountDeadlineYaml = '';
+  } else {
+  let accountDeadlineYaml = '';
+  for (let i = 0; i < (accountDeadline.length); i++) {
+     const accountIDDLYaml = accountDeadline.at(i).get('account_id_dl').value as string;
+     const deadlineYaml = accountDeadline.at(i).get('target_deadline_dl').value as string;
+     accountDeadlineYaml += accountIDDLYaml + ': ' + '' + deadlineYaml + '\r\n';
+    }
+  configYaml += '\r\naccount_id_to_target_deadline:\r\n' + accountDeadlineYaml;
+  }
+  const getMinigInfoInterval = this.configForm.get('get_mining_info_interval').value;
+  configYaml += '\r\nget_mining_info_interval: ' + getMinigInfoInterval;
+  const timeout = this.configForm.get('timeout').value;
+  configYaml += '\r\ntimeout: ' + timeout;
+  const sendProxyDetails = this.configForm.get('send_proxy_details').value;
+  configYaml += '\r\nsend_proxy_details: ' + sendProxyDetails;
+  // Additional headers
+  const additionalHeader = this.configForm.get('additional_headers') as FormArray;
+  let additionalHeaderYaml = '';
+  if (additionalHeader.length === 0) {
+    let additionalHeaderYaml = '';
+  } else {
+  let additionalHeaderYaml = '\r\n' + '\r\nadditional_headers:\r\n';
+  for (let i = 0; i < (additionalHeader.length); i++) {
+     const headerKeyYaml = additionalHeader.at(i).get('header_key').value as string;
+     const headerValueYaml = additionalHeader.at(i).get('header_value').value as string;
+     additionalHeaderYaml += '\"' + headerKeyYaml + '\"' + ': ' + '\"' + headerValueYaml + '\"' + '\r\n';
+    }
+  configYaml += additionalHeaderYaml;
+  }
+  // CPU settings
+  const cpuThreads = this.cpu_settings.get('cpu_threads').value;
+  configYaml += '\r\ncpu_threads: ' + cpuThreads;
+  const cpuWorkerTaskCount = this.cpu_settings.get('cpu_worker_task_count').value;
+  configYaml += '\r\ncpu_worker_task_count: ' + cpuWorkerTaskCount;
+  const cpuNoncesPerCache = this.cpu_settings.get('cpu_nonces_per_cache').value;
+  configYaml += '\r\ncpu_nonces_per_cache: ' + cpuNoncesPerCache;
+  const cpuThreadPinning = this.cpu_settings.get('cpu_thread_pinning').value;
+  configYaml += '\r\ncpu_thread_pinning: ' + cpuThreadPinning;
+  // GPU settings
+  const gpuThreads = this.gpu_settings.get('gpu_threads').value;
+  configYaml += '\r\n' + '\r\ngpu_threads: ' + gpuThreads;
+  const gpuWorkerTaskCount = this.gpu_settings.get('gpu_worker_task_count').value;
+  configYaml += '\r\ngpu_worker_task_count: ' + gpuWorkerTaskCount;
+  const gpuPlatform = this.gpu_settings.get('gpu_platform').value;
+  configYaml += '\r\ngpu_platform: ' + gpuPlatform;
+  const gpuDevice = this.gpu_settings.get('gpu_device').value;
+  configYaml += '\r\ngpu_device: ' + gpuDevice;
+  const gpuNoncesPercache = this.gpu_settings.get('gpu_nonces_per_cache').value;
+  configYaml += '\r\ngpu_nonces_per_cache: ' + gpuNoncesPercache;
+  const gpuMemoryMapping = this.gpu_settings.get('gpu_mem_mapping').value;
+  configYaml += '\r\ngpu_mem_mapping: ' + gpuMemoryMapping;
+  const gpuAsync = this.gpu_settings.get('gpu_async').value;
+  configYaml += '\r\ngpu_async: ' + gpuAsync;
+  // Logging settings
+  const consoleLogLevel = this.logging_settings.get('console_log_level').value;
+  configYaml += '\r\n' + '\r\nconsole_log_level: ' + '\'' + consoleLogLevel + '\'';
+  const logfileLogLevel = this.logging_settings.get('logfile_log_level').value;
+  configYaml += '\r\nlogfile_log_level: ' + '\'' + logfileLogLevel + '\'';
+  const logfileMaxCount = this.logging_settings.get('logfile_max_count').value;
+  configYaml += '\r\nlogfile_max_count: ' + logfileMaxCount;
+  const logfileMaxSize = this.logging_settings.get('logfile_max_size').value;
+  configYaml += '\r\nlogfile_max_size: ' + logfileMaxSize;
+  const lowNoiseConsole = '\"{({d(%H:%M:%S)} [{l}]):16.16} {m}{n}\"';
+  const lowNoiseLogfile = '\"{({d(%Y-%m-%d %H:%M:%S)} [{l}]):26.26} {m}{n}\"';
+  const detailedConsole = '\"{d(%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}] [{t}] - {M}:{m}{n}\"';
+  const detailedLogfile = '\"{d(%Y-%m-%dT%H:%M:%S.%3f%z)} [{h({l}):<5}] [{T}]-[{t}] [{f}:{L}] - {M}:{m}{n}\"';
+  const consoleLogPattern = this.logging_settings.get('console_log_pattern').value;
+  if (consoleLogPattern === 'low_noise') {
+    configYaml += '\r\nconsole_log_pattern: ' + lowNoiseConsole;
+  } else {
+    configYaml += '\r\nconsole_log_pattern: ' + detailedConsole;
+  }
+  const logfileLogPattern = this.logging_settings.get('logfile_log_pattern').value;
+  if (logfileLogPattern === 'low_noise') {
+    configYaml += '\r\nlogfile_log_pattern: ' + lowNoiseLogfile;
+  } else {
+    configYaml += '\r\nlogfile_log_pattern: ' + detailedLogfile;
+  }
+  // Display and benchmark settings
+  const showProgress = this.display_settings.get('show_progress').value;
+  configYaml += '\r\n' + '\r\nshow_progress: ' + showProgress;
+  const showDriveStats = this.display_settings.get('show_drive_stats').value;
+  configYaml += '\r\nshow_drive_stats: ' + showDriveStats;
+  const benchmarkOnly = this.display_settings.get('benchmark_only').value;
+  configYaml += '\r\nbenchmark_only: ' + '\'' + benchmarkOnly + '\'';
+  hiddenElement.href = 'data:application/yaml,' + encodeURI(configYaml);
+  // console.log('configYaml: ' + configYaml);
+  hiddenElement.target = '_blank';
+  hiddenElement.download = 'config.yaml';
+  hiddenElement.click();
+  }
+
+
+
+// *****
+
+
+
+
+
+
+
+
+
 
     // Add account ID and passphrase
   addAccount(i: number) {
