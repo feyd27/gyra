@@ -1007,10 +1007,10 @@ logfileSize() {
     const consoleLogPattern = this.logging_settings.get('console_log_pattern').value;
     if (consoleLogPattern === 'low_noise') {
       this.configYaml.zaconsole_log_pattern = lowNoiseConsole;
-      configYaml += '\nconsole_log_pattern: ' + lowNoiseConsole;
+      configYaml += '\r\nconsole_log_pattern: ' + lowNoiseConsole;
     } else {
       this.configYaml.zaconsole_log_pattern = detailedConsole;
-      configYaml += '\nconsole_log_pattern: ' + detailedConsole;
+      configYaml += '\r\nconsole_log_pattern: ' + detailedConsole;
     }
     const logfileLogPattern = this.logging_settings.get('logfile_log_pattern').value;
     if (logfileLogPattern === 'low_noise') {
