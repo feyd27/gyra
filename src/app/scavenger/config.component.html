@@ -725,11 +725,19 @@
 
                 </div>
                 <div class="alert alert-danger"
-                  *ngIf="formErrors.header_key && additionalHeaderForms.touched && (formErrors.display == 'true')">
+                  *ngIf="formErrors?.header_key && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
                   {{ formErrors.header_key }}
 
                 </div>
-                <div class="alert alert-danger" *ngIf="formErrors.header_value && additionalHeaderForms.touched">
+
+                <!-- <div class="alert alert-danger"
+                *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                {{ formErrors.account_id }}
+
+              </div> -->
+
+
+                <div class="alert alert-danger" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched">
                   {{ formErrors.header_value }}
                 </div>
               </div>
