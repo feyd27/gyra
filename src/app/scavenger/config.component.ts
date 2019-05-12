@@ -343,7 +343,7 @@ export class ConfigComponent implements OnInit {
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         account_id_to_target_deadline: this.fb.array([]),
-        get_mining_info_interval: ['3000', [Validators.required, Validators.pattern(regnumber)]],
+        get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
         send_proxy_details: ['false', [Validators.required]],
       logging_settings: this.fb.group({

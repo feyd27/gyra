@@ -203,7 +203,7 @@
                 <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval
                   [ms]:</label>
                 <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text"
-                  placeholder="3000" class="form-control col-6" (blur)="logValidationErrors()">
+                  placeholder="1000" class="form-control col-6" (blur)="logValidationErrors()">
               </div>
               <div class="alert alert-danger"
                 *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
@@ -1108,5 +1108,3 @@
         </div>
       </div>
       <!-- Modal end -->
-
-
