@@ -1,25 +1,32 @@
 <!doctype html>
+<!-- Structure Start-->
+<div class="container-fluid">
+  <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
+          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Quick Setup</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Pool & Wallet</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Plot Files</button>
+  </div>
+</div>
+<div class="container-fluid">
+    <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
+            <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Expert Setup</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Account Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Mining Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Miner Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">CPU Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">GPU Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Logging Settings</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Display & Benchmark</button>&nbsp;
+            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Extra Headers</button>&nbsp;
 
-<div class="col-12">
-  <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-    <div class="btn-toolbar float-left" role="toolbar">
-      <div class="btn-group mr-2" role="group">
-        <button type="button" class="btn btn-primary"><i class="material-icons small"
-            style="text-align: center">book</i>&nbsp;Gyra Guide</button>
-        <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small"
-            style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
-        <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-          type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
-            class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
-        <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-          type="button" class="btn btn-primary" (click)="exportConfig()"><i class="material-icons small"
-            style="text-align: center">get_app</i>&nbsp;Export
-          .yaml</button>
-        <button type="button" class="btn btn-primary"><i class="material-icons small"
-            style="text-align: center">bolt</i>&nbsp;Start
-          Scavenger</button>
-      </div>
     </div>
+  </div>
+<!-- Structure End -->
+<!-- Test Start-->
+<div class="container-fluid">
+<!--Form Start-->
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+
 
 
     <br>
@@ -768,6 +775,27 @@
       </div>
     </div>
   </form>
+<!--Form End-->
+</div>
+<div class="row">
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample1">
+      <div class="card card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+      </div>
+    </div>
+  </div>
+  <div class="col">
+    <div class="collapse multi-collapse" id="multiCollapseExample2">
+      <div class="card card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Test End -->
+<div class="col-12">
+
 
    <div class="container">
 
@@ -1108,3 +1136,21 @@
         </div>
       </div>
       <!-- Modal end -->
+      <div class="btn-toolbar float-left" role="toolbar">
+          <div class="btn-group mr-2" role="group">
+            <button type="button" class="btn btn-primary"><i class="material-icons small"
+                style="text-align: center">book</i>&nbsp;Gyra Guide</button>
+            <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small"
+                style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
+            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+              type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
+                class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
+            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+              type="button" class="btn btn-primary" (click)="exportConfig()"><i class="material-icons small"
+                style="text-align: center">get_app</i>&nbsp;Export
+              .yaml</button>
+            <button type="button" class="btn btn-primary"><i class="material-icons small"
+                style="text-align: center">bolt</i>&nbsp;Start
+              Scavenger</button>
+          </div>
+        </div>

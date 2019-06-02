@@ -1,0 +1,68 @@
+<!doctype html>
+<head>
+    <title>Gyra</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<style>
+  /* not active */
+.nav-pills .pill-1 .nav-link:not(.active) {
+    background-color: rgba(255, 0, 0, 0.5);
+}
+
+.nav-pills .pill-2 .nav-link:not(.active) {
+    background-color: rgba(0, 250, 0, 0.2);
+}
+
+.nav-pills .pill-3 .nav-link:not(.active) {
+    background-color: rgba(0, 0, 250, 0.5);
+    color: white;
+}
+
+
+/* active (faded) */
+.nav-pills .pill-1 .nav-link {
+    background-color: rgba(255, 0, 0, 0.2);
+    color: white;
+}
+
+.nav-pills .pill-2 .nav-link {
+    background-color: #65bb3e;
+}
+
+.nav-pills .pill-3 .nav-link {
+    background-color: rgba(0, 0, 250, 0.2);
+    color: white;
+}
+</style>
+<!-- Start-->
+<!--Collapsibles-->
+<body>
+<p>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" >Toggle first element</button>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2">Toggle second element</button>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse">Toggle both elements</button>
+  </p>
+  <div class="row">
+    <div class="col">
+      <div class="collapse multi-collapse" id="multiCollapseExample1">
+        <div class="card card-body">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="collapse multi-collapse" id="multiCollapseExample2">
+        <div class="card card-body">
+          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- End-->
+</body>
