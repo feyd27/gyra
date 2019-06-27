@@ -2,108 +2,131 @@
 <!-- Structure Start-->
 <div class="container-fluid">
   <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Quick Setup</button>&nbsp;
+          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="poolWallet multiCollapseExample1 multiCollapseExample2">Quick Setup</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Pool & Wallet</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Plot Files</button>
   </div>
-</div>
-<div class="container-fluid">
-    <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-            <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Expert Setup</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Account Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Mining Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Miner Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">CPU Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">GPU Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Logging Settings</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Display & Benchmark</button>&nbsp;
-            <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Extra Headers</button>&nbsp;
-
     </div>
-  </div>
 <!-- Structure End -->
 <!-- Test Start-->
 <div class="container-fluid">
 <!--Form Start-->
 <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+<!--Collapsibles start-->
+    <div class="row collapse multi-collapse" style="margin-top: -35px;"  id="multiCollapseExample1">
+       <div class="col">
+            <div class="shadow p-3 mb-5 bg-light rounded border">
+                <h4>Pool and wallet settings</h4>
+
+                    <div class="row">
+                    <div class="col-6">
+                      <br>
+                      <label for="url">Pool or wallet URL:</label>
+                      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
+                          class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
+                      </p>
+                      <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
+                        {{ formErrors.url }}
+                      </div>
+                      <div class="alert alert-warning font-weight-bold"
+                        *ngIf="formWarning.url && (formWarning.display == 'true')">
+                        {{ formWarning.url }}
+                      </div>
+                  </div>
+                  <div class="col-6">
+
+                      <div class="alert alert-danger" role="alert">
+                          Mandatory setting for pool and solo mining setup.
+                        </div>
+
+                    <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
+                      The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
+
+                      <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo mining).</i>
+                      <br><br>
+                      <div class="alert alert-info" role="alert">
+                          Default value: <strong>none</strong>.
+                        </div>
+
+                      </div>
+                    </div>
 
 
+            </div>
+        </div>
+      </div>
+      <div class="row collapse multi-collapse" style="margin-top: -35px;" id="multiCollapseExample2">
+        <div class="col">
+            <div class="shadow p-3 mb-5 bg-light rounded border">
+                <h4> Plot directory settings</h4>
 
-    <br>
-    <br>
-    <div class="container col-sm-12">
-      <div class="alert alert-success" style="border: 1px solid green">
-        <h3 class="text-capitalize">Basic setup</h3>
+                    <div class="row">
+                    <div class="col-6">
+                      <br>
+                      <div formArrayName="plot_dirs" style="margin-top: 2px">
+                          <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
+                            <div>
+                              <p><input [id]="'plot_dirs'+i" type="text"
+                                  placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
+                                  formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
+                                &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
+                                    class="material-icons small" style="text-align: right; font-weight: bolder;">remove</i></button>
+                              </p>
+                            </div>
+                            <div class="alert alert-danger"
+                              *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
+                              {{ formErrors.plot_dirs }}
+                            </div>
+                          </div>
+                        </div>
+
+                        <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
+                          plot</button>
+                        <br><br>
+                        <div class="alert alert-warning font-weight-bold"
+                          *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
+                          {{ formWarning.plot_dirs }}
+                        </div>
+                  </div>
+                  <div class="col-6">
+
+                      <div class="alert alert-danger" role="alert">
+                          Mandatory setting for pool and solo mining setup.
+                        </div>
+
+                    <p>Provide the path to the directories that contain the plot files. All valid Windows and Linux path formats are supported.</p>
+
+                      <i>Prior to mining, plot files have to be created and stored.</i>
+                      <br><br>
+                      <div class="alert alert-info" role="alert">
+                          Default value: <strong>none</strong>.
+                        </div>
+
+                      </div>
+                    </div>
+
+
+            </div>
+        </div>
       </div>
 
-      <!-- deck 0 -->
-      <div class="card-deck">
-        <div class="card">
+      <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
+          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Expert Setup</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Account Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Mining Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Miner Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">CPU Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">GPU Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Logging Settings</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Display & Benchmark</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Extra Headers</button>&nbsp;
 
-          <div class="card-header bg-dark text-light">
-            Pool and wallet settings
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
-              data-target="#poolWalletHelp">
-              ?
-            </button>
-          </div>
-          <div class="card-body">
-            <label for="url">Pool or wallet URL:</label>
-            <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
-                class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
-            </p>
-            <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
-              {{ formErrors.url }}
-            </div>
-            <div class="alert alert-warning font-weight-bold"
-              *ngIf="formWarning.url && (formWarning.display == 'true')">
-              {{ formWarning.url }}
-            </div>
-          </div>
-        </div>
+  </div>
 
-        <div class="card">
-          <div class="card-header bg-dark text-light">
-            Plot directory settings
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
-              data-target="#plotModal">
-              ?
-            </button>
-          </div>
-          <div class="card-body">
-            <label for="plot_dirs">Plot directories' paths:</label>
 
-            <div formArrayName="plot_dirs" style="margin-top: 2px">
-              <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
-                <div>
-                  <p><input [id]="'plot_dirs'+i" type="text"
-                      placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
-                      formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
-                    &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
-                        class="material-icons small" style="text-align: right; font-weight: bolder;">remove</i></button>
-                  </p>
-                </div>
-                <div class="alert alert-danger"
-                  *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
-                  {{ formErrors.plot_dirs }}
-                </div>
-              </div>
-            </div>
+<!--Collapsibles end-->
 
-            <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
-              plot</button>
-            <br><br>
-            <div class="alert alert-warning font-weight-bold"
-              *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
-              {{ formWarning.plot_dirs }}
-            </div>
-          </div>
-        </div>
 
-      </div>
-    </div>
 
     <!--space-->
     <div>
@@ -799,42 +822,6 @@
 
    <div class="container">
 
-      <!-- The Pool and Wallet Modal -->
-      <div class="modal fade" id="poolWalletHelp">
-        <div class="modal-dialog">
-          <div class="modal-content">
-
-            <!-- Modal Header -->
-            <div class="modal-header bg-dark text-light">
-              <h6 class="modal-title">Pool and wallet settings</h6>
-              <button type="button" class="close text-light" data-dismiss="modal">&times;</button>
-            </div>
-
-            <!-- Modal body -->
-            <div class="modal-body">
-
-                <div class="alert alert-danger" role="alert">
-                    Mandatory setting for pool and solo mining setup.
-                  </div>
-
-              <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
-                The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
-
-                <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo mining).</i>
-                <br><br>
-                <div class="alert alert-info" role="alert">
-                    Default value: <strong>none</strong>.
-                  </div>
-            </div>
-
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn-sm btn-danger" data-dismiss="modal">Close</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
 
       <!-- The Solo Account Modal -->
       <div class="modal fade" id="soloAccount">
