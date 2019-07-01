@@ -2,117 +2,113 @@
 <!-- Structure Start-->
 <div class="container-fluid">
   <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="poolWallet multiCollapseExample1 multiCollapseExample2">Quick Setup</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Pool & Wallet</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Plot Files</button>
+    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse"
+      aria-expanded="false" aria-controls="poolWallet plotDirectory">Quick Setup</button>&nbsp;
+    <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#poolWallet"
+      aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>&nbsp;
+    <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#plotDirectory"
+      aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
   </div>
-    </div>
+</div>
 <!-- Structure End -->
 <!-- Test Start-->
 <div class="container-fluid">
-<!--Form Start-->
-<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-<!--Collapsibles start-->
-    <div class="row collapse multi-collapse" style="margin-top: -35px;"  id="multiCollapseExample1">
-       <div class="col">
-            <div class="shadow p-3 mb-5 bg-light rounded border">
-                <h4>Pool and wallet settings</h4>
+  <!--Form Start-->
+  <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+    <!--Collapsibles start-->
+    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="poolWallet">
+      <div class="col">
+        <div class="shadow p-3 mb-5 bg-light rounded border">
+          <h4>Pool and wallet settings</h4>
 
-                    <div class="row">
-                    <div class="col-6">
-                      <br>
-                      <label for="url">Pool or wallet URL:</label>
-                      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
-                          class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
-                      </p>
-                      <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
-                        {{ formErrors.url }}
-                      </div>
-                      <div class="alert alert-warning font-weight-bold"
-                        *ngIf="formWarning.url && (formWarning.display == 'true')">
-                        {{ formWarning.url }}
-                      </div>
-                  </div>
-                  <div class="col-6">
+          <div class="row">
+            <div class="col-6">
+              <br>
+              <label for="url">Pool or wallet URL:</label>
+              <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
+                  class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
+              </p>
+              <div class="alert alert-danger" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
+                {{ formErrors.url }}
+              </div>
+              <div class="alert alert-warning font-weight-bold"
+                *ngIf="formWarning.url && (formWarning.display == 'true')">
+                {{ formWarning.url }}
+              </div>
+            </div>
+            <div class="col-6">
 
-                      <div class="alert alert-danger" role="alert">
-                          Mandatory setting for pool and solo mining setup.
-                        </div>
+              <div class="alert alert-danger" role="alert">
+                Mandatory setting for pool and solo mining setup.
+              </div>
 
-                    <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
-                      The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
+              <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
+                The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP
+                address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
 
-                      <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo mining).</i>
-                      <br><br>
-                      <div class="alert alert-info" role="alert">
-                          Default value: <strong>none</strong>.
-                        </div>
-
-                      </div>
-                    </div>
-
+              <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo
+                mining).</i>
+              <br><br>
+              <div class="alert alert-info" role="alert">
+                Default value: <strong>none</strong>.
+              </div>
 
             </div>
+          </div>
         </div>
       </div>
-      <div class="row collapse multi-collapse" style="margin-top: -35px;" id="multiCollapseExample2">
-        <div class="col">
-            <div class="shadow p-3 mb-5 bg-light rounded border">
-                <h4> Plot directory settings</h4>
-
-                    <div class="row">
-                    <div class="col-6">
-                      <br>
-                      <div formArrayName="plot_dirs" style="margin-top: 2px">
-                          <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
-                            <div>
-                              <p><input [id]="'plot_dirs'+i" type="text"
-                                  placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
-                                  formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
-                                &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
-                                    class="material-icons small" style="text-align: right; font-weight: bolder;">remove</i></button>
-                              </p>
-                            </div>
-                            <div class="alert alert-danger"
-                              *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
-                              {{ formErrors.plot_dirs }}
-                            </div>
-                          </div>
-                        </div>
-
-                        <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
-                          plot</button>
-                        <br><br>
-                        <div class="alert alert-warning font-weight-bold"
-                          *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
-                          {{ formWarning.plot_dirs }}
-                        </div>
+    </div>
+    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="plotDirectory">
+      <div class="col">
+        <div class="shadow p-3 mb-5 bg-light rounded border">
+          <h4>Plot directory settings</h4>
+          <div class="row">
+            <div class="col-6">
+              <br>
+              <div formArrayName="plot_dirs" style="margin-top: 2px">
+                <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
+                  <div>
+                    <p><input [id]="'plot_dirs'+i" type="text"
+                        placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
+                        formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
+                      &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
+                          class="material-icons small"
+                          style="text-align: right; font-weight: bolder;">remove</i></button>
+                    </p>
                   </div>
-                  <div class="col-6">
-
-                      <div class="alert alert-danger" role="alert">
-                          Mandatory setting for pool and solo mining setup.
-                        </div>
-
-                    <p>Provide the path to the directories that contain the plot files. All valid Windows and Linux path formats are supported.</p>
-
-                      <i>Prior to mining, plot files have to be created and stored.</i>
-                      <br><br>
-                      <div class="alert alert-info" role="alert">
-                          Default value: <strong>none</strong>.
-                        </div>
-
-                      </div>
-                    </div>
-
-
+                  <div class="alert alert-danger"
+                    *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
+                    {{ formErrors.plot_dirs }}
+                  </div>
+                </div>
+              </div>
+              <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
+                plot</button>
+              <br><br>
+              <div class="alert alert-warning font-weight-bold"
+                *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
+                {{ formWarning.plot_dirs }}
+              </div>
             </div>
+            <div class="col-6">
+              <div class="alert alert-danger" role="alert">
+                Mandatory setting for pool and solo mining setup.
+              </div>
+              <p>Provide the path to the directories that contain the plot files. Duplicate entries are not allowed. All valid Windows and Linux path
+                formats are supported.</p>
+              <i>Prior to mining, plot files have to be created and stored.</i>
+              <br><br>
+              <div class="alert alert-info" role="alert">
+                Default value: <strong>none</strong>.
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
+    </div>
       <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Expert Setup</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Account Settings</button>&nbsp;
+          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="accountSettings">Expert Setup</button>&nbsp;
+          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Mining Settings</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Miner Settings</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">CPU Settings</button>&nbsp;
@@ -120,8 +116,96 @@
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Logging Settings</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Display & Benchmark</button>&nbsp;
           <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Extra Headers</button>&nbsp;
+      </div>
+      <div class="row collapse multi-collapse" style="margin-top: -35px;" id="accountSettings">
+        <div class="col">
+          <div class="shadow p-3 mb-5 bg-light rounded border">
+              <h4>Account settings for solo mining</h4>
+            <div class="row">
+              <div class="col-6">
+                  <label>Account ID and passphrase:</label><br>
+                <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+                  <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+                    <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
+                        formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
+                      <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
+                        class="form-control-sm col-7" (blur)="logValidationErrors()">
 
-  </div>
+                      &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+                        <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+                      </button><br>
+                    </p>
+                  </div>
+                  <div class="alert alert-danger"
+                    *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                    {{ formErrors.account_id }}
+
+                  </div>
+                  <div class="alert alert-danger"
+                    *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                    {{ formErrors.passphrase }}
+                  </div>
+                </div>
+                <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary"
+                  (click)="addAccount()">Add account</button>
+              </div>
+              <div class="col-6">
+                  <div class="alert alert-danger" role="alert">
+                    Mandatory setting for solo mining setup.
+                  </div>
+                  <p>Provide the account numeric ID and its' passphrase to create a solo mining configuration. In case of multi-account mining setup,
+                    provide all account IDs and their matching passphrases relevant to the plot files that are mined.
+                  Duplicate entries are not allowed.
+                As the account numeric ID is read from the plot file in case of pool mining, the account setting can be omitted in such cases.</p>
+                  <i>Prior to mining, the reward recipient has to be set to the desired wallet.</i>
+                  <br><br>
+                  <div class="alert alert-info" role="alert">
+                    Default value: <strong>none</strong>.
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="demo" class="collapse">
+        <div class="container col-12">
+          <div class="card-deck">
+
+            <div class="card">
+              <div class="card-header bg-dark text-light">
+                Account settings for solo mining
+                <!-- Button to Open the Modal -->
+
+              </div>
+              <div class="card-body">
+                <label>Account ID and passphrase:</label><br>
+                <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+                  <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+                    <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
+                        formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
+                      <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
+                        class="form-control-sm col-7" (blur)="logValidationErrors()">
+
+                      &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+                        <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
+                      </button><br>
+                    </p>
+                  </div>
+                  <div class="alert alert-danger"
+                    *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                    {{ formErrors.account_id }}
+
+                  </div>
+                  <div class="alert alert-danger"
+                    *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                    {{ formErrors.passphrase }}
+                  </div>
+                </div>
+                <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary"
+                  (click)="addAccount()">Add account</button>
+              </div>
+            </div>
+
 
 
 <!--Collapsibles end-->
@@ -144,48 +228,6 @@
         </h3>
       </div>
     </div>
-    <div id="demo" class="collapse">
-      <div class="container col-12">
-        <div class="card-deck">
-
-          <div class="card">
-            <div class="card-header bg-dark text-light">
-              Account settings for solo mining
-              <!-- Button to Open the Modal -->
-              <button type="button" class="btn-xs btn-outline-light float-right" data-toggle="modal"
-                data-target="#soloAccount">
-                ?
-              </button>
-            </div>
-            <div class="card-body">
-              <label>Account ID and passphrase:</label><br>
-              <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
-                <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
-                  <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
-                      formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
-                    <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
-                      class="form-control-sm col-7" (blur)="logValidationErrors()">
-
-                    &nbsp; <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
-                      <i class="material-icons small" style="text-align: right; font-weight: bolder">remove</i>
-                    </button><br>
-                  </p>
-                </div>
-                <div class="alert alert-danger"
-                  *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-                  {{ formErrors.account_id }}
-
-                </div>
-                <div class="alert alert-danger"
-                  *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-                  {{ formErrors.passphrase }}
-                </div>
-              </div>
-              <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary"
-                (click)="addAccount()">Add account</button>
-            </div>
-          </div>
-
 
 
           <div class="card">
