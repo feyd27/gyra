@@ -301,15 +301,15 @@
       </div>
       <div class="col-6">
         <ul class="small">
-          <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-          that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-          available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
+          <li><b>HDD reader thread count:</b> Sets the number of disks to be read in parallel, and it should reflect the number of
+          hard disks where plot files are stored. In case the setting is left at default value of 0, Scavenger will use as many
+          threads as there are disks. </li>
           <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-          <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-          The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
-          <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-          <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-          The value is provided in milliseconds.</li>
+          <li><b>Use direct I/O: </b>Scavenger supports the usage of direct IO - a setting that enables or disables operating system caching.
+          If set to "true" the operating system caching layer will be bypassed.</li>
+          <div class="alert alert-info" role="alert">Default value: <strong>yes</strong>.</div>
+          <li><b>HDD "Wake-up" after: </b>If HDD wake-up is available, this setting instructs the Scavenger on how often, after submitting the deadline to the pool/wallet, to execute the "HDD wake-up" script.
+          The setting is given in seconds.</li>
           <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
         </ul>
       </div>
@@ -387,16 +387,18 @@
     </div>
     <div class="col-6">
       <ul class="small">
-      <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-      that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-      available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
+      <li><b>CPU threads:</b> Sets the number of active CPU threads for hashing operations. The value 0 implies
+      the number of logical CPU cores.</li>
       <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-      <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-      The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
+      <li><b>CPU worker task count: </b> The number of CPU workers used to calculate deadlines. In cae only GPU is to be used for deadlines
+      calculation, this parameter should be set to 0. For optimal performance match the sum of all worker tasks (CPU + GPU) to the number of hard disks.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>4</strong>.</div>
+      <li><b>CPU nonces per cache: </b> To set the amount of RAM used for nonce caching, use the following configuration file line, which refers to number
+        of nonces to be read at once for processing. To view the estimated usage of RAM, click outside the form field, and
+       the estimate will be shown. </li>
+      <div class="alert alert-info" role="alert">Default value: <strong>65536</strong>.</div>
+      <li><b>CPU thread pinning: </b> Set to "yes" in order to use as many worker threads as there are CPU cores. </li>
       <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-      <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-      The value is provided in milliseconds.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
      </ul>
     </div>
     </div>
@@ -504,16 +506,31 @@
     </div>
     <div class="col-6">
     <ul class="small">
-    <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-      that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-      available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
+    <li><b>GPU threads:</b> Number of GPU threads to use. Lower values show better performance.
+    For integrated GPUs try the setting 1, for dedicated GPUs 1-4.</li>
       <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-    <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-      The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
+    <li><b>GPU worker task count: </b>Refers to the number of threads used for GPU processing. In case no
+       GPU is available on the system or it shouldn't be used, users should leave the default setting of 0.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+    <li><b>GPU platform: </b>GPU platform information. <br>To list GPUs available on the system, users can run Scavenger with CLI option -o,
+      and the Scavenger will display available GPU platforms and devices.
+      It will also hint the ideal multiplier for the GPU nonce per cache setting.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+    <li><b>GPU device: </b>GPU device information. The way to find out the GPU device is described above.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+    <li><b>GPU nonces per cache: </b> GPU nonces per cache setting can improve the miner performance on some systems.
+      It is practically impossible to give a general recommendation about this setting,
+      as the performance depends on CPU settings and the overall system capability. Users can change this setting
+      and observe how it will affect the performance, and adapt both this and the CPU nonces per cache setting until
+      they reach the desired performance. To see the estimated RAM usage, click outside the form field after the
+       parameter has been provided. Note that the GPU async setting also affects the RAM usage.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>262144</strong>.</div>
+    <li><b>GPU memory mapping: </b>Enabling memory mapping can result in ZeroCopyBuffers for CPU, in setups with integrated
+    GPUs, and it may speed up the data transfer on certain GPUs. The feature should be disabled for dedicated GPUs.</li>
       <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-    <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-      The value is provided in milliseconds.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
+    <li><b>GPU async: </b> When set to "yes", it enables asynchronous data transfer and hashing, which may improve the
+     performance of dedicated GPUs. The feature should be disabled for integrated GPUs.</li>
+      <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
     </ul>
     </div>
     </div>

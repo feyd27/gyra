@@ -364,12 +364,7 @@ export class ConfigComponent implements OnInit {
         validator_messages: [true, [Validators.required]],
         info_messages: [true, [Validators.required]],
         warning_messages: [true, [Validators.required]]
-      }),
-      gui_settings: this.fb.group({
-        validator_messages: [true, [Validators.required]],
-        info_messages: [true, [Validators.required]],
-        warning_messages: [true, [Validators.required]]
-      }),
+      })
     });
 
     this.configForm.valueChanges.subscribe((data) => {
