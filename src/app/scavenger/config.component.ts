@@ -269,6 +269,9 @@ export class ConfigComponent implements OnInit {
     benchmark_only: '',
   };
 
+  formDocumentation = {
+    display: '',
+  };
   configYaml = {
     a_url: '',
     c_account_id_to_secret_phrase: '',
@@ -363,7 +366,8 @@ export class ConfigComponent implements OnInit {
       gui_settings: this.fb.group({
         validator_messages: [true, [Validators.required]],
         info_messages: [true, [Validators.required]],
-        warning_messages: [true, [Validators.required]]
+        warning_messages: [true, [Validators.required]],
+        documentation: [true, [Validators.required]]
       })
     });
 
@@ -464,6 +468,7 @@ export class ConfigComponent implements OnInit {
     const guiValidator = this.gui_settings.get('validator_messages').value;
     const guiInformation = this.gui_settings.get('info_messages').value;
     const guiWarning = this.gui_settings.get('warning_messages').value;
+    const guiDocumentation = this.gui_settings.get('documentation').value;
 // tslint:disable-next-line: triple-equals
     if (guiValidator === true) {
       this.formErrors.display = 'true';
@@ -480,6 +485,13 @@ export class ConfigComponent implements OnInit {
     } else {
       this.formWarning.display = 'false';
     }
+    if (guiDocumentation == true) {
+      this.formDocumentation.display = 'true';
+    } else {
+      this.formDocumentation.display = 'false';
+    }
+    console.log(this.formDocumentation.display);
+    console.log(this.formErrors.display);
   }
 
   // URL settings info messages

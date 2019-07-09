@@ -636,16 +636,37 @@
     </div>
     <div class="col-6">
     <ul class="small">
-      <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-         that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-         available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-      <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-        The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-      <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-        The value is provided in milliseconds.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
+      <li><b>Console log settings:</b> Defines the level of details shown in the console once Scavenger is running.</li>
+        <div class="text-info" role="alert">Default value: <strong>Info</strong></div>
+      <li><b>Logfile settings </b>Defines the level of details written in logfiles.</li>
+        <div class="text-info" role="alert">Default value: <strong>Warn</strong></div>
+      <ul>Options available for logging:
+        <li><b>Off</b> No information will be displayed/logged. User are strongly advised against
+           using this setting.</li>
+        <li><b>Error</b> Information will be shown in the console or log will only when an error occurs.</li>
+        <li><b>Warn</b> Warning and error information will be displayed/logged.</li>
+        <li><b>Info</b> Shows/writes information on regular processes, including warnings and errors.</li>
+        <li><b>Debug</b> Includes errors, warnings, regular information on processes and additional information
+           relevant for debugging. Note that this setting will increase significantly the size of log files,
+           and provides information of very little use to users with no development related skills</li>
+        <li><b>Trace</b> Includes all above listed information with additional information regarding application
+          process execution. Same as the "Debug" level - it significantly increases the size of log files and
+          includes information relevant for development and optimization.</li>
+         The general recommendation for the user who wishes to mine, without getting into the application
+          structure and its working cycles, the "Info" level should provide enough information to monitor
+          the application and the mining process. In case of repeated errors, unrelated to configuration
+          and pool/wallet accessibility errors, the "Debug" setting can be turned on, to provide enough
+          information to supporting developers.
+      </ul>
+      <li><b>Number of log files to keep: </b>Sets the number of logfiles that will be available on the system.</li>
+        <div class="text-info" role="alert">Default value: <strong>10</strong></div>
+      <li><b>Log file size [MiB]: </b>Sets the maximum size of a log file. Once the log file reaches the configured size,
+      a new file will be written.</li>
+        <div class="text-info" role="alert">Default value: <strong>20</strong></div>
+      <li><b>Console log pattern: </b>The formatting used to write information to the console.</li>
+        <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
+      <li><b>Logfile log pattern: </b>The formatting used to write information to logfiles.</li>
+        <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
     </ul>
     </div>
     </div>
@@ -772,8 +793,8 @@
     class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
     </div>
     </div>
-    <div class="col-6">
-    <ul class="small">
+    <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+    <ul class="small"  [hidden]="formDocumentation.display !== 'true'">
       <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
          that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
          available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
@@ -791,29 +812,35 @@
     </div>
     </div>
   </form>
-    <div class="float-right" [formGroup]="gui_settings">
+
+  <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-bottom">
+       <div [formGroup]="gui_settings">
         <div class="form-check form-check-inline">
-          <button type="button" class="alert-danger" style="border: 1px solid red; margin: 1px">
             <input class="form-check-input" type="checkbox" id="validator_messages" value="true" checked
               formControlName="validator_messages">
-            <label class="form-check-label" for="validator_messages">&nbsp;Show validation messages&nbsp;</label>
-          </button>
+            <label class="form-check-label small" for="validator_messages">&nbsp;Validation messages&nbsp;</label>
+            <i class="material-icons" style="text-align: center">error</i>
         </div>
         <div class="form-check form-check-inline">
-          <button type="button" class="alert-info" style="border: 1px solid navy; margin: 1px">
             <input class="form-check-input" type="checkbox" id="info_messages" value="true" checked
               formControlName="info_messages">
-            <label class="form-check-label" for="info_messages">&nbsp;Show info messages&nbsp;</label>
-          </button>
+            <label class="form-check-label small" for="info_messages">&nbsp;Info messages&nbsp;</label>
+            <i class="material-icons" style="text-align: center">info</i>
         </div>
         <div class="form-check form-check-inline">
-          <button type="button" class="alert-warning" style="border: 1px solid orange; margin: 1px">
             <input class="form-check-input" type="checkbox" id="warning_messages" value="true" checked
               formControlName="warning_messages">
-            <label class="form-check-label" for="warning_messages">&nbsp;Show warnings&nbsp;</label>
-          </button>
+            <label class="form-check-label small" for="warning_messages">&nbsp;Warnings&nbsp;</label>
+            <i class="material-icons" style="text-align: center">warning</i>
+          </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="documentation" value="true" checked
+              formControlName="documentation">
+            <label class="form-check-label small" for="documentation">&nbsp;Documentation&nbsp;</label>
+            <i class="material-icons" style="text-align: center">help</i>
         </div>
       </div>
+    </nav>
 
       <!-- The provisional preview Modal -->
     <div class="modal fade" id="previewConfig">
@@ -865,8 +892,9 @@
               Scavenger</button>
           </div>
         </div>
-
-     <!-- Form: <p>{{ configForm.value | json }}</p> <br>
+        <!--
+<br> <br>
+      Form: <p>{{ configForm.value | json }}</p> <br>
         Warning: <p>{{ formWarning | json }}</p> <br>
         Error: <p>{{ formErrors | json }}</p> -->
 
