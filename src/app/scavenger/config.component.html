@@ -542,7 +542,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>Logging settings</h4>
     <div class="row">
-    <div class="col-6">
+    <div class="col-6" >
     <div class="card-body" formGroupName="logging_settings">
     <div class="form-group row">
     <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
@@ -607,9 +607,10 @@
      class="form-check-input" name="console_log_pattern" value="detailed" checked>Detailed
     </label>
     </div>
-    <div class="alert alert-danger"
+    <div class="text-danger small"
     *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
-    {{ formErrors.console_log_pattern }}
+    <p><i class="material-icons small" style="text-align: center">error</i>
+    {{ formErrors.console_log_pattern }} </p>
     </div>
     </div>
     <div class="form-group row">
@@ -627,14 +628,15 @@
       class="form-check-input" name="logfile_log_pattern" value="detailed" checked>Detailed
     </label>
     </div>
-    <div class="alert alert-danger"
+    <div class="text-danger small"
     *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
-      {{ formErrors.logfile_log_pattern }}
+    <p><i class="material-icons small" style="text-align: center">error</i>
+    {{ formErrors.logfile_log_pattern }} </p>
     </div>
     </div>
     </div>
     </div>
-    <div class="col-6">
+    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
     <ul class="small">
       <li><b>Console log settings:</b> Defines the level of details shown in the console once Scavenger is running.</li>
         <div class="text-info" role="alert">Default value: <strong>Info</strong></div>
@@ -696,8 +698,9 @@
     </label>
     </div>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
-      {{ formErrors.show_progress }}
+    <div class="text-danger small" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: center">error</i>
+      {{ formErrors.show_progress }} </p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label">Show drive statistics:</label>
@@ -714,8 +717,9 @@
     </label>
     </div>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
-    {{ formErrors.show_drive_stats }}
+    <div class="text-danger small" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: center">error</i>
+      {{ formErrors.show_drive_stats }} </p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
@@ -738,24 +742,34 @@
     </label>
     </div>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
-   {{ formErrors.benchmark_only }}
+    <div class="text-danger small" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: center">error</i>
+   {{ formErrors.benchmark_only }}</p>
     </div>
     </div>
     </div>
     </div>
-    <div class="col-6">
+    <div class="col-6"  [hidden]="formDocumentation.display == 'false'">
     <ul class="small">
-      <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-         that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-         available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-      <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-        The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-      <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-        The value is provided in milliseconds.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
+      <li><b>Show progress:</b> When enabled, shows the progress and the speed of processing plot files.</li>
+        <div class="text-info" role="alert">Default value: <strong>Yes</strong></div>
+      <li><b>Show drive statistics:</b> When enabled, shows the statistics of processed hard drives.</li>
+        <div class="text-info" role="alert">Default value: <strong>No</strong></div>
+      <li><b>Benchmark: </b>If enabled, will run Scavenger in benchmark mode - without sending deadlines.The
+      I/O option is used to test the maximum HDD reading speed. The XPU option is used for benchmarking
+    the hashing speed.</li>
+    <div class="text-info" role="alert">Default value: <strong>Disabled</strong></div>
+        <ul>For optimal performance in cases where both CPU and GPU mining is enabled, users are strongly
+          advised to first run a benchmark and set the productive configuration based on results of it. One of
+          the ways to complete the benchmark is:
+          <li>optimizing CPU by setting the hdd_reader parameter to the number of hard drives with plot files,</li>
+          <li>proceed by setting the cpu_worker_thread_count value between the number of cores and hdd_reader and
+            observe the performance depending on the settings,</li>
+          <li>optimize GPU (in GPU only scenario) by setting the value of gpu_worker_thread_count to values between 1
+            and hdd_reader,</li>
+          <li>experiment with gpu_nonces_per_cache and cpu_nonces_per_cache depending on available resources,</li>
+          <li>combine the CPU and GPU results in order to find the configuration for optimal performance.</li>
+        </ul>
     </ul>
     </div>
     </div>
@@ -781,12 +795,14 @@
     </button><br>
     </p>
     </div>
-    <div class="alert alert-danger"
+    <div class="text-danger small"
       *ngIf="formErrors?.header_key && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
-      {{ formErrors.header_key }}
+      <p><i class="material-icons small" style="text-align: center">error</i>
+      {{ formErrors.header_key }} </p>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched">
-      {{ formErrors.header_value }}
+    <div class="text-danger small" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: center">error</i>
+      {{ formErrors.header_value }} </p>
     </div>
     </div>
     <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
@@ -794,17 +810,9 @@
     </div>
     </div>
     <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
-    <ul class="small"  [hidden]="formDocumentation.display !== 'true'">
-      <li><b>HDD reader thread count:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-         that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-         available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
-      <li><b>Use direct I/O: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-        The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
-      <li><b>HDD "Wake-up" after: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-        The value is provided in milliseconds.</li>
-        <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
+    <ul class="small">
+      <li><b>Additional headers:</b> The setting allows the entry of arbitrary key/value pairs, that can be sent to the wallet or pool.</li>
+      <div class="text-info" role="alert">Default value: <strong>Disabled</strong></div>
     </ul>
     </div>
     </div>
