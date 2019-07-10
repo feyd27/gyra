@@ -38,7 +38,7 @@
             </div>
             <div class="col-6 small">
 
-              <div class="alert alert-danger" role="alert">
+              <div class="text-danger font-weight-bold" role="alert">
                 Mandatory setting for pool and solo mining setup.
               </div>
 
@@ -49,7 +49,7 @@
               <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo
                 mining).</i>
               <br><br>
-              <div class="alert alert-info" role="alert">
+              <div class="text-info" role="alert">
                 Default value: <strong>none</strong>.
               </div>
 
@@ -91,14 +91,14 @@
               </div>
             </div>
             <div class="col-6 small">
-              <div class="alert alert-danger" role="alert">
+              <div class="text-danger font-weight-bold" role="alert">
                 Mandatory setting for pool and solo mining setup.
               </div>
               <p>Provide the path to the directories that contain the plot files. Duplicate entries are not allowed. All valid Windows and Linux path
                 formats are supported.</p>
               <i>Prior to mining, plot files have to be created and stored.</i>
               <br><br>
-              <div class="alert alert-info" role="alert">
+              <div class="text-info" role="alert">
                 Default value: <strong>none</strong>.
               </div>
             </div>
@@ -147,14 +147,14 @@
             (click)="addAccount()">Add account</button>
           </div>
           <div class="col-6 small">
-          <div class="alert alert-danger" role="alert">Mandatory setting for solo mining setup.</div>
+          <div class="text-danger font-weight-bold" role="alert">Mandatory setting for solo mining setup.</div>
           <p>Provide the account numeric ID and its' passphrase to create a solo mining configuration. In case of multi-account mining setup,
             provide all account IDs and their matching passphrases relevant to the plot files that are mined.
             Duplicate entries are not allowed.
             As the account numeric ID is read from the plot file in case of pool mining, the account setting can be omitted in such cases.</p>
             <i>Prior to mining, the reward recipient has to be set to the desired wallet.</i>
             <br><br>
-            <div class="alert alert-info" role="alert">Default value: <strong>none</strong>.</div>
+            <div class="text-info" role="alert">Default value: <strong>none</strong>.</div>
           </div>
           </div>
           </div>
@@ -235,17 +235,17 @@
         <li><b>Target deadline:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
                 that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
                 available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
-                <div class="alert alert-info" role="alert">Default value: <strong>31536000</strong>.</div>
+                <div class="text-info" role="alert">Default value: <strong>31536000</strong>.</div>
         <li><b>Multi-ID mining: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
                 The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
         <li><b>Get mining info interval: </b>An instruction to the miner on how frequently it should poll the wallet for information. The
                   value is provided in milliseconds. </li>
-                <div class="alert alert-info" role="alert">Default value: <strong>1000</strong>.</div>
+                <div class="text-info" role="alert">Default value: <strong>1000</strong>.</div>
         <li><b>Timeout: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
                 The value is provided in milliseconds.</li>
-                <div class="alert alert-info" role="alert">Default value: <strong>5000</strong>. </div>
+                <div class="text-info" role="alert">Default value: <strong>5000</strong>. </div>
         <li><b> Send proxy details: </b>The setting instructs the mine rto send or not to send proxy details.</li>
-                  <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
+                <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
       </ul>
       </div>
       </div>
@@ -304,13 +304,13 @@
           <li><b>HDD reader thread count:</b> Sets the number of disks to be read in parallel, and it should reflect the number of
           hard disks where plot files are stored. In case the setting is left at default value of 0, Scavenger will use as many
           threads as there are disks. </li>
-          <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+          <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
           <li><b>Use direct I/O: </b>Scavenger supports the usage of direct IO - a setting that enables or disables operating system caching.
           If set to "true" the operating system caching layer will be bypassed.</li>
-          <div class="alert alert-info" role="alert">Default value: <strong>yes</strong>.</div>
+          <div class="text-info" role="alert">Default value: <strong>yes</strong>.</div>
           <li><b>HDD "Wake-up" after: </b>If HDD wake-up is available, this setting instructs the Scavenger on how often, after submitting the deadline to the pool/wallet, to execute the "HDD wake-up" script.
           The setting is given in seconds.</li>
-          <div class="alert alert-info" role="alert">Default value: <strong>240</strong>.</div>
+          <div class="text-info" role="alert">Default value: <strong>240</strong>.</div>
         </ul>
       </div>
       </div>
@@ -322,7 +322,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>CPU settings</h4>
     <div class="row">
-    <div class="col-6">
+    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
     <div class="card-body">
     <div formGroupName="cpu_settings" class="card-body">
     <div class="form-group row">
@@ -330,35 +330,41 @@
     <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0"
     class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
-    {{ formErrors.cpu_threads }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.cpu_threads }}</p>
     </div>
-    <div class="alert alert-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
-    {{ formInfo.cpu_threads }}
+    <div class="text-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">info</i>
+      {{ formInfo.cpu_threads }}</p>
     </div>
     <div class="form-group row">
     <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
     <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4"
       class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
-      {{ formErrors.cpu_worker_task_count }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.cpu_worker_task_count }}</p>
     </div>
-    <div class="alert alert-info font-weight-bold"
+    <div class="text-info"
       *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-      {{ formInfo.cpu_worker_task_count }}
+      <p><i class="material-icons small" style="text-align: left">info</i>
+      {{ formInfo.cpu_worker_task_count }}</p>
     </div>
     <div class="form-group row">
     <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
     <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536"
      class="form-control col-4" (blur)="logValidationErrors(); cpuNonces()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
-    {{ formErrors.cpu_nonces_per_cache }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.cpu_nonces_per_cache }}</p>
     </div>
-    <div class="alert alert-info"
+    <div class="text-info"
      *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-      {{ formInfo.cpu_nonces_per_cache }}
+     <p><i class="material-icons small" style="text-align: left">info</i>
+     {{ formInfo.cpu_nonces_per_cache }}</p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
@@ -375,30 +381,32 @@
       </label>
     </div>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
-     {{ formErrors.cpu_thread_pinning }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.cpu_thread_pinning }}</p>
     </div>
-    <div class="alert alert-warning font-weight-bold"
+    <div class="text-warning font-weight-bold"
       *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-      {{ formWarning.miners_off }}
+      <p><i class="material-icons small" style="text-align: left">warning</i>
+      {{ formWarning.miners_off }}</p>
     </div>
     </div>
     </div>
     </div>
-    <div class="col-6">
+    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
       <ul class="small">
       <li><b>CPU threads:</b> Sets the number of active CPU threads for hashing operations. The value 0 implies
       the number of logical CPU cores.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
       <li><b>CPU worker task count: </b> The number of CPU workers used to calculate deadlines. In cae only GPU is to be used for deadlines
       calculation, this parameter should be set to 0. For optimal performance match the sum of all worker tasks (CPU + GPU) to the number of hard disks.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>4</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>4</strong>.</div>
       <li><b>CPU nonces per cache: </b> To set the amount of RAM used for nonce caching, use the following configuration file line, which refers to number
         of nonces to be read at once for processing. To view the estimated usage of RAM, click outside the form field, and
        the estimate will be shown. </li>
-      <div class="alert alert-info" role="alert">Default value: <strong>65536</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>65536</strong>.</div>
       <li><b>CPU thread pinning: </b> Set to "yes" in order to use as many worker threads as there are CPU cores. </li>
-      <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
      </ul>
     </div>
     </div>
@@ -410,7 +418,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>GPU settings</h4>
     <div class="row">
-    <div class="col-6">
+    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
     <div class="card-body">
     <div formGroupName="gpu_settings" class="card-body">
     <div class="form-group row">
@@ -418,49 +426,56 @@
     <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0"
      class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
-    {{ formErrors.gpu_threads }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_threads }}</p>
     </div>
     <div class="form-group row">
     <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
     <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0"
       class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
     </div>
-    <div class="alert alert-danger"
+    <div class="text-danger font-weight-bold"
      *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
-      {{ formErrors.gpu_worker_task_count }}
+     <p><i class="material-icons small" style="text-align: left">error</i>
+     {{ formErrors.gpu_worker_task_count }}</p>
     </div>
-    <div class="alert alert-info font-weight-bold"
+    <div class="text-info"
     *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
-      {{ formInfo.gpu_worker_task_count }}
+    <p><i class="material-icons small" style="text-align: left">info</i>
+    {{ formInfo.gpu_worker_task_count }}</p>
     </div>
     <div class="form-group row">
     <label for="gpu_platform" class="col-sm-5 col-form-label">GPU platform:</label>
     <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0"
      class="form-control col-2" (blur)="logValidationErrors()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
-    {{ formErrors.gpu_platform }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_platform }}</p>
     </div>
     <div class="form-group row">
     <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
     <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0"
     class="form-control col-2" (blur)="logValidationErrors()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
-      {{ formErrors.gpu_device }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_device }}</p>
     </div>
     <div class="form-group row">
     <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
     <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144"
       class="form-control col-4" (blur)="logValidationErrors(); gpuNonces()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
-      {{ formErrors.gpu_nonces_per_cache }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_nonces_per_cache }}</p>
     </div>
-    <div class="alert alert-info"
+    <div class="text-info"
       *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
-      {{ formInfo.gpu_nonces_per_cache }}
+      <p><i class="material-icons small" style="text-align: left">info</i>
+      {{ formInfo.gpu_nonces_per_cache }}</p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
@@ -476,8 +491,9 @@
     value="false" checked >No</label>
     </div>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
-      {{ formErrors.gpu_mem_mapping }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_mem_mapping }}</p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label">GPU async: </label>
@@ -493,44 +509,46 @@
      name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
     </label>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
-      {{ formErrors.gpu_async }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.gpu_async }}</p>
     </div>
     </div>
-    <div class="alert alert-warning font-weight-bold"
+    <div class="text-warning font-weight-bold"
       *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-      {{ formWarning.miners_off }}
+      <p><i class="material-icons small" style="text-align: left">warning</i>
+      {{ formWarning.miners_off }}</p>
     </div>
     </div>
     </div>
     </div>
-    <div class="col-6">
+    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
     <ul class="small">
     <li><b>GPU threads:</b> Number of GPU threads to use. Lower values show better performance.
     For integrated GPUs try the setting 1, for dedicated GPUs 1-4.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
     <li><b>GPU worker task count: </b>Refers to the number of threads used for GPU processing. In case no
        GPU is available on the system or it shouldn't be used, users should leave the default setting of 0.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
     <li><b>GPU platform: </b>GPU platform information. <br>To list GPUs available on the system, users can run Scavenger with CLI option -o,
       and the Scavenger will display available GPU platforms and devices.
       It will also hint the ideal multiplier for the GPU nonce per cache setting.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
     <li><b>GPU device: </b>GPU device information. The way to find out the GPU device is described above.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>0</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
     <li><b>GPU nonces per cache: </b> GPU nonces per cache setting can improve the miner performance on some systems.
       It is practically impossible to give a general recommendation about this setting,
       as the performance depends on CPU settings and the overall system capability. Users can change this setting
       and observe how it will affect the performance, and adapt both this and the CPU nonces per cache setting until
       they reach the desired performance. To see the estimated RAM usage, click outside the form field after the
        parameter has been provided. Note that the GPU async setting also affects the RAM usage.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>262144</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>262144</strong>.</div>
     <li><b>GPU memory mapping: </b>Enabling memory mapping can result in ZeroCopyBuffers for CPU, in setups with integrated
     GPUs, and it may speed up the data transfer on certain GPUs. The feature should be disabled for dedicated GPUs.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
     <li><b>GPU async: </b> When set to "yes", it enables asynchronous data transfer and hashing, which may improve the
      performance of dedicated GPUs. The feature should be disabled for integrated GPUs.</li>
-      <div class="alert alert-info" role="alert">Default value: <strong>no</strong>.</div>
+      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
     </ul>
     </div>
     </div>
@@ -542,7 +560,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>Logging settings</h4>
     <div class="row">
-    <div class="col-6" >
+    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}" >
     <div class="card-body" formGroupName="logging_settings">
     <div class="form-group row">
     <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
@@ -555,8 +573,9 @@
       <option name="console_log_level" value="trace">Trace</option>
     </select>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
-    {{ formErrors.console_log_level }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.console_log_level }}</p>
     </div>
     <div class="form-group row">
     <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
@@ -569,28 +588,32 @@
       <option name="logfile_log_level" value="trace">Trace</option>
     </select>
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
-      {{ formErrors.logfile_log_level }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.logfile_log_level }}</p>
     </div>
     <div class="form-group row">
     <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
     <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10"
       class="form-control col-2" (blur)="logValidationErrors()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
-      {{ formErrors.logfile_max_count }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.logfile_max_count }} </p>
     </div>
     <div class="form-group row">
     <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
     <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20"
       class="form-control col-2" (blur)="logValidationErrors()">
     </div>
-    <div class="alert alert-danger" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
-      {{ formErrors.logfile_max_size }}
+    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+      {{ formErrors.logfile_max_size }}</p>
     </div>
-   <div class="alert alert-info"
+   <div class="text-info"
     *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
-    {{ formInfo.logging_settings }}
+    <p><i class="material-icons small" style="text-align: left">info</i>
+    {{ formInfo.logging_settings }}</p>
     </div>
     <div class="form-group row">
     <label class="col-sm-5 col-form-label">Console log pattern:</label>
@@ -607,7 +630,7 @@
      class="form-check-input" name="console_log_pattern" value="detailed" checked>Detailed
     </label>
     </div>
-    <div class="text-danger small"
+    <div class="text-danger font-weight-bold"
     *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
     <p><i class="material-icons small" style="text-align: center">error</i>
     {{ formErrors.console_log_pattern }} </p>
@@ -628,7 +651,7 @@
       class="form-check-input" name="logfile_log_pattern" value="detailed" checked>Detailed
     </label>
     </div>
-    <div class="text-danger small"
+    <div class="text-danger font-weight-bold"
     *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
     <p><i class="material-icons small" style="text-align: center">error</i>
     {{ formErrors.logfile_log_pattern }} </p>
@@ -680,7 +703,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>Display and benchmark settings</h4>
     <div class="row">
-    <div class="col-6">
+    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
     <div class="card-body">
     <div formGroupName="display_settings">
     <div class="form-group row">
@@ -781,7 +804,7 @@
     <div class="shadow p-3 mb-5 bg-light rounded border">
     <h4>Additional headers</h4>
     <div class="row">
-    <div class="col-6">
+    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
     <div class="card-body">
     <label>Additional headers:</label><br>
     <div formArrayName="additional_headers" style="margin-top: 2px">
@@ -795,18 +818,18 @@
     </button><br>
     </p>
     </div>
-    <div class="text-danger small"
+    <div class="text-danger font-weight-bold"
       *ngIf="formErrors?.header_key && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
       <p><i class="material-icons small" style="text-align: center">error</i>
       {{ formErrors.header_key }} </p>
     </div>
-    <div class="text-danger small" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
+    <div class="text-danger font-weight-bold" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
         <p><i class="material-icons small" style="text-align: center">error</i>
       {{ formErrors.header_value }} </p>
     </div>
     </div>
     <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
-    class="btn btn-primary" (click)="addAdditionalHeader()">Add additional header</button>
+    class="btn btn-dark" (click)="addAdditionalHeader()">Add additional header</button>
     </div>
     </div>
     <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
@@ -872,7 +895,7 @@
 
             <!-- Modal footer -->
             <div class="modal-footer">
-              <button type="button" class="btn-sm btn-danger" data-dismiss="modal">Close</button>
+              <button type="button" class="btn-sm btn-outline-dark" data-dismiss="modal">Close</button>
             </div>
 
           </div>
