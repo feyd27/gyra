@@ -1,850 +1,886 @@
 <!doctype html>
-<!-- Structure Start-->
-<div class="container-fluid">
-  <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-    <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse"
-      aria-expanded="false" aria-controls="poolWallet plotDirectory">Quick Setup</button>&nbsp;
-    <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#poolWallet"
-      aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>&nbsp;
-    <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#plotDirectory"
-      aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
-  </div>
-</div>
-<!-- Structure End -->
 <!-- Test Start-->
 <div class="container-fluid">
-  <!--Form Start-->
+  <div class="row">
+    <div class="col-12"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
+            <button type="button" class="btn btn-dark font-weight-bolder"><i class="material-icons small text-success"
+                style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
+                style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
+            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+              type="button" class="btn btn-dark" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
+                class="material-icons text-success small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>&nbsp;&nbsp;
+            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
+              type="button" class="btn btn-dark" (click)="exportConfig()"><i class="material-icons text-success small"
+                style="text-align: center">get_app</i>&nbsp;Export.yaml</button>&nbsp;&nbsp;
+            <button type="button" class="btn btn-dark disabled"><i class="material-icons text-success small"
+                style="text-align: center">bolt</i>&nbsp;Start Scavenger</button>
+            </div>
+            </div>
+    </div>
+  <br><br>
+  <div class="row" style="margin-top: -45px;">
+    <div class="col-3">
+      <!-- Structure Start-->
+    <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">Quick Setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="accountSettings miningSettings minerSettings cpuSettings gpuSettings loggingSettings displaySettings additionalHeaders">Expert Setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only setup</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#poolWallet" aria-expanded="true" aria-controls="poolWallet">Pool & Wallet</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#plotDirectory" aria-expanded="true" aria-controls="plotDirectory">Plot Files</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>
+    </div>
+  <!-- Structure End -->
+    </div>
+    <div class="col-9" style="margin-top: -35px;">
+        <!--Form Start-->
   <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
-    <!--Collapsibles start-->
-    <div class="row collapse multi-collapse show" style="margin-top: -35px;" id="poolWallet">
+      <!--Collapsibles start-->
+      <div class="row multi-collapse"  id="poolWallet">
       <div class="col">
-        <div class="shadow p-3 mb-5 bg-light rounded border">
-          <h4>Pool and wallet settings</h4>
-
-          <div class="row">
-            <div class="col-6">
-              <br>
-              <label for="url">Pool or wallet URL:</label>
-              <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
-                  class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
-              </p>
-              <div class="alert alert-danger small" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
-                {{ formErrors.url }}
-              </div>
-              <div class="alert alert-warning font-weight-bold small"
-                *ngIf="formWarning.url && (formWarning.display == 'true')">
-                {{ formWarning.url }}
-              </div>
-            </div>
-            <div class="col-6 small">
-
-              <div class="text-danger font-weight-bold" role="alert">
-                Mandatory setting for pool and solo mining setup.
-              </div>
-
-              <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
-                The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP
-                address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
-
-              <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo
-                mining).</i>
-              <br><br>
-              <div class="text-info" role="alert">
-                Default value: <strong>none</strong>.
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row collapse multi-collapse show" style="margin-top: -35px;" id="plotDirectory">
-      <div class="col">
-        <div class="shadow p-3 mb-5 bg-light rounded border">
-          <h4>Plot directory settings</h4>
-          <div class="row">
-            <div class="col-6">
-              <br>
-              <div formArrayName="plot_dirs" style="margin-top: 2px">
-                <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
-                  <div>
-                    <p><input [id]="'plot_dirs'+i" type="text"
-                        placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
-                        formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
-                      &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
-                          class="material-icons small"
-                          style="text-align: right; font-weight: bolder;">clear</i></button>
-                    </p>
-                  </div>
-                  <div class="alert alert-danger small"
-                    *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
-                    {{ formErrors.plot_dirs }}
-                  </div>
-                </div>
-              </div>
-              <button [disabled]="plotDirs.invalid" type="button" class="btn btn-primary" (click)="addPlots()">Add
-                plot</button>
-              <br><br>
-              <div class="alert alert-warning font-weight-bold small"
-                *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
-                {{ formWarning.plot_dirs }}
-              </div>
-            </div>
-            <div class="col-6 small">
-              <div class="text-danger font-weight-bold" role="alert">
-                Mandatory setting for pool and solo mining setup.
-              </div>
-              <p>Provide the path to the directories that contain the plot files. Duplicate entries are not allowed. All valid Windows and Linux path
-                formats are supported.</p>
-              <i>Prior to mining, plot files have to be created and stored.</i>
-              <br><br>
-              <div class="text-info" role="alert">
-                Default value: <strong>none</strong>.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-      <div class="shadow p-3 mb-5 bg-light rounded border" style="margin-top: -35px;">
-          <button class="btn btn-dark" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="accountSettings">Expert Setup</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>&nbsp;
-          <button class="btn btn-outline-dark" type="button" data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>&nbsp;
-      </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="accountSettings">
-      <div class="col">
-        <div class="shadow p-3 mb-5 bg-light rounded border">
-        <h4>Account settings for solo mining</h4>
-          <div class="row">
-          <div class="col-6">
-          <label>Account ID and passphrase:</label><br>
-          <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
-          <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
-          <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
-              formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
-          <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
-              class="form-control-sm col-7" (blur)="logValidationErrors()">&nbsp;
-          <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
-          <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
-          </button><br></p>
-          </div>
-          <div class="alert alert-danger small"
-              *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-               {{ formErrors.account_id }}
-          </div>
-          <div class="alert alert-danger small"
-              *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
-               {{ formErrors.passphrase }}
-          </div>
-          </div>
-          <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-primary"
-            (click)="addAccount()">Add account</button>
-          </div>
-          <div class="col-6 small">
-          <div class="text-danger font-weight-bold" role="alert">Mandatory setting for solo mining setup.</div>
-          <p>Provide the account numeric ID and its' passphrase to create a solo mining configuration. In case of multi-account mining setup,
-            provide all account IDs and their matching passphrases relevant to the plot files that are mined.
-            Duplicate entries are not allowed.
-            As the account numeric ID is read from the plot file in case of pool mining, the account setting can be omitted in such cases.</p>
-            <i>Prior to mining, the reward recipient has to be set to the desired wallet.</i>
-            <br><br>
-            <div class="text-info" role="alert">Default value: <strong>none</strong>.</div>
-          </div>
-          </div>
-          </div>
-        </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="miningSettings">
-      <div class="col">
-      <div class="shadow p-3 mb-5 bg-light rounded border">
-      <h4>Mining settings</h4>
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>Pool and wallet settings</h4>
       <div class="row">
-      <div class="col-6">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+      <br>
+      <label for="url">Pool or wallet URL:</label>
+      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
+        class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
+      </p>
+      <div class="text-danger  font-weight-bold" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.url }}</p>
+      </div>
+      <div class="text-warning font-weight-bold"
+       *ngIf="formWarning.url && (formWarning.display == 'true')">
+       <p><i class="material-icons small" style="text-align: left">warning</i>
+       {{ formWarning.url }}</p>
+      </div>
+      </div>
+      <div class="col-6 small" [hidden]="formDocumentation.display !== 'true'">
+     <div class="text-danger font-weight-bold" role="alert">
+       Mandatory setting for pool and solo mining setup.
+      </div>
+     <p>Provide the URL of the pool or the wallet where the deadlines are submitted to.
+        The URL has to contain the protocol <i>(http or https)</i>, the DNS <i>(e.g. yourpool.com)</i> or IP
+       address <i>(e.g. 152.36.58.987)</i> of the pool/wallet and the port number <i>(e.g. 8080)</i>.</p>
+
+        <i>Prior to mining, the reward recipient has to be set to the desired pool or wallet (for solo
+          mining).</i>
+        <br><br>
+        <div class="text-info" role="alert">
+         Default value: <strong>none</strong>.
+        </div>
+       </div>
+      </div>
+      </div>
+        </div>
+      </div>
+      <div class="row multi-collapse"  id="plotDirectory">
+      <div class="col">
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>Plot directory settings</h4>
+      <div class="row">
+      <div [ngClass]="{'col-6': formDocumentation.display == 'true', 'col-12': formDocumentation.display !== 'true' }">
+        <br>
+      <div formArrayName="plot_dirs" style="margin-top: 2px">
+      <div *ngFor="let plotdirs of plotDirs.controls; let i=index" [formGroupName]="i">
+      <div>
+      <p><input [id]="'plot_dirs'+i" type="text"
+          placeholder="Windows: C:\second\windows\plot\dir, Linux or Unix: /first/linux/plot/dir"
+          formControlName="plot_dirs" class="form-control-sm col-11" (blur)="logValidationErrors()">
+         &nbsp;<button type="button" class="btn-sm btn-danger" (click)="deletePlots(i)"> <i
+          class="material-icons small"
+         style="text-align: right; font-weight: bolder;">clear</i></button>
+      </p>
+      </div>
+      <div class="text-danger font-weight-bold"
+      *ngIf="plotdirs.invalid && plotdirs.touched && (formErrors.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">warning</i>
+        {{ formErrors.plot_dirs }}</p>
+      </div>
+       </div>
+      </div>
+      <button [disabled]="plotDirs.invalid" type="button" class="btn btn-dark" (click)="addPlots()">Add
+          plot</button>
+      <br><br>
+      <div class="text-warning font-weight-bold"
+        *ngIf="formWarning.plot_dirs && plotDirs.valid && (formWarning.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">warning</i>
+        {{ formWarning.plot_dirs }}</p>
+        </div>
+      </div>
+      <div class="col-6 small" [hidden]="formDocumentation.display !== 'true'" >
+      <div class="text-danger font-weight-bold" role="alert">
+        Mandatory setting for pool and solo mining setup.
+      </div>
+      <p>Provide the path to the directories that contain the plot files. Duplicate entries are not allowed. All valid Windows and Linux path
+        formats are supported.</p>
+      <i>Prior to mining, plot files have to be created and stored.</i>
+      <br><br>
+      <div class="text-info" role="alert">
+       Default value: <strong>none</strong>.
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="row multi-collapse"  id="accountSettings">
+        <div class="col">
+          <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+          <h4>Account settings for solo mining</h4>
+            <div class="row">
+            <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+            <label>Account ID and passphrase:</label><br>
+            <div formArrayName="account_id_to_secret_phrase" style="margin-top: 2px">
+            <div *ngFor="let account of accountForms.controls; let i=index" [formGroupName]="i">
+            <p><input [id]="'account_id'+i" type="text" placeholder="Numeric account ID"
+                formControlName="account_id" class="form-control-sm col-4" (blur)="logValidationErrors()">
+            <input [id]="'passphrase'+i" type="text" placeholder="Passphrase" formControlName="passphrase"
+                class="form-control-sm col-7" (blur)="logValidationErrors()">&nbsp;
+            <button type="button" class="btn-sm btn-danger" (click)="deleteAccount(i)">
+            <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
+            </button><br></p>
+            </div>
+            <div class="text-danger font-weight-bold"
+                *ngIf="formErrors?.account_id && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                <p><i class="material-icons small" style="text-align: left">error</i>
+                {{ formErrors.account_id }}</p>
+            </div>
+            <div class="text-danger font-weight-bold"
+                *ngIf="formErrors?.passphrase && accountForms?.invalid && accountForms.touched && (formErrors.display == 'true')">
+                <p><i class="material-icons small" style="text-align: left">error</i>
+                {{ formErrors.passphrase }}</p>
+            </div>
+            </div>
+            <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-dark"
+              (click)="addAccount()">Add account</button>
+            </div>
+            <div class="col-6 small" [hidden]="formDocumentation.display !== 'true'">
+            <div class="text-danger font-weight-bold" role="alert">Mandatory setting for solo mining setup.</div>
+            <p>Provide the account numeric ID and its' passphrase to create a solo mining configuration. In case of multi-account mining setup,
+              provide all account IDs and their matching passphrases relevant to the plot files that are mined.
+              Duplicate entries are not allowed.
+              As the account numeric ID is read from the plot file in case of pool mining, the account setting can be omitted in such cases.</p>
+              <i>Prior to mining, the reward recipient has to be set to the desired wallet.</i>
+              <br><br>
+              <div class="text-info" role="alert">Default value: <strong>none</strong>.</div>
+            </div>
+            </div>
+            </div>
+          </div>
+      </div>
+      <div class="row multi-collapse"  id="miningSettings">
+        <div class="col">
+        <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+        <h4>Mining settings</h4>
+        <div class="row">
+        <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+        <div class="card-body">
+        <div class="form-group row">
+        <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
+        <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="31536000"
+          class="form-control col-6" (blur)="logValidationErrors()">
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.target_deadline }}</p>
+        </div>
+        <div formArrayName="account_id_to_target_deadline">
+        <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
+        <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID"
+            formControlName="account_id_dl" class="form-control-sm col-4" (blur)="logValidationErrors()">
+        <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline"
+            formControlName="target_deadline_dl" class="form-control-sm col-7" (blur)="logValidationErrors()">&nbsp;
+            <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
+            <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
+            </button></p>
+        </div>
+        <div class="text-danger font-weight-bold"
+          *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.account_id_dl }}</p>
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.target_deadline_dl }}</p>
+        </div>
+        <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-dark">Add
+        target deadlines for multi-id mining</button>
+        </div><br>
+        <div class="form-group row">
+        <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
+        <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text"
+        placeholder="1000" class="form-control col-6" (blur)="logValidationErrors()">
+        </div>
+        <div class="text-danger font-weight-bold"
+        *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.get_mining_info_interval }}</p>
+        </div>
+        <div class="form-group row">
+        <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
+        <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
+        (blur)="logValidationErrors()">
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.timeout && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.timeout }}</p>
+        </div>
+        <div class="form-group row">
+        <label class="col-sm-5 col-form-label">Send proxy details:</label>
+        <div class="form-check-inline">
+        <label for="send_proxy_details" class="form-check-label">
+        <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio"
+         class="form-check-input" name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
+        </label>
+        </div>
+        <div class="form-check-inline">
+        <label for="send_proxy_details" class="form-check-label">
+        <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio"
+        class="form-check-input" name="send_proxy_details" value="false" checked>No
+        </label>
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.send_proxy_details }}</p>
+        </div>
+        </div>
+        </div>
+        </div>
+        <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+        <ul class="small">
+          <li><b>Target deadline:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
+                  that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
+                  available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
+                  <div class="text-info" role="alert">Default value: <strong>31536000</strong>.</div>
+          <li><b>Multi-ID mining: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
+                  The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
+          <li><b>Get mining info interval: </b>An instruction to the miner on how frequently it should poll the wallet for information. The
+                    value is provided in milliseconds. </li>
+                  <div class="text-info" role="alert">Default value: <strong>1000</strong>.</div>
+          <li><b>Timeout: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
+                  The value is provided in milliseconds.</li>
+                  <div class="text-info" role="alert">Default value: <strong>5000</strong>. </div>
+          <li><b> Send proxy details: </b>The setting instructs the mine rto send or not to send proxy details.</li>
+                  <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
+        </ul>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+      <div class="row multi-collapse"  id="minerSettings">
+        <div class="col">
+        <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+        <h4>Miner settings</h4>
+        <div class="row">
+        <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+        <div class="card-body" formGroupName="miner_settings">
+        <div class="form-group row">
+        <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader thread count:</label>
+        <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text"
+          placeholder="0" class="form-control col-sm-2" (blur)="logValidationErrors()">
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.hdd_reader_thread_count }}</p>
+        </div>
+        <div class="text-info"
+          *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">info</i>
+          {{ formInfo.hdd_reader_thread_count }}</p>
+        </div>
+        <div class="form-group row">
+        <label class="col-sm-5 col-form-label">Use direct I/O:</label>
+        <div class="form-check-inline">
+        <label for="hdd_use_direct_io" class="form-check-label">
+        <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio"
+        class="form-check-input" name="hdd_use_direct_io" value="true" checked>Yes
+        </label>
+        </div>
+        <div class="form-check-inline">
+        <label for="hdd_use_direct_io" class="form-check-label">
+        <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio"
+        class="form-check-input" name="hdd_use_direct_io" value="false">No
+        </label>
+        </div>
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.hdd_use_direct_io }}</p>
+        </div>
+        <div class="form-group row">
+        <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
+        <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240"
+          class="form-control col-2" (blur)="logValidationErrors()">
+        </div>
+        <div class="text-danger font-weight-bold" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
+            <p><i class="material-icons small" style="text-align: left">error</i>
+          {{ formErrors.hdd_wake_up_after }}</p>
+        </div>
+        </div>
+        </div>
+        <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+          <ul class="small">
+            <li><b>HDD reader thread count:</b> Sets the number of disks to be read in parallel, and it should reflect the number of
+            hard disks where plot files are stored. In case the setting is left at default value of 0, Scavenger will use as many
+            threads as there are disks. </li>
+            <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+            <li><b>Use direct I/O: </b>Scavenger supports the usage of direct IO - a setting that enables or disables operating system caching.
+            If set to "true" the operating system caching layer will be bypassed.</li>
+            <div class="text-info" role="alert">Default value: <strong>yes</strong>.</div>
+            <li><b>HDD "Wake-up" after: </b>If HDD wake-up is available, this setting instructs the Scavenger on how often, after submitting the deadline to the pool/wallet, to execute the "HDD wake-up" script.
+            The setting is given in seconds.</li>
+            <div class="text-info" role="alert">Default value: <strong>240</strong>.</div>
+          </ul>
+        </div>
+        </div>
+        </div>
+        </div>
+      </div>
+      <div class="row multi-collapse"  id="cpuSettings">
+      <div class="col">
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>CPU settings</h4>
+      <div class="row">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
       <div class="card-body">
+      <div formGroupName="cpu_settings" class="card-body">
       <div class="form-group row">
-      <label class="col-sm-5 col-form-label" for="target_deadline">Target deadline:</label>
-      <input formControlName="target_deadline" id="target_deadline" type="text" placeholder="31536000"
-        class="form-control col-6" (blur)="logValidationErrors()">
+      <label for="cpu_threads" class="col-sm-5 col-form-label">CPU threads:</label>
+      <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0"
+      class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
       </div>
-      <div class="alert alert-danger small" *ngIf="formErrors.target_deadline && (formErrors.display == 'true')">
-       {{ formErrors.target_deadline }}
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.cpu_threads }}</p>
       </div>
-      <div formArrayName="account_id_to_target_deadline">
-      <div *ngFor="let deadline of deadlineForms.controls; let i=index" [formGroupName]="i">
-      <p><input [id]="'account_id_dl'+i" type="text" placeholder="Numeric account ID"
-          formControlName="account_id_dl" class="form-control-sm col-4" (blur)="logValidationErrors()">
-      <input [id]="'target_deadline_dl'+i" type="text" placeholder="Target deadline"
-          formControlName="target_deadline_dl" class="form-control-sm col-7" (blur)="logValidationErrors()">&nbsp;
-          <button type="button" class="btn-sm btn-danger" (click)="deleteDeadline(i)">
-          <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
-          </button></p>
-      </div>
-      <div class="alert alert-danger small"
-        *ngIf="formErrors.account_id_dl && deadlineForms.touched && (formErrors.display == 'true')">
-        {{ formErrors.account_id_dl }}
-      </div>
-      <div class="alert alert-danger small" *ngIf="formErrors.target_deadline_dl && deadlineForms.touched">
-        {{ formErrors.target_deadline_dl }}
-      </div>
-      <button [disabled]="configForm.invalid" type="button" (click)="addDeadline()" class="btn btn-primary">Add
-      target deadlines for multi-id mining</button>
-      </div><br>
-      <div class="form-group row">
-      <label class="col-sm-5 col-form-label" for="get_mining_info_interval">Get mining info interval [ms]:</label>
-      <input formControlName="get_mining_info_interval" id="get_mining_info_interval" type="text"
-      placeholder="1000" class="form-control col-6" (blur)="logValidationErrors()">
-      </div>
-      <div class="alert alert-danger small"
-      *ngIf="formErrors.get_mining_info_interval && (formErrors.display == 'true')">{{ formErrors.get_mining_info_interval }}
+      <div class="text-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">info</i>
+        {{ formInfo.cpu_threads }}</p>
       </div>
       <div class="form-group row">
-      <label class="col-sm-5 col-form-label" for="timeout">Timeout [ms]:</label>
-      <input formControlName="timeout" id="timeout" type="text" placeholder="5000" class="form-control col-4"
-      (blur)="logValidationErrors()">
+      <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
+      <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4"
+        class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
       </div>
-      <div class="alert alert-danger small" *ngIf="formErrors.timeout && (formErrors.display == 'true')">{{ formErrors.timeout }}
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.cpu_worker_task_count }}</p>
+      </div>
+      <div class="text-info"
+        *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">info</i>
+        {{ formInfo.cpu_worker_task_count }}</p>
       </div>
       <div class="form-group row">
-      <label class="col-sm-5 col-form-label">Send proxy details:</label>
+      <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
+      <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536"
+       class="form-control col-4" (blur)="logValidationErrors(); cpuNonces()">
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.cpu_nonces_per_cache }}</p>
+      </div>
+      <div class="text-info"
+       *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
+       <p><i class="material-icons small" style="text-align: left">info</i>
+       {{ formInfo.cpu_nonces_per_cache }}</p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
       <div class="form-check-inline">
-      <label for="send_proxy_details" class="form-check-label">
-      <input formControlName="send_proxy_details" id="send_proxy_details1" type="radio"
-       class="form-check-input" name="send_proxy_details" value="true" (blur)="logValidationErrors()">Yes
+      <label for="cpu_thread_pinning" class="form-check-label">
+      <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning1" type="radio"
+      class="form-check-input" name="cpu_thread_pinning" value="true" (blur)="logValidationErrors()">Yes
       </label>
       </div>
       <div class="form-check-inline">
-      <label for="send_proxy_details" class="form-check-label">
-      <input formControlName="send_proxy_details" id="send_proxy_details2" type="radio"
-      class="form-check-input" name="send_proxy_details" value="false" checked>No
+      <label for="cpu_thread_pinning" class="form-check-label">
+      <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning2" type="radio"
+        class="form-check-input" name="cpu_thread_pinning" value="false" checked>No
+        </label>
+      </div>
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.cpu_thread_pinning }}</p>
+      </div>
+      <div class="text-warning font-weight-bold"
+        *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">warning</i>
+        {{ formWarning.miners_off }}</p>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+        <ul class="small">
+        <li><b>CPU threads:</b> Sets the number of active CPU threads for hashing operations. The value 0 implies
+        the number of logical CPU cores.</li>
+        <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+        <li><b>CPU worker task count: </b> The number of CPU workers used to calculate deadlines. In cae only GPU is to be used for deadlines
+        calculation, this parameter should be set to 0. For optimal performance match the sum of all worker tasks (CPU + GPU) to the number of hard disks.</li>
+        <div class="text-info" role="alert">Default value: <strong>4</strong>.</div>
+        <li><b>CPU nonces per cache: </b> To set the amount of RAM used for nonce caching, use the following configuration file line, which refers to number
+          of nonces to be read at once for processing. To view the estimated usage of RAM, click outside the form field, and
+         the estimate will be shown. </li>
+        <div class="text-info" role="alert">Default value: <strong>65536</strong>.</div>
+        <li><b>CPU thread pinning: </b> Set to "yes" in order to use as many worker threads as there are CPU cores. </li>
+        <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
+       </ul>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="row multi-collapse"  id="gpuSettings">
+      <div class="col">
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>GPU settings</h4>
+      <div class="row">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+      <div class="card-body">
+      <div formGroupName="gpu_settings" class="card-body">
+      <div class="form-group row">
+      <label for="gpu_threads" class="col-sm-5 col-form-label">GPU threads:</label>
+      <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0"
+       class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_threads }}</p>
+      </div>
+      <div class="form-group row">
+      <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
+      <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0"
+        class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
+      </div>
+      <div class="text-danger font-weight-bold"
+       *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
+       <p><i class="material-icons small" style="text-align: left">error</i>
+       {{ formErrors.gpu_worker_task_count }}</p>
+      </div>
+      <div class="text-info"
+      *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
+      <p><i class="material-icons small" style="text-align: left">info</i>
+      {{ formInfo.gpu_worker_task_count }}</p>
+      </div>
+      <div class="form-group row">
+      <label for="gpu_platform" class="col-sm-5 col-form-label">GPU platform:</label>
+      <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0"
+       class="form-control col-2" (blur)="logValidationErrors()">
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_platform }}</p>
+      </div>
+      <div class="form-group row">
+      <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
+      <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0"
+      class="form-control col-2" (blur)="logValidationErrors()">
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_device }}</p>
+      </div>
+      <div class="form-group row">
+      <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
+      <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144"
+        class="form-control col-4" (blur)="logValidationErrors(); gpuNonces()">
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_nonces_per_cache }}</p>
+      </div>
+      <div class="text-info"
+        *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">info</i>
+        {{ formInfo.gpu_nonces_per_cache }}</p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
+      <div class="form-check-inline">
+      <label for="gpu_mem_mapping" class="form-check-label">
+      <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping1" type="radio" class="form-check-input"
+       name="gpu_mem_mapping" value="true" (blur)="logValidationErrors()">Yes
       </label>
       </div>
-      <div class="alert alert-danger small" *ngIf="formErrors.send_proxy_details && (formErrors.display == 'true')">
-      {{ formErrors.send_proxy_details }}
+      <div class="form-check-inline">
+      <label for="gpu_mem_mapping" class="form-check-label">
+      <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping2" type="radio" class="form-check-input" name="gpu_mem_mapping"
+      value="false" checked >No</label>
+      </div>
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_mem_mapping }}</p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">GPU async: </label>
+      <div class="form-check-inline">
+      <label for="gpu_async" class="form-check-label">
+      <input formControlName="gpu_async" id="gpu_async1" type="radio" class="form-check-input"
+       name="gpu_async" value="true" (blur)="logValidationErrors(); gpuNonces()">Yes
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="gpu_async" class="form-check-label">
+      <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input"
+       name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
+      </label>
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.gpu_async }}</p>
+      </div>
+      </div>
+      <div class="text-warning font-weight-bold"
+        *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
+        <p><i class="material-icons small" style="text-align: left">warning</i>
+        {{ formWarning.miners_off }}</p>
       </div>
       </div>
       </div>
       </div>
-      <div class="col-6">
+      <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
       <ul class="small">
-        <li><b>Target deadline:</b> The optimal target deadline is based on the effective plot capacity, and should be set so,
-                that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
-                available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
-                <div class="text-info" role="alert">Default value: <strong>31536000</strong>.</div>
-        <li><b>Multi-ID mining: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
-                The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
-        <li><b>Get mining info interval: </b>An instruction to the miner on how frequently it should poll the wallet for information. The
-                  value is provided in milliseconds. </li>
-                <div class="text-info" role="alert">Default value: <strong>1000</strong>.</div>
-        <li><b>Timeout: </b>The amount of time to wait before responses from the pool or the wallet before proceeding with the next request.
-                The value is provided in milliseconds.</li>
-                <div class="text-info" role="alert">Default value: <strong>5000</strong>. </div>
-        <li><b> Send proxy details: </b>The setting instructs the mine rto send or not to send proxy details.</li>
-                <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
+      <li><b>GPU threads:</b> Number of GPU threads to use. Lower values show better performance.
+      For integrated GPUs try the setting 1, for dedicated GPUs 1-4.</li>
+        <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+      <li><b>GPU worker task count: </b>Refers to the number of threads used for GPU processing. In case no
+         GPU is available on the system or it shouldn't be used, users should leave the default setting of 0.</li>
+        <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+      <li><b>GPU platform: </b>GPU platform information. <br>To list GPUs available on the system, users can run Scavenger with CLI option -o,
+        and the Scavenger will display available GPU platforms and devices.
+        It will also hint the ideal multiplier for the GPU nonce per cache setting.</li>
+        <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+      <li><b>GPU device: </b>GPU device information. The way to find out the GPU device is described above.</li>
+        <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
+      <li><b>GPU nonces per cache: </b> GPU nonces per cache setting can improve the miner performance on some systems.
+        It is practically impossible to give a general recommendation about this setting,
+        as the performance depends on CPU settings and the overall system capability. Users can change this setting
+        and observe how it will affect the performance, and adapt both this and the CPU nonces per cache setting until
+        they reach the desired performance. To see the estimated RAM usage, click outside the form field after the
+         parameter has been provided. Note that the GPU async setting also affects the RAM usage.</li>
+        <div class="text-info" role="alert">Default value: <strong>262144</strong>.</div>
+      <li><b>GPU memory mapping: </b>Enabling memory mapping can result in ZeroCopyBuffers for CPU, in setups with integrated
+      GPUs, and it may speed up the data transfer on certain GPUs. The feature should be disabled for dedicated GPUs.</li>
+        <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
+      <li><b>GPU async: </b> When set to "yes", it enables asynchronous data transfer and hashing, which may improve the
+       performance of dedicated GPUs. The feature should be disabled for integrated GPUs.</li>
+        <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
       </ul>
       </div>
       </div>
       </div>
       </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="minerSettings">
+      </div>
+      <div class="row multi-collapse"  id="loggingSettings">
       <div class="col">
-      <div class="shadow p-3 mb-5 bg-light rounded border">
-      <h4>Miner settings</h4>
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>Logging settings</h4>
       <div class="row">
-      <div class="col-6">
-      <div class="card-body" formGroupName="miner_settings">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}" >
+      <div class="card-body" formGroupName="logging_settings">
       <div class="form-group row">
-      <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader thread count:</label>
-      <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text"
-        placeholder="0" class="form-control col-sm-2" (blur)="logValidationErrors()">
+      <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
+      <select formControlName="console_log_level" class="form- col-6" (blur)="logValidationErrors()">
+        <option name="console_log_level" value="off">Off</option>
+        <option name="console_log_level" value="error">Error</option>
+        <option name="console_log_level" value="warn">Warn</option>
+        <option name="console_log_level" value="info" selected>Info</option>
+        <option name="console_log_level" value="debug">Debug</option>
+        <option name="console_log_level" value="trace">Trace</option>
+      </select>
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.hdd_reader_thread_count && (formErrors.display == 'true')">
-        {{ formErrors.hdd_reader_thread_count }}
-      </div>
-      <div class="alert alert-info"
-        *ngIf="formInfo.hdd_reader_thread_count && miner_settings.get('hdd_reader_thread_count').touched && miner_settings.get('hdd_reader_thread_count').valid && (formInfo.display == 'true')">
-        {{ formInfo.hdd_reader_thread_count }}
-      </div>
-      <div class="form-group row">
-      <label class="col-sm-5 col-form-label">Use direct I/O:</label>
-      <div class="form-check-inline">
-      <label for="hdd_use_direct_io" class="form-check-label">
-      <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio"
-      class="form-check-input" name="hdd_use_direct_io" value="true" checked>Yes
-      </label>
-      </div>
-      <div class="form-check-inline">
-      <label for="hdd_use_direct_io" class="form-check-label">
-      <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio"
-      class="form-check-input" name="hdd_use_direct_io" value="false">No
-      </label>
-      </div>
-      </div>
-      <div class="alert alert-danger" *ngIf="formErrors.hdd_use_direct_io && (formErrors.display == 'true')">
-       {{ formErrors.hdd_use_direct_io }}
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.console_log_level }}</p>
       </div>
       <div class="form-group row">
-      <label for="hdd_wake_up_after" class="col-sm-5 col-form-label">HDD "Wake-up" after [s]:</label>
-      <input id="hdd_wake_up_after" formControlName="hdd_wake_up_after" type="text" placeholder="240"
+      <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
+      <select formControlName="logfile_log_level" class="form- col-6" (blur)="logValidationErrors()">
+        <option name="logfile_log_level" value="off">Off</option>
+        <option name="logfile_log_level" value="error">Error</option>
+        <option name="logfile_log_level" value="warn" selected>Warn</option>
+        <option name="logfile_log_level" value="info">Info</option>
+        <option name="logfile_log_level" value="debug">Debug</option>
+        <option name="logfile_log_level" value="trace">Trace</option>
+      </select>
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.logfile_log_level }}</p>
+      </div>
+      <div class="form-group row">
+      <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
+      <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10"
         class="form-control col-2" (blur)="logValidationErrors()">
       </div>
-      <div class="alert alert-danger" *ngIf="formErrors.hdd_wake_up_after && (formErrors.display == 'true')">
-        {{ formErrors.hdd_wake_up_after }}
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.logfile_max_count }} </p>
       </div>
+      <div class="form-group row">
+      <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
+      <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20"
+        class="form-control col-2" (blur)="logValidationErrors()">
       </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formErrors.logfile_max_size }}</p>
       </div>
-      <div class="col-6">
-        <ul class="small">
-          <li><b>HDD reader thread count:</b> Sets the number of disks to be read in parallel, and it should reflect the number of
-          hard disks where plot files are stored. In case the setting is left at default value of 0, Scavenger will use as many
-          threads as there are disks. </li>
-          <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-          <li><b>Use direct I/O: </b>Scavenger supports the usage of direct IO - a setting that enables or disables operating system caching.
-          If set to "true" the operating system caching layer will be bypassed.</li>
-          <div class="text-info" role="alert">Default value: <strong>yes</strong>.</div>
-          <li><b>HDD "Wake-up" after: </b>If HDD wake-up is available, this setting instructs the Scavenger on how often, after submitting the deadline to the pool/wallet, to execute the "HDD wake-up" script.
-          The setting is given in seconds.</li>
-          <div class="text-info" role="alert">Default value: <strong>240</strong>.</div>
-        </ul>
-      </div>
-      </div>
-      </div>
-      </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="cpuSettings">
-    <div class="col">
-    <div class="shadow p-3 mb-5 bg-light rounded border">
-    <h4>CPU settings</h4>
-    <div class="row">
-    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
-    <div class="card-body">
-    <div formGroupName="cpu_settings" class="card-body">
-    <div class="form-group row">
-    <label for="cpu_threads" class="col-sm-5 col-form-label">CPU threads:</label>
-    <input formControlName="cpu_threads" id="cpu_threads" type="text" placeholder="0"
-    class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_threads && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.cpu_threads }}</p>
-    </div>
-    <div class="text-info" *ngIf="formInfo.cpu_threads && cpu_settings.get('cpu_threads').touched && cpu_settings.get('cpu_threads').valid && (formInfo.display == 'true')">
+     <div class="text-info"
+      *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
       <p><i class="material-icons small" style="text-align: left">info</i>
-      {{ formInfo.cpu_threads }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="cpu_worker_task_count" class="col-sm-5 col-form-label">CPU worker task count:</label>
-    <input formControlName="cpu_worker_task_count" id="cpu_worker_task_count" type="text" placeholder="4"
-      class="form-control col-2" (blur)="logValidationErrors(); cpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_worker_task_count && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.cpu_worker_task_count }}</p>
-    </div>
-    <div class="text-info"
-      *ngIf="formInfo.cpu_worker_task_count && cpu_settings.get('cpu_worker_task_count').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">info</i>
-      {{ formInfo.cpu_worker_task_count }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="cpu_nonces_per_cache" class="col-sm-5 col-form-label">CPU nonces per cache:</label>
-    <input formControlName="cpu_nonces_per_cache" id="cpu_nonces_per_cache" type="text" placeholder="65536"
-     class="form-control col-4" (blur)="logValidationErrors(); cpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_nonces_per_cache && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.cpu_nonces_per_cache }}</p>
-    </div>
-    <div class="text-info"
-     *ngIf="formInfo.cpu_nonces_per_cache && cpu_settings.get('cpu_nonces_per_cache').touched && cpu_settings.get('cpu_worker_task_count').valid && (formInfo.display == 'true')">
-     <p><i class="material-icons small" style="text-align: left">info</i>
-     {{ formInfo.cpu_nonces_per_cache }}</p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label" for="cpu_thread_pinning">CPU thread pinning:</label>
-    <div class="form-check-inline">
-    <label for="cpu_thread_pinning" class="form-check-label">
-    <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning1" type="radio"
-    class="form-check-input" name="cpu_thread_pinning" value="true" (blur)="logValidationErrors()">Yes
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="cpu_thread_pinning" class="form-check-label">
-    <input formControlName="cpu_thread_pinning" id="cpu_thread_pinning2" type="radio"
-      class="form-check-input" name="cpu_thread_pinning" value="false" checked>No
-      </label>
-    </div>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.cpu_thread_pinning && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.cpu_thread_pinning }}</p>
-    </div>
-    <div class="text-warning font-weight-bold"
-      *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">warning</i>
-      {{ formWarning.miners_off }}</p>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
-      <ul class="small">
-      <li><b>CPU threads:</b> Sets the number of active CPU threads for hashing operations. The value 0 implies
-      the number of logical CPU cores.</li>
-      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-      <li><b>CPU worker task count: </b> The number of CPU workers used to calculate deadlines. In cae only GPU is to be used for deadlines
-      calculation, this parameter should be set to 0. For optimal performance match the sum of all worker tasks (CPU + GPU) to the number of hard disks.</li>
-      <div class="text-info" role="alert">Default value: <strong>4</strong>.</div>
-      <li><b>CPU nonces per cache: </b> To set the amount of RAM used for nonce caching, use the following configuration file line, which refers to number
-        of nonces to be read at once for processing. To view the estimated usage of RAM, click outside the form field, and
-       the estimate will be shown. </li>
-      <div class="text-info" role="alert">Default value: <strong>65536</strong>.</div>
-      <li><b>CPU thread pinning: </b> Set to "yes" in order to use as many worker threads as there are CPU cores. </li>
-      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
-     </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="gpuSettings">
-    <div class="col">
-    <div class="shadow p-3 mb-5 bg-light rounded border">
-    <h4>GPU settings</h4>
-    <div class="row">
-    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
-    <div class="card-body">
-    <div formGroupName="gpu_settings" class="card-body">
-    <div class="form-group row">
-    <label for="gpu_threads" class="col-sm-5 col-form-label">GPU threads:</label>
-    <input formControlName="gpu_threads" id="gpu_threads" type="text" placeholder="0"
-     class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_threads && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_threads }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="gpu_worker_task_count" class="col-sm-5 col-form-label">GPU worker task count:</label>
-    <input formControlName="gpu_worker_task_count" id="gpu_worker_task_count" type="text" placeholder="0"
-      class="form-control col-2" (blur)="logValidationErrors(); gpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold"
-     *ngIf="formErrors.gpu_worker_task_count && (gpu_settings.get('gpu_worker_task_count').touched || gpu_settings.get('gpu_threads').touched) && (formErrors.display == 'true')">
-     <p><i class="material-icons small" style="text-align: left">error</i>
-     {{ formErrors.gpu_worker_task_count }}</p>
-    </div>
-    <div class="text-info"
-    *ngIf="formInfo.gpu_worker_task_count && gpu_settings.get('gpu_worker_task_count').touched && gpu_settings.valid && (formInfo.display == 'true')">
-    <p><i class="material-icons small" style="text-align: left">info</i>
-    {{ formInfo.gpu_worker_task_count }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="gpu_platform" class="col-sm-5 col-form-label">GPU platform:</label>
-    <input formControlName="gpu_platform" id="gpu_platform" type="text" placeholder="0"
-     class="form-control col-2" (blur)="logValidationErrors()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_platform && (formErrors.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_platform }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="gpu_device" class="col-sm-5 col-form-label">GPU device:</label>
-    <input formControlName="gpu_device" id="gpu_device" type="text" placeholder="0"
-    class="form-control col-2" (blur)="logValidationErrors()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_device && (formErrors.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_device }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="gpu_nonces_per_cache" class="col-sm-5 col-form-label">GPU nonces per cache:</label>
-    <input formControlName="gpu_nonces_per_cache" id="gpu_nonces_per_cache" type="text" placeholder="262144"
-      class="form-control col-4" (blur)="logValidationErrors(); gpuNonces()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_nonces_per_cache && (formErrors.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_nonces_per_cache }}</p>
-    </div>
-    <div class="text-info"
-      *ngIf="formInfo.gpu_nonces_per_cache && gpu_settings.touched && gpu_settings.get('gpu_worker_task_count').valid && gpu_settings.get('gpu_threads').valid && (formInfo.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">info</i>
-      {{ formInfo.gpu_nonces_per_cache }}</p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">GPU memory mapping:</label>
-    <div class="form-check-inline">
-    <label for="gpu_mem_mapping" class="form-check-label">
-    <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping1" type="radio" class="form-check-input"
-     name="gpu_mem_mapping" value="true" (blur)="logValidationErrors()">Yes
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="gpu_mem_mapping" class="form-check-label">
-    <input formControlName="gpu_mem_mapping" id="gpu_mem_mapping2" type="radio" class="form-check-input" name="gpu_mem_mapping"
-    value="false" checked >No</label>
-    </div>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_mem_mapping && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_mem_mapping }}</p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">GPU async: </label>
-    <div class="form-check-inline">
-    <label for="gpu_async" class="form-check-label">
-    <input formControlName="gpu_async" id="gpu_async1" type="radio" class="form-check-input"
-     name="gpu_async" value="true" (blur)="logValidationErrors(); gpuNonces()">Yes
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="gpu_async" class="form-check-label">
-    <input formControlName="gpu_async" id="gpu_async2" type="radio" class="form-check-input"
-     name="gpu_async" value="false" (blur)="logValidationErrors(); gpuNonces()" checked>No
-    </label>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.gpu_async && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.gpu_async }}</p>
-    </div>
-    </div>
-    <div class="text-warning font-weight-bold"
-      *ngIf="formWarning.miners_off && gpu_settings.valid && cpu_settings.valid && (formWarning.display == 'true')">
-      <p><i class="material-icons small" style="text-align: left">warning</i>
-      {{ formWarning.miners_off }}</p>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
-    <ul class="small">
-    <li><b>GPU threads:</b> Number of GPU threads to use. Lower values show better performance.
-    For integrated GPUs try the setting 1, for dedicated GPUs 1-4.</li>
-      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-    <li><b>GPU worker task count: </b>Refers to the number of threads used for GPU processing. In case no
-       GPU is available on the system or it shouldn't be used, users should leave the default setting of 0.</li>
-      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-    <li><b>GPU platform: </b>GPU platform information. <br>To list GPUs available on the system, users can run Scavenger with CLI option -o,
-      and the Scavenger will display available GPU platforms and devices.
-      It will also hint the ideal multiplier for the GPU nonce per cache setting.</li>
-      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-    <li><b>GPU device: </b>GPU device information. The way to find out the GPU device is described above.</li>
-      <div class="text-info" role="alert">Default value: <strong>0</strong>.</div>
-    <li><b>GPU nonces per cache: </b> GPU nonces per cache setting can improve the miner performance on some systems.
-      It is practically impossible to give a general recommendation about this setting,
-      as the performance depends on CPU settings and the overall system capability. Users can change this setting
-      and observe how it will affect the performance, and adapt both this and the CPU nonces per cache setting until
-      they reach the desired performance. To see the estimated RAM usage, click outside the form field after the
-       parameter has been provided. Note that the GPU async setting also affects the RAM usage.</li>
-      <div class="text-info" role="alert">Default value: <strong>262144</strong>.</div>
-    <li><b>GPU memory mapping: </b>Enabling memory mapping can result in ZeroCopyBuffers for CPU, in setups with integrated
-    GPUs, and it may speed up the data transfer on certain GPUs. The feature should be disabled for dedicated GPUs.</li>
-      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
-    <li><b>GPU async: </b> When set to "yes", it enables asynchronous data transfer and hashing, which may improve the
-     performance of dedicated GPUs. The feature should be disabled for integrated GPUs.</li>
-      <div class="text-info" role="alert">Default value: <strong>no</strong>.</div>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="loggingSettings">
-    <div class="col">
-    <div class="shadow p-3 mb-5 bg-light rounded border">
-    <h4>Logging settings</h4>
-    <div class="row">
-    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}" >
-    <div class="card-body" formGroupName="logging_settings">
-    <div class="form-group row">
-    <label for="console_log_level" class="col-sm-5 col-form-label">Console log settings:</label>
-    <select formControlName="console_log_level" class="form- col-6" (blur)="logValidationErrors()">
-      <option name="console_log_level" value="off">Off</option>
-      <option name="console_log_level" value="error">Error</option>
-      <option name="console_log_level" value="warn">Warn</option>
-      <option name="console_log_level" value="info" selected>Info</option>
-      <option name="console_log_level" value="debug">Debug</option>
-      <option name="console_log_level" value="trace">Trace</option>
-    </select>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.console_log_level && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.console_log_level }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="logfile_log_level" class="col-sm-5 col-form-label">Logfile settings:</label>
-    <select formControlName="logfile_log_level" class="form- col-6" (blur)="logValidationErrors()">
-      <option name="logfile_log_level" value="off">Off</option>
-      <option name="logfile_log_level" value="error">Error</option>
-      <option name="logfile_log_level" value="warn" selected>Warn</option>
-      <option name="logfile_log_level" value="info">Info</option>
-      <option name="logfile_log_level" value="debug">Debug</option>
-      <option name="logfile_log_level" value="trace">Trace</option>
-    </select>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_log_level && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.logfile_log_level }}</p>
-    </div>
-    <div class="form-group row">
-    <label for="logfile_max_count" class="col-sm-5 col-form-label">Number of log files to keep:</label>
-    <input formControlName="logfile_max_count" id="logfile_max_count" type="text" placeholder="10"
-      class="form-control col-2" (blur)="logValidationErrors()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_count && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.logfile_max_count }} </p>
-    </div>
-    <div class="form-group row">
-    <label for="logfile_max_size" class="col-sm-5 col-form-label">Log file size [MiB]:</label>
-    <input formControlName="logfile_max_size" id="logfile_max_size" type="text" placeholder="20"
-      class="form-control col-2" (blur)="logValidationErrors()">
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors.logfile_max_size && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: left">error</i>
-      {{ formErrors.logfile_max_size }}</p>
-    </div>
-   <div class="text-info"
-    *ngIf="formInfo.logging_settings && logging_settings.valid && logging_settings.touched && (formInfo.display == 'true')">
-    <p><i class="material-icons small" style="text-align: left">info</i>
-    {{ formInfo.logging_settings }}</p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Console log pattern:</label>
-    <div class="form-check-inline">
-    <label for="console_log_pattern" class="form-check-label">
-    <input formControlName="console_log_pattern" id="console_log_pattern1" type="radio"
-     class="form-check-input" name="console_log_pattern" value="low_noise"
-    (blur)="logValidationErrors()">Low noise
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="console_log_pattern" class="form-check-label">
-    <input formControlName="console_log_pattern" id="console_log_pattern2" type="radio"
-     class="form-check-input" name="console_log_pattern" value="detailed" checked>Detailed
-    </label>
-    </div>
-    <div class="text-danger font-weight-bold"
-    *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
-    <p><i class="material-icons small" style="text-align: center">error</i>
-    {{ formErrors.console_log_pattern }} </p>
-    </div>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Logfile log pattern:</label>
-    <div class="form-check-inline">
-    <label for="logfile_log_pattern" class="form-check-label">
-    <input formControlName="logfile_log_pattern" id="logfile_log_pattern1" type="radio"
-      class="form-check-input" name="logfile_log_pattern" value="low_noise"
+      {{ formInfo.logging_settings }}</p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Console log pattern:</label>
+      <div class="form-check-inline">
+      <label for="console_log_pattern" class="form-check-label">
+      <input formControlName="console_log_pattern" id="console_log_pattern1" type="radio"
+       class="form-check-input" name="console_log_pattern" value="low_noise"
       (blur)="logValidationErrors()">Low noise
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="logfile_log_pattern" class="form-check-label">
-    <input formControlName="logfile_log_pattern" id="logfile_log_pattern2" type="radio"
-      class="form-check-input" name="logfile_log_pattern" value="detailed" checked>Detailed
-    </label>
-    </div>
-    <div class="text-danger font-weight-bold"
-    *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
-    <p><i class="material-icons small" style="text-align: center">error</i>
-    {{ formErrors.logfile_log_pattern }} </p>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="col-6" [hidden]="formDocumentation.display == 'false'">
-    <ul class="small">
-      <li><b>Console log settings:</b> Defines the level of details shown in the console once Scavenger is running.</li>
-        <div class="text-info" role="alert">Default value: <strong>Info</strong></div>
-      <li><b>Logfile settings </b>Defines the level of details written in logfiles.</li>
-        <div class="text-info" role="alert">Default value: <strong>Warn</strong></div>
-      <ul>Options available for logging:
-        <li><b>Off</b> No information will be displayed/logged. User are strongly advised against
-           using this setting.</li>
-        <li><b>Error</b> Information will be shown in the console or log will only when an error occurs.</li>
-        <li><b>Warn</b> Warning and error information will be displayed/logged.</li>
-        <li><b>Info</b> Shows/writes information on regular processes, including warnings and errors.</li>
-        <li><b>Debug</b> Includes errors, warnings, regular information on processes and additional information
-           relevant for debugging. Note that this setting will increase significantly the size of log files,
-           and provides information of very little use to users with no development related skills</li>
-        <li><b>Trace</b> Includes all above listed information with additional information regarding application
-          process execution. Same as the "Debug" level - it significantly increases the size of log files and
-          includes information relevant for development and optimization.</li>
-         The general recommendation for the user who wishes to mine, without getting into the application
-          structure and its working cycles, the "Info" level should provide enough information to monitor
-          the application and the mining process. In case of repeated errors, unrelated to configuration
-          and pool/wallet accessibility errors, the "Debug" setting can be turned on, to provide enough
-          information to supporting developers.
-      </ul>
-      <li><b>Number of log files to keep: </b>Sets the number of logfiles that will be available on the system.</li>
-        <div class="text-info" role="alert">Default value: <strong>10</strong></div>
-      <li><b>Log file size [MiB]: </b>Sets the maximum size of a log file. Once the log file reaches the configured size,
-      a new file will be written.</li>
-        <div class="text-info" role="alert">Default value: <strong>20</strong></div>
-      <li><b>Console log pattern: </b>The formatting used to write information to the console.</li>
-        <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
-      <li><b>Logfile log pattern: </b>The formatting used to write information to logfiles.</li>
-        <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="displaySettings">
-    <div class="col">
-    <div class="shadow p-3 mb-5 bg-light rounded border">
-    <h4>Display and benchmark settings</h4>
-    <div class="row">
-    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
-    <div class="card-body">
-    <div formGroupName="display_settings">
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Show progress:</label>
-    <div class="form-check-inline">
-    <label for="show_progress" class="form-check-label">
-    <input formControlName="show_progress" id="show_progress1" type="radio" class="form-check-input"
-      name="show_progress" value="true" checked (blur)="logValidationErrors()">Yes
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="show_progress" class="form-check-label">
-    <input formControlName="show_progress" id="show_progress2" type="radio" class="form-check-input"
-      name="show_progress" value="false">No
-    </label>
-    </div>
-    </div>
-    <div class="text-danger small" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: center">error</i>
-      {{ formErrors.show_progress }} </p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label">Show drive statistics:</label>
-    <div class="form-check-inline">
-    <label for="show_drive_stats" class="form-check-label">
-    <input formControlName="show_drive_stats" id="show_drive_stats1" type="radio"
-      class="form-check-input" name="show_drive_stats" value="true" (blur)="logValidationErrors()">Yes
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="show_drive_stats" class="form-check-label">
-    <input formControlName="show_drive_stats" id="show_drive_stats2" type="radio"
-      class="form-check-input" name="show_drive_stats" value="false" checked>No
-    </label>
-    </div>
-    </div>
-    <div class="text-danger small" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: center">error</i>
-      {{ formErrors.show_drive_stats }} </p>
-    </div>
-    <div class="form-group row">
-    <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
-    <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-    <input formControlName="benchmark_only" id="benchmark_only1" type="radio" class="form-check-input"
-      name="benchmark_only" value="disabled" checked (blur)="logValidationErrors()">Disabled
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-    <input formControlName="benchmark_only" id="benchmark_only2" type="radio" class="form-check-input"
-     name="benchmark_only" value="I/O">I/O
-    </label>
-    </div>
-    <div class="form-check-inline">
-    <label for="benchmark_only" class="form-check-label">
-    <input formControlName="benchmark_only" id="benchmark_only3" type="radio" class="form-check-input"
-    name="benchmark_only" value="XPU">XPU
-    </label>
-    </div>
-    </div>
-    <div class="text-danger small" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: center">error</i>
-   {{ formErrors.benchmark_only }}</p>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="col-6"  [hidden]="formDocumentation.display == 'false'">
-    <ul class="small">
-      <li><b>Show progress:</b> When enabled, shows the progress and the speed of processing plot files.</li>
-        <div class="text-info" role="alert">Default value: <strong>Yes</strong></div>
-      <li><b>Show drive statistics:</b> When enabled, shows the statistics of processed hard drives.</li>
-        <div class="text-info" role="alert">Default value: <strong>No</strong></div>
-      <li><b>Benchmark: </b>If enabled, will run Scavenger in benchmark mode - without sending deadlines.The
-      I/O option is used to test the maximum HDD reading speed. The XPU option is used for benchmarking
-    the hashing speed.</li>
-    <div class="text-info" role="alert">Default value: <strong>Disabled</strong></div>
-        <ul>For optimal performance in cases where both CPU and GPU mining is enabled, users are strongly
-          advised to first run a benchmark and set the productive configuration based on results of it. One of
-          the ways to complete the benchmark is:
-          <li>optimizing CPU by setting the hdd_reader parameter to the number of hard drives with plot files,</li>
-          <li>proceed by setting the cpu_worker_thread_count value between the number of cores and hdd_reader and
-            observe the performance depending on the settings,</li>
-          <li>optimize GPU (in GPU only scenario) by setting the value of gpu_worker_thread_count to values between 1
-            and hdd_reader,</li>
-          <li>experiment with gpu_nonces_per_cache and cpu_nonces_per_cache depending on available resources,</li>
-          <li>combine the CPU and GPU results in order to find the configuration for optimal performance.</li>
-        </ul>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    <div class="row collapse multi-collapse" style="margin-top: -35px;" id="additionalHeaders">
-    <div class="col">
-    <div class="shadow p-3 mb-5 bg-light rounded border">
-    <h4>Additional headers</h4>
-    <div class="row">
-    <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
-    <div class="card-body">
-    <label>Additional headers:</label><br>
-    <div formArrayName="additional_headers" style="margin-top: 2px">
-    <div *ngFor="let additionaHeader of additionalHeaderForms.controls; let i=index" [formGroupName]="i">
-    <p><input [id]="'header_key'+i" type="text" placeholder="Key" formControlName="header_key"
-     class="form-control-sm col-4" (blur)="logValidationErrors()">
-    <input [id]="'header_value'+i" type="text" placeholder="Value" formControlName="header_value"
-    class="form-control-sm col-6" (blur)="logValidationErrors()">&nbsp;
-    <button type="button" class="btn-sm btn-danger" (click)="deleteAdditionalHeader(i)">
-    <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
-    </button><br>
-    </p>
-    </div>
-    <div class="text-danger font-weight-bold"
-      *ngIf="formErrors?.header_key && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="console_log_pattern" class="form-check-label">
+      <input formControlName="console_log_pattern" id="console_log_pattern2" type="radio"
+       class="form-check-input" name="console_log_pattern" value="detailed" checked>Detailed
+      </label>
+      </div>
+      <div class="text-danger font-weight-bold"
+      *ngIf="formErrors.console_log_pattern && (formErrors.display == 'true')">
       <p><i class="material-icons small" style="text-align: center">error</i>
-      {{ formErrors.header_key }} </p>
-    </div>
-    <div class="text-danger font-weight-bold" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
-        <p><i class="material-icons small" style="text-align: center">error</i>
-      {{ formErrors.header_value }} </p>
-    </div>
-    </div>
-    <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
-    class="btn btn-dark" (click)="addAdditionalHeader()">Add additional header</button>
-    </div>
-    </div>
-    <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
-    <ul class="small">
-      <li><b>Additional headers:</b> The setting allows the entry of arbitrary key/value pairs, that can be sent to the wallet or pool.</li>
+      {{ formErrors.console_log_pattern }} </p>
+      </div>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Logfile log pattern:</label>
+      <div class="form-check-inline">
+      <label for="logfile_log_pattern" class="form-check-label">
+      <input formControlName="logfile_log_pattern" id="logfile_log_pattern1" type="radio"
+        class="form-check-input" name="logfile_log_pattern" value="low_noise"
+        (blur)="logValidationErrors()">Low noise
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="logfile_log_pattern" class="form-check-label">
+      <input formControlName="logfile_log_pattern" id="logfile_log_pattern2" type="radio"
+        class="form-check-input" name="logfile_log_pattern" value="detailed" checked>Detailed
+      </label>
+      </div>
+      <div class="text-danger font-weight-bold"
+      *ngIf="formErrors.logfile_log_pattern && (formErrors.display == 'true')">
+      <p><i class="material-icons small" style="text-align: center">error</i>
+      {{ formErrors.logfile_log_pattern }} </p>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+      <ul class="small">
+        <li><b>Console log settings:</b> Defines the level of details shown in the console once Scavenger is running.</li>
+          <div class="text-info" role="alert">Default value: <strong>Info</strong></div>
+        <li><b>Logfile settings </b>Defines the level of details written in logfiles.</li>
+          <div class="text-info" role="alert">Default value: <strong>Warn</strong></div>
+        <ul>Options available for logging:
+          <li><b>Off</b> No information will be displayed/logged. User are strongly advised against
+             using this setting.</li>
+          <li><b>Error</b> Information will be shown in the console or log will only when an error occurs.</li>
+          <li><b>Warn</b> Warning and error information will be displayed/logged.</li>
+          <li><b>Info</b> Shows/writes information on regular processes, including warnings and errors.</li>
+          <li><b>Debug</b> Includes errors, warnings, regular information on processes and additional information
+             relevant for debugging. Note that this setting will increase significantly the size of log files,
+             and provides information of very little use to users with no development related skills</li>
+          <li><b>Trace</b> Includes all above listed information with additional information regarding application
+            process execution. Same as the "Debug" level - it significantly increases the size of log files and
+            includes information relevant for development and optimization.</li>
+           The general recommendation for the user who wishes to mine, without getting into the application
+            structure and its working cycles, the "Info" level should provide enough information to monitor
+            the application and the mining process. In case of repeated errors, unrelated to configuration
+            and pool/wallet accessibility errors, the "Debug" setting can be turned on, to provide enough
+            information to supporting developers.
+        </ul>
+        <li><b>Number of log files to keep: </b>Sets the number of logfiles that will be available on the system.</li>
+          <div class="text-info" role="alert">Default value: <strong>10</strong></div>
+        <li><b>Log file size [MiB]: </b>Sets the maximum size of a log file. Once the log file reaches the configured size,
+        a new file will be written.</li>
+          <div class="text-info" role="alert">Default value: <strong>20</strong></div>
+        <li><b>Console log pattern: </b>The formatting used to write information to the console.</li>
+          <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
+        <li><b>Logfile log pattern: </b>The formatting used to write information to logfiles.</li>
+          <div class="text-info" role="alert">Default value: <strong>Low noise</strong></div>
+      </ul>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="row multi-collapse"  id="displaySettings">
+      <div class="col">
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>Display and benchmark settings</h4>
+      <div class="row">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+      <div class="card-body">
+      <div formGroupName="display_settings">
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Show progress:</label>
+      <div class="form-check-inline">
+      <label for="show_progress" class="form-check-label">
+      <input formControlName="show_progress" id="show_progress1" type="radio" class="form-check-input"
+        name="show_progress" value="true" checked (blur)="logValidationErrors()">Yes
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="show_progress" class="form-check-label">
+      <input formControlName="show_progress" id="show_progress2" type="radio" class="form-check-input"
+        name="show_progress" value="false">No
+      </label>
+      </div>
+      </div>
+      <div class="text-danger small" *ngIf="formErrors.show_progress && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: center">error</i>
+        {{ formErrors.show_progress }} </p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label">Show drive statistics:</label>
+      <div class="form-check-inline">
+      <label for="show_drive_stats" class="form-check-label">
+      <input formControlName="show_drive_stats" id="show_drive_stats1" type="radio"
+        class="form-check-input" name="show_drive_stats" value="true" (blur)="logValidationErrors()">Yes
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="show_drive_stats" class="form-check-label">
+      <input formControlName="show_drive_stats" id="show_drive_stats2" type="radio"
+        class="form-check-input" name="show_drive_stats" value="false" checked>No
+      </label>
+      </div>
+      </div>
+      <div class="text-danger small" *ngIf="formErrors.show_drive_stats && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: center">error</i>
+        {{ formErrors.show_drive_stats }} </p>
+      </div>
+      <div class="form-group row">
+      <label class="col-sm-5 col-form-label" for="benchmark_only">Benchmark:</label>
+      <div class="form-check-inline">
+      <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only1" type="radio" class="form-check-input"
+        name="benchmark_only" value="disabled" checked (blur)="logValidationErrors()">Disabled
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only2" type="radio" class="form-check-input"
+       name="benchmark_only" value="I/O">I/O
+      </label>
+      </div>
+      <div class="form-check-inline">
+      <label for="benchmark_only" class="form-check-label">
+      <input formControlName="benchmark_only" id="benchmark_only3" type="radio" class="form-check-input"
+      name="benchmark_only" value="XPU">XPU
+      </label>
+      </div>
+      </div>
+      <div class="text-danger small" *ngIf="formErrors.benchmark_only && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: center">error</i>
+     {{ formErrors.benchmark_only }}</p>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="col-6"  [hidden]="formDocumentation.display !== 'true'">
+      <ul class="small">
+        <li><b>Show progress:</b> When enabled, shows the progress and the speed of processing plot files.</li>
+          <div class="text-info" role="alert">Default value: <strong>Yes</strong></div>
+        <li><b>Show drive statistics:</b> When enabled, shows the statistics of processed hard drives.</li>
+          <div class="text-info" role="alert">Default value: <strong>No</strong></div>
+        <li><b>Benchmark: </b>If enabled, will run Scavenger in benchmark mode - without sending deadlines.The
+        I/O option is used to test the maximum HDD reading speed. The XPU option is used for benchmarking
+      the hashing speed.</li>
       <div class="text-info" role="alert">Default value: <strong>Disabled</strong></div>
-    </ul>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
-  </form>
+          <ul>For optimal performance in cases where both CPU and GPU mining is enabled, users are strongly
+            advised to first run a benchmark and set the productive configuration based on results of it. One of
+            the ways to complete the benchmark is:
+            <li>optimizing CPU by setting the hdd_reader parameter to the number of hard drives with plot files,</li>
+            <li>proceed by setting the cpu_worker_thread_count value between the number of cores and hdd_reader and
+              observe the performance depending on the settings,</li>
+            <li>optimize GPU (in GPU only scenario) by setting the value of gpu_worker_thread_count to values between 1
+              and hdd_reader,</li>
+            <li>experiment with gpu_nonces_per_cache and cpu_nonces_per_cache depending on available resources,</li>
+            <li>combine the CPU and GPU results in order to find the configuration for optimal performance.</li>
+          </ul>
+      </ul>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
+      <div class="row multi-collapse"  id="additionalHeaders">
+      <div class="col">
+      <div class="shadow-sm p-3 mb-5 bg-light rounded border">
+      <h4>Additional headers</h4>
+      <div class="row">
+      <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
+      <div class="card-body">
+      <label>Additional headers:</label><br>
+      <div formArrayName="additional_headers" style="margin-top: 2px">
+      <div *ngFor="let additionaHeader of additionalHeaderForms.controls; let i=index" [formGroupName]="i">
+      <p><input [id]="'header_key'+i" type="text" placeholder="Key" formControlName="header_key"
+       class="form-control-sm col-4" (blur)="logValidationErrors()">
+      <input [id]="'header_value'+i" type="text" placeholder="Value" formControlName="header_value"
+      class="form-control-sm col-6" (blur)="logValidationErrors()">&nbsp;
+      <button type="button" class="btn-sm btn-danger" (click)="deleteAdditionalHeader(i)">
+      <i class="material-icons small" style="text-align: right; font-weight: bolder">clear</i>
+      </button><br>
+      </p>
+      </div>
+      <div class="text-danger font-weight-bold"
+        *ngIf="formErrors?.header_key && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
+        <p><i class="material-icons small" style="text-align: center">error</i>
+        {{ formErrors.header_key }} </p>
+      </div>
+      <div class="text-danger font-weight-bold" *ngIf="formErrors?.header_value  && additionalHeaderForms.invalid && additionalHeaderForms.touched && (formErrors.display == 'true')">
+          <p><i class="material-icons small" style="text-align: center">error</i>
+        {{ formErrors.header_value }} </p>
+      </div>
+      </div>
+      <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
+      class="btn btn-dark" (click)="addAdditionalHeader()">Add additional header</button>
+      </div>
+      </div>
+      <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
+      <ul class="small">
+        <li><b>Additional headers:</b> The setting allows the entry of arbitrary key/value pairs, that can be sent to the wallet or pool.</li>
+        <div class="text-info" role="alert">Default value: <strong>Disabled</strong></div>
+      </ul>
+      </div>
+      </div>
+      </div>
+      </div>
+      </div>
 
-  <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-bottom">
+    </form>
+    </div>
+
+  </div>
+</div>
+
+  <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-bottom border-top">
        <div [formGroup]="gui_settings">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="checkbox" id="validator_messages" value="true" checked
@@ -905,24 +941,7 @@
 
 
 
-      <div class="btn-toolbar float-left" role="toolbar">
-          <div class="btn-group mr-2" role="group">
-            <button type="button" class="btn btn-primary"><i class="material-icons small"
-                style="text-align: center">book</i>&nbsp;Gyra Guide</button>
-            <button type="button" class="btn btn-primary" (click)="resetConfig(configForm)"><i class="material-icons small"
-                style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>
-            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-              type="button" class="btn btn-primary" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
-                class="material-icons small" style="text-align: center">open_in_new</i>&nbsp;Preview configuration</button>
-            <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
-              type="button" class="btn btn-primary" (click)="exportConfig()"><i class="material-icons small"
-                style="text-align: center">get_app</i>&nbsp;Export
-              .yaml</button>
-            <button type="button" class="btn btn-primary"><i class="material-icons small"
-                style="text-align: center">bolt</i>&nbsp;Start
-              Scavenger</button>
-          </div>
-        </div>
+
         <!--
 <br> <br>
       Form: <p>{{ configForm.value | json }}</p> <br>

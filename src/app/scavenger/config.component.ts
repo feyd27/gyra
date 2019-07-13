@@ -367,7 +367,7 @@ export class ConfigComponent implements OnInit {
         validator_messages: [true, [Validators.required]],
         info_messages: [true, [Validators.required]],
         warning_messages: [true, [Validators.required]],
-        documentation: [true, [Validators.required]]
+        documentation: [false, [Validators.required]]
       })
     });
 
@@ -485,7 +485,7 @@ export class ConfigComponent implements OnInit {
     } else {
       this.formWarning.display = 'false';
     }
-    if (guiDocumentation == true) {
+    if (guiDocumentation === true) {
       this.formDocumentation.display = 'true';
     } else {
       this.formDocumentation.display = 'false';
