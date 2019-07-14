@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
-            <button type="button" class="btn btn-dark font-weight-bolder"><i class="material-icons small text-success"
+            <button type="button" class="btn btn-dark font-weight-bolder" data-toggle="collapse" data-target="#startGyra" aria-expanded="false" aria-controls="startGyra"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
@@ -25,10 +25,10 @@
     <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
       <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">Quick Setup</button>
       <button class="btn btn-dark btn-block text-left font-weight-bold" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="accountSettings miningSettings minerSettings cpuSettings gpuSettings loggingSettings displaySettings additionalHeaders">Expert Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only setup</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#poolWallet" aria-expanded="true" aria-controls="poolWallet">Pool & Wallet</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#plotDirectory" aria-expanded="true" aria-controls="plotDirectory">Plot Files</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
+      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>
@@ -41,10 +41,93 @@
   <!-- Structure End -->
     </div>
     <div class="col-9" style="margin-top: -35px;">
+      <div class="row multi-collapse show" id="startGyra">
+        <div class="col">
+                <div class="card">
+               <h5 class="card-header bg-dark text-light">
+                 What is Gyra?
+               </h5>
+               <div class="card-body">
+                 Gyra is a tool that allows you to create formally valid and logically consistent
+                 configuration files for the Proof of Capacity miner Scavenger.<br>
+                The configuration file used by Scavenger and created by Gyra is a .yaml file, which
+                you can download in your browser and save it in the root directory where the Scavenger
+                 executable is placed.</div>
+                 <div class="card-footer"><i class="material-icons small">get_app</i>&nbsp;<a class="text-dark font-weight-bold text-decoration-none" href="https://github.com/PoC-Consortium/scavenger/releases">Download the Scavenger from the PoCC Github.</a></div>
+               </div><br>
+               <div class="card">
+                  <h5 class="card-header bg-dark text-light">
+                    Security
+                  </h5>
+                  <div class="card-body">
+                    Gyra is a front-end tool, with no back-end. All of the data inserted into the configuration form
+                  is processed only by built-in form validators. None of it is stored or sent outside the form. Gyra makes no HTTP requests whatsoever.</div>
+                    <div class="card-footer text-dark font-weight-bold"><i class="material-icons small">security</i>&nbsp;Your mining account information is absolutely safe.</div>
+                  </div><br>
+               <div class="card">
+                  <h5 class="card-header bg-dark text-light">
+                    Features
+                  </h5>
+                  <div class="card-body">
+                    <ul>
+                      <li class="toast-header font-weight-bold">Different config options</li>
+                      <span>
+                        <br><p><i class="material-icons small text-success">star</i>&nbsp; <strong>Quick Setup:</strong> provide only the bare minimum - pool/wallet settings and plot directory paths, and you're good to mine.
+                        The rest of the configuration is populated by recommended default mining settings with CPU only.</p>
+                        <p><i class="material-icons small text-success">star</i>&nbsp; <strong>Expert Setup:</strong> go through all configuration parameters and set each to
+                          your liking and hardware mining setup capabilities.</p>
+                        <p><i class="material-icons small text-success">star</i>&nbsp; <strong>CPU-only Setup:</strong> configure only your pool/wallet, plot directories and CPU settings, and
+                          keep other parameters at recommended default values.</p>
+                        <p><i class="material-icons small text-success">star</i>&nbsp; <strong>GPU-only Setup:</strong> provide your pool/wallet information, paths to plot directories and configure
+                          the GPU you wish to mine with. All other configuration parameters are kept at default values, with the CPU switched off.</p>
+                      </span>
+                      <li class="toast-header font-weight-bold">Instructions and documentation</li>
+                      <span>
+                          <br>
+                          <p><i class="material-icons small text-success">star</i>&nbsp; <strong>The top toolbar:</strong> use the buttons to reset the configuration, preview and export it.
+                          Note that the buttons for configuration preview and export will be disabled as long as the provided settings contain parameters that
+                        are invalid or would create a logically inconsistent mining configuration.</p>
+                          <p><i class="material-icons small text-success">star</i>&nbsp; <strong>The bottom toolbar:</strong> set the level of application
+                          feedback you need and read detailed information about specific Scavenger parameters.</p>
+                          <p><i class="material-icons small text-danger">error</i>&nbsp; <strong class="text-danger">Validation messages:</strong> each time a provided
+                            parameter formally doesn't comply with the configuration (e.g. a letter instead of a number), a validation message will be
+                            shown and the entry disabled. Once the error is corrected, the validation message will be cleared.</p>
+                          <p><i class="material-icons small text-info">info</i>&nbsp; <strong class="text-info">Info messages:</strong> will be shown to indicate the estimated
+                            resource consumption - such as RAM usage with some settings.</p>
+                          <p><i class="material-icons small text-warning">warning</i>&nbsp; <strong class="text-warning">Warning messages:</strong> will be shown each time the parameters are
+                            formally correct but make no sense (e.g. switching off both CPU and GPU in a configuration).</p>
+                         <p><i class="material-icons small text-dark">help</i>&nbsp; <strong class="text-dark">Documentation:</strong> shows detailed information about specific parameters and
+                          their relevance in the context of the Scavenger Proof of Capacity miner.</p>
+                        </span>
+                    </ul>
+                    </div>
+                   <div class="card-footer text-dark font-weight-bold"><i class="material-icons small">feedback</i>&nbsp;Share your feedback and improvements suggestions in the FeydLabs discord.</div>
+                  </div><br>
+                  <div class="card">
+                      <h5 class="card-header bg-dark text-light">
+                        Who made dis?
+                      </h5>
+                      <div class="card-body">
+                        Gyra is an open-source <b class="text-success">FeydLabs</b> project, intended to make Proof of Capacity mining easier for miners. <br>
+                      Other engagements include writing technical documentation for PoC related software (<a href="https://github.com/PoC-Consortium/scavenger/wiki" class="text-dark font-weight-bold text-decoration-none">Scavenger user guide</a>, <a href="https://github.com/PoC-Consortium/engraver/wiki" class="text-dark font-weight-bold text-decoration-none">Engraver user guide</a>, <a href="https://github.com/PoC-Consortium/Helix/wiki/A-Guide-To-Helix:-Creating-Plot-Files-With-Compressor-And-Crispr" class="text-dark font-weight-bold text-decoration-none">Helix Wiki</a>,
+                      <a href="https://github.com/PoC-Consortium/aggregator/wiki" class="text-dark font-weight-bold text-decoration-none">Aggregator user guide</a>), less technical <a href="https://medium.com/@feyd27" class="text-dark font-weight-bold text-decoration-none">articles about cryptocurrencies</a> and
+                      some Wikipedia articles (<a href="https://en.wikipedia.org/wiki/Stablecoin" class="text-dark font-weight-bold text-decoration-none">Stablecoin</a> and <a href="https://en.wikipedia.org/wiki/Shabal" class="text-dark font-weight-bold text-decoration-none">Shabal</a>, among other contributions).
+                      <br>
+                        <ul>
+                            <li class="toast-header font-weight-bold">Meet the team</li>
+                            <span><br><img width="200px" src="./assets/cicler.jpg" alt="Cicler"></span>
+                        </ul>
+
+                      </div>
+                        <div class="card-footer text-dark font-weight-bold" ><i class="material-icons small">pets</i>&nbsp;Support the best cat: BURST-GZQ9-UC9P-XDBC-FJHML, ETH: 0x6d7350aff4e19bA4F73B02C353cB7c8bcB3Ff624</div>
+                      </div><br><br>
+              </div>
+            </div>
+
         <!--Form Start-->
   <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
       <!--Collapsibles start-->
-      <div class="row multi-collapse"  id="poolWallet">
+      <div class="row multi-collapse collapse"  id="poolWallet">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Pool and wallet settings</h4>
@@ -84,7 +167,7 @@
       </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="plotDirectory">
+      <div class="row multi-collapse collapse"  id="plotDirectory">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Plot directory settings</h4>
@@ -134,7 +217,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="accountSettings">
+      <div class="row multi-collapse collapse"  id="accountSettings">
         <div class="col">
           <div class="shadow-sm p-3 mb-5 bg-light rounded border">
           <h4>Account settings for solo mining</h4>
@@ -179,7 +262,7 @@
             </div>
           </div>
       </div>
-      <div class="row multi-collapse"  id="miningSettings">
+      <div class="row multi-collapse collapse"  id="miningSettings">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Mining settings</h4>
@@ -279,7 +362,7 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="minerSettings">
+      <div class="row multi-collapse collapse"  id="minerSettings">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Miner settings</h4>
@@ -348,7 +431,7 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="cpuSettings">
+      <div class="row multi-collapse collapse"  id="cpuSettings">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>CPU settings</h4>
@@ -444,7 +527,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="gpuSettings">
+      <div class="row multi-collapse collapse"  id="gpuSettings">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>GPU settings</h4>
@@ -586,7 +669,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="loggingSettings">
+      <div class="row multi-collapse collapse"  id="loggingSettings">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Logging settings</h4>
@@ -729,7 +812,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="displaySettings">
+      <div class="row multi-collapse collapse"  id="displaySettings">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Display and benchmark settings</h4>
@@ -830,7 +913,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="additionalHeaders">
+      <div class="row multi-collapse collapse"  id="additionalHeaders">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Additional headers</h4>
