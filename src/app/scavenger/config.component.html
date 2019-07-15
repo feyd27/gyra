@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-12"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
-            <button type="button" class="btn btn-dark font-weight-bolder" data-toggle="collapse" data-target="#startGyra" aria-expanded="false" aria-controls="startGyra"><i class="material-icons small text-success"
+            <button type="button" (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
@@ -23,10 +23,13 @@
     <div class="col-3">
       <!-- Structure Start-->
     <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">Quick Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="accountSettings miningSettings minerSettings cpuSettings gpuSettings loggingSettings displaySettings additionalHeaders">Expert Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+      <h5 class="text-light font-weight-bold">Setups To Go</h5>
+      <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="setupQuick()" type="button">Quick Setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="setupCpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
+      <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="setupGpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+      {{setupType}}
+      <br>
+      <h5 class="text-light font-weight-bold">Expert Setup</h5>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
       <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
@@ -41,7 +44,7 @@
   <!-- Structure End -->
     </div>
     <div class="col-9" style="margin-top: -35px;">
-      <div class="row multi-collapse show" id="startGyra">
+      <div class="row" id="startGyra" [hidden]="setupType">
         <div class="col">
                 <div class="card">
                <h5 class="card-header bg-dark text-light">
@@ -127,7 +130,7 @@
         <!--Form Start-->
   <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
       <!--Collapsibles start-->
-      <div class="row multi-collapse collapse"  id="poolWallet">
+      <div class="row multi-collapse"  id="poolWallet" [hidden]="!setupType" >
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Pool and wallet settings</h4>
@@ -167,7 +170,7 @@
       </div>
         </div>
       </div>
-      <div class="row multi-collapse collapse"  id="plotDirectory">
+      <div class="row multi-collapse"  id="plotDirectory" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Plot directory settings</h4>
@@ -217,7 +220,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse collapse"  id="accountSettings">
+      <div class="row multi-collapse"  id="accountSettings" [hidden]="!setupType">
         <div class="col">
           <div class="shadow-sm p-3 mb-5 bg-light rounded border">
           <h4>Account settings for solo mining</h4>
@@ -262,7 +265,7 @@
             </div>
           </div>
       </div>
-      <div class="row multi-collapse collapse"  id="miningSettings">
+      <div class="row multi-collapse"  id="miningSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Mining settings</h4>
@@ -362,7 +365,7 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse collapse"  id="minerSettings">
+      <div class="row multi-collapse"  id="minerSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Miner settings</h4>
@@ -431,7 +434,7 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse collapse"  id="cpuSettings">
+      <div class="row multi-collapse"  id="cpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>CPU settings</h4>
@@ -527,7 +530,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse collapse"  id="gpuSettings">
+      <div class="row multi-collapse"  id="gpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>GPU settings</h4>
@@ -669,7 +672,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse collapse"  id="loggingSettings">
+      <div class="row multi-collapse"  id="loggingSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Logging settings</h4>
@@ -812,7 +815,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse collapse"  id="displaySettings">
+      <div class="row multi-collapse"  id="displaySettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Display and benchmark settings</h4>
@@ -913,7 +916,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse collapse"  id="additionalHeaders">
+      <div class="row multi-collapse"  id="additionalHeaders" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Additional headers</h4>
@@ -1030,6 +1033,3 @@
       Form: <p>{{ configForm.value | json }}</p> <br>
         Warning: <p>{{ formWarning | json }}</p> <br>
         Error: <p>{{ formErrors | json }}</p> -->
-
-
-

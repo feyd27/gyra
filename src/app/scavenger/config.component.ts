@@ -11,7 +11,7 @@ import { stringify } from '@angular/core/src/util';
 })
 export class ConfigComponent implements OnInit {
 
-  configForm: FormGroup;
+   configForm: FormGroup;
 
   validationMessages = {
     url: {
@@ -308,6 +308,19 @@ export class ConfigComponent implements OnInit {
     zfadditional_headers: '',
   };
 
+  setupType = '';
+  setupQuick() {
+    this.setupType = 'quick';
+  }
+  setupCpu() {
+    this.setupType = 'cpu';
+  }
+  setupGpu() {
+    this.setupType = 'gpu';
+  }
+  clearSetupType() {
+    this.setupType = '';
+  }
 
   constructor(private fb: FormBuilder) { }
 
@@ -390,6 +403,7 @@ export class ConfigComponent implements OnInit {
     });
   }
   // Configuration form end
+
 
   // Getters
   get url() {
