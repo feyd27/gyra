@@ -1,9 +1,26 @@
 <!doctype html>
 <!-- Test Start-->
 <div class="container-fluid">
-  <div class="row">
-    <div class="col-12"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
-            <button type="button" (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"><i class="material-icons small text-success"
+    <div class="row">
+        <div class="col-3">
+      <div class="shadow p-3 mb-5 bg-light rounded border"><img src="./assets/gyra-xs.png" style="margin-left: 35px;">
+        <div class="card-header border float-right rounded" style="margin-right: 35px;">
+            <h6 class="align-baseline" style="padding-bottom: 5px; font-weight: bolder;">for Scavenger</h6>
+          <img src="./assets/scavenger.png" width="80px" style="margin-left: 15px;"><br>
+          <span class="badge badge-info align-items-center">v1.7.6</span>&nbsp;
+          <span class="badge badge-info align-items-center">v1.7.8</span>
+        </div>
+      </div>
+      </div>
+      <div class="col-9">A FeydLabs project.</div>
+      </div>
+
+
+  <div class="row" style="margin-top: -85px;">
+    <div class="col-3">&nbsp;</div>
+    <!-- Structure Start-->
+    <div class="col-9"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
+            <button type="button" active (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
@@ -20,29 +37,28 @@
     </div>
   <br><br>
   <div class="row" style="margin-top: -45px;">
-    <div class="col-3">
-      <!-- Structure Start-->
-    <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
-      <h5 class="text-light font-weight-bold">Setups To Go</h5>
-      <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="setupQuick()" type="button">Quick Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="setupCpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
-      <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="setupGpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
-      {{setupType}}
-      <br>
-      <h5 class="text-light font-weight-bold">Expert Setup</h5>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>
-      <button class="btn btn-dark btn-block text-left" type="button" data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>
-    </div>
-  <!-- Structure End -->
-    </div>
+<div class="col-3">
+  <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
+    <h5 class="text-light font-weight-bold">Setups To Go</h5>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupQuick()" type="button">Quick Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType();setupCpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupGpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+    <br>
+    <h5 class="text-light font-weight-bold">Expert Setup</h5>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>
+  </div>
+<!-- Structure End -->
+
+</div>
     <div class="col-9" style="margin-top: -35px;">
       <div class="row" id="startGyra" [hidden]="setupType">
         <div class="col">
@@ -73,16 +89,16 @@
                   </h5>
                   <div class="card-body">
                     <ul>
-                      <li class="toast-header font-weight-bold">Different config options</li>
+                      <li class="toast-header font-weight-bold">Setups to go</li>
                       <span>
                         <br><p><i class="material-icons small text-success">star</i>&nbsp; <strong>Quick Setup:</strong> provide only the bare minimum - pool/wallet settings and plot directory paths, and you're good to mine.
                         The rest of the configuration is populated by recommended default mining settings with CPU only.</p>
-                        <p><i class="material-icons small text-success">star</i>&nbsp; <strong>Expert Setup:</strong> go through all configuration parameters and set each to
-                          your liking and hardware mining setup capabilities.</p>
                         <p><i class="material-icons small text-success">star</i>&nbsp; <strong>CPU-only Setup:</strong> configure only your pool/wallet, plot directories and CPU settings, and
                           keep other parameters at recommended default values.</p>
                         <p><i class="material-icons small text-success">star</i>&nbsp; <strong>GPU-only Setup:</strong> provide your pool/wallet information, paths to plot directories and configure
                           the GPU you wish to mine with. All other configuration parameters are kept at default values, with the CPU switched off.</p>
+                        <p><i class="material-icons small text-success">star</i>&nbsp; <strong>Expert Setup:</strong> go through all configuration parameters and set each to
+                          your liking and hardware mining setup capabilities.</p>
                       </span>
                       <li class="toast-header font-weight-bold">Instructions and documentation</li>
                       <span>
@@ -130,7 +146,33 @@
         <!--Form Start-->
   <form [formGroup]="configForm" (ngSubmit)="onSubmit()">
       <!--Collapsibles start-->
-      <div class="row multi-collapse"  id="poolWallet" [hidden]="!setupType" >
+      <div class="card" [hidden]="setupType !== 'quick'">
+        <div class="card-header text-light" style="background-color: #c3a171;">
+          The quick setup requires the minimum information to create a valid mining setup. Just provide the pool address
+          and plot file directories and you're good to mine. Any additional setting can also be applied, or just keep the defaults.
+        </div>
+      </div>
+      <div class="card" [hidden]="setupType !== 'cpu'">
+        <div class="card-header text-light" style="background-color: #c3a171;">
+         For the CPU-only setup, configure only your pool/wallet, plot directories and CPU settings, and keep other parameters at
+         recommended default values. You can, however, modify any other configuration parameter.
+        </div>
+      </div>
+      <div class="card" [hidden]="setupType !== 'gpu'">
+        <div class="card-header text-light" style="background-color: #c3a171;">
+         For the GPU-only setup, configure only your pool/wallet, plot directories and GPU settings, and keep other parameters at
+         recommended default values. You can, however, modify any other configuration parameter. Note that the CPU mining will be
+         turned off once you clicked the GPU-only setup. Before completing the configuration, you can switch it back on by adjusting
+         CPU settings.
+        </div>
+      </div>
+      <div class="card" [hidden]="setupType !== 'expert'">
+        <div class="card-header text-light" style="background-color: #c3a171;">
+        Configure each parameter one by one. Note that each segment is collapsible - if you're not seeing a configuration group,
+        click the button on the left side to show it.
+        </div>
+      </div>
+      <div [ngClass]="{'row show': setupType === 'quick' || setupType === 'cpu' || setupType === 'gpu' || setupType === 'expert' }"   id="poolWallet" [hidden]="!setupType" >
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Pool and wallet settings</h4>
@@ -170,7 +212,7 @@
       </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="plotDirectory" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'quick' || setupType === 'cpu' || setupType === 'gpu' || setupType === 'expert'}"   id="plotDirectory" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Plot directory settings</h4>
@@ -220,7 +262,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="accountSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"   id="accountSettings" [hidden]="!setupType">
         <div class="col">
           <div class="shadow-sm p-3 mb-5 bg-light rounded border">
           <h4>Account settings for solo mining</h4>
@@ -265,7 +307,7 @@
             </div>
           </div>
       </div>
-      <div class="row multi-collapse"  id="miningSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="miningSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Mining settings</h4>
@@ -365,14 +407,14 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="minerSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="minerSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
         <h4>Miner settings</h4>
-        <div class="row">
+        <div class="row" formGroupName="miner_settings">
         <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
-        <div class="card-body" formGroupName="miner_settings">
-        <div class="form-group row">
+        <div class="card-body">
+        <div class="form-group row" >
         <label for="hdd_reader_thread_count" class="col-sm-5 col-form-label">HDD reader thread count:</label>
         <input id="hdd_reader_thread_count" formControlName="hdd_reader_thread_count" type="text"
           placeholder="0" class="form-control col-sm-2" (blur)="logValidationErrors()">
@@ -390,13 +432,13 @@
         <label class="col-sm-5 col-form-label">Use direct I/O:</label>
         <div class="form-check-inline">
         <label for="hdd_use_direct_io" class="form-check-label">
-        <input id="hdd_use_direct_io1" formControlName="hdd_use_direct_io" type="radio"
+        <input formControlName="hdd_use_direct_io" id="hdd_use_direct_io1"  type="radio"
         class="form-check-input" name="hdd_use_direct_io" value="true" checked>Yes
         </label>
         </div>
         <div class="form-check-inline">
         <label for="hdd_use_direct_io" class="form-check-label">
-        <input id="hdd_use_direct_io2" formControlName="hdd_use_direct_io" type="radio"
+        <input formControlName="hdd_use_direct_io" id="hdd_use_direct_io2"  type="radio"
         class="form-check-input" name="hdd_use_direct_io" value="false">No
         </label>
         </div>
@@ -434,7 +476,7 @@
         </div>
         </div>
       </div>
-      <div class="row multi-collapse"  id="cpuSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'cpu' || setupType === 'expert', 'collapse' : setupType === 'gpu' || setupType === 'quick'}"   id="cpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>CPU settings</h4>
@@ -530,7 +572,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="gpuSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'gpu' || setupType === 'expert', 'collapse' : setupType === 'cpu' || setupType === 'quick'}"  id="gpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>GPU settings</h4>
@@ -672,7 +714,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="loggingSettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="loggingSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Logging settings</h4>
@@ -815,7 +857,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="displaySettings" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="displaySettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Display and benchmark settings</h4>
@@ -916,7 +958,7 @@
       </div>
       </div>
       </div>
-      <div class="row multi-collapse"  id="additionalHeaders" [hidden]="!setupType">
+      <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="additionalHeaders" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
       <h4>Additional headers</h4>
@@ -987,7 +1029,7 @@
             <i class="material-icons" style="text-align: center">warning</i>
           </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="checkbox" id="documentation" value="true" checked
+            <input class="form-check-input" type="checkbox" id="documentation" value="true"
               formControlName="documentation">
             <label class="form-check-label small" for="documentation">&nbsp;Documentation&nbsp;</label>
             <i class="material-icons" style="text-align: center">help</i>
@@ -1028,8 +1070,10 @@
 
 
 
-        <!--
-<br> <br>
+
+<!--<br> <br>
       Form: <p>{{ configForm.value | json }}</p> <br>
         Warning: <p>{{ formWarning | json }}</p> <br>
-        Error: <p>{{ formErrors | json }}</p> -->
+        Error: <p>{{ formErrors | json }}</p>
+        Setup Type: <p>{{ setupType }}</p>
+        <br><br><br><br> -->

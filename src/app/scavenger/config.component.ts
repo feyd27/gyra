@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
-import { utf8Encode } from '@angular/compiler/src/util';
-import { stringify } from '@angular/core/src/util';
 
 @Component({
   selector: 'app-config',
@@ -10,6 +8,7 @@ import { stringify } from '@angular/core/src/util';
   styleUrls: ['./config.component.css']
 })
 export class ConfigComponent implements OnInit {
+
 
    configForm: FormGroup;
 
@@ -309,6 +308,7 @@ export class ConfigComponent implements OnInit {
   };
 
   setupType = '';
+
   setupQuick() {
     this.setupType = 'quick';
   }
@@ -317,6 +317,9 @@ export class ConfigComponent implements OnInit {
   }
   setupGpu() {
     this.setupType = 'gpu';
+  }
+  setupExpert() {
+    this.setupType = 'expert';
   }
   clearSetupType() {
     this.setupType = '';
@@ -336,9 +339,9 @@ export class ConfigComponent implements OnInit {
       account_id_to_secret_phrase: this.fb.array([]),
       plot_dirs: this.fb.array([]),
       miner_settings: this.fb.group({
-        hdd_reader_thread_count: ['0', [Validators.required, Validators.pattern(regnumber)]],
+        hdd_reader_thread_count: [0, [Validators.required, Validators.pattern(regnumber)]],
         hdd_use_direct_io: ['true', [Validators.required]],
-        hdd_wake_up_after: ['240', [Validators.required, Validators.pattern(regnumber)]]
+        hdd_wake_up_after: [240, [Validators.required, Validators.pattern(regnumber)]]
       }),
       cpu_settings: this.fb.group({
         cpu_threads: ['0', [Validators.required, Validators.pattern(regnumber)]],
@@ -403,7 +406,9 @@ export class ConfigComponent implements OnInit {
     });
   }
   // Configuration form end
-
+  get setupTypeValue() {
+    return this.configForm.get('setupType');
+  }
 
   // Getters
   get url() {
