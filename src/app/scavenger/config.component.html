@@ -44,8 +44,8 @@
 <div class="col-3">
   <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
     <h5 class="text-light font-weight-bold">Setups To Go</h5>
-    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupQuick()" type="button">Quick Setup</button>
-    <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType();setupCpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupQuick(); switchCpuOn()" type="button">Quick Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType();setupCpu(); switchCpuOn()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
     <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupGpu(); switchCpuOff()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
     <br>
     <h5 class="text-light font-weight-bold">Expert Setup</h5>

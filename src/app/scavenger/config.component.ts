@@ -792,6 +792,19 @@ logfileSize() {
       }
     });
   }
+
+// Switch CPU on
+  switchCpuOn() {
+    this.configForm.patchValue({
+      cpu_settings: {
+        cpu_threads: '0',
+        cpu_worker_task_count: '4',
+        cpu_nonces_per_cache: '65536',
+        cpu_thread_pinning: 'false',
+        memory_usage: '',
+      }
+    });
+  }
 // Reset configuration to default values without triggering validators
   resetConfig() {
     this.configForm.patchValue({
