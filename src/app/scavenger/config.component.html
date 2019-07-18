@@ -12,7 +12,11 @@
         </div>
       </div>
       </div>
-      <div class="col-9">A FeydLabs project.</div>
+      <div class="col-9">
+        <div class="shadow p-3 mb-5 rounded border" style="background-color: black;">&nbsp;
+        <img class="float-right" src="./assets/feydlabs logo.png"><br><br><kbd class="text-success text-right small">LOOK FORWARD.</kbd>
+      </div>
+      </div>
       </div>
 
 
@@ -20,7 +24,7 @@
     <div class="col-3">&nbsp;</div>
     <!-- Structure Start-->
     <div class="col-9"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
-            <button type="button" active (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"><i class="material-icons small text-success"
+            <button type="button" active (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"data-toggle="tooltip" data-placement="top" title="Click to reset the view"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
@@ -42,7 +46,7 @@
     <h5 class="text-light font-weight-bold">Setups To Go</h5>
     <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupQuick()" type="button">Quick Setup</button>
     <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType();setupCpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
-    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupGpu()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupGpu(); switchCpuOff()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
     <br>
     <h5 class="text-light font-weight-bold">Expert Setup</h5>
     <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
@@ -55,6 +59,7 @@
     <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>
     <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>
     <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>
+    <br><kbd class="float-right text-light small font-weight-light">&copy; 2019 FeydLabs</kbd><br>
   </div>
 <!-- Structure End -->
 

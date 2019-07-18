@@ -780,8 +780,18 @@ logfileSize() {
       }
     }
   }
-
-
+// Switch CPU off
+  switchCpuOff() {
+    this.configForm.patchValue({
+      cpu_settings: {
+        cpu_threads: '0',
+        cpu_worker_task_count: '0',
+        cpu_nonces_per_cache: '65536',
+        cpu_thread_pinning: 'false',
+        memory_usage: '',
+      }
+    });
+  }
 // Reset configuration to default values without triggering validators
   resetConfig() {
     this.configForm.patchValue({
@@ -907,7 +917,7 @@ logfileSize() {
       const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
       const plotDirYamlString = plotDirYaml.toString();
       const plotDirYamlTrimmed = plotDirYamlString.trim();
-      plotDirsYaml += '   -\'' + plotDirYamlTrimmed + '\'\r\n';
+      plotDirsYaml += '   -\''  + plotDirYamlTrimmed + '\'\r\n';
     }
     this.configYaml.b_plot_dirs = plotDirsYaml; // needs to be fixed
     // miner settings
@@ -1051,7 +1061,7 @@ exportConfig(): void {
     const plotDirYaml = plotDirs.at(i).get('plot_dirs').value as string;
     const plotDirYamlString = plotDirYaml.toString();
     const plotDirYamlTrimmed = plotDirYamlString.trim();
-    plotDirsYaml += '   -\'' + plotDirYamlTrimmed + '\'\r\n';
+    plotDirsYaml += '   - \'' + plotDirYamlTrimmed + '\'\r\n';
   }
   configYaml += '\r\nplot_dirs: \r\n' + plotDirsYaml + '\r\n';
   // miner settings
