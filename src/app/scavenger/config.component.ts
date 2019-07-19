@@ -9,8 +9,18 @@ import { __values } from 'tslib';
 })
 export class ConfigComponent implements OnInit {
 
+  show1: false;
+  show2: false;
+  show3: false;
+  show4: false;
+  show5: false;
+  show6: false;
+  show7: false;
+  show8: false;
+  show9: false;
+  show10: false;
 
-   configForm: FormGroup;
+  configForm: FormGroup;
 
   validationMessages = {
     url: {
@@ -804,6 +814,19 @@ logfileSize() {
         memory_usage: '',
       }
     });
+  }
+// Reset "show"
+  resetShow() {
+    this.show1 = false;
+    this.show2 = false;
+    this.show3 = false;
+    this.show4 = false;
+    this.show5 = false;
+    this.show6 = false;
+    this.show7 = false;
+    this.show8 = false;
+    this.show9 = false;
+    this.show10 = false;
   }
 // Reset configuration to default values without triggering validators
   resetConfig() {

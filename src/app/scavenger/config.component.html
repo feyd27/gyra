@@ -23,9 +23,9 @@
   <div class="row" style="margin-top: -85px;">
     <div class="col-3">&nbsp;</div>
     <!-- Structure Start-->
-    <div class="col-9"> <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #65bb3e;">
+    <div class="col-9"> <div class="shadow p-3 mb-5 rounded border"  style="margin-top: -35px; background-color: #65bb3e;">
             <button type="button" active (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"data-toggle="tooltip" data-placement="top" title="Click to reset the view"><i class="material-icons small text-success"
-                style="text-align: center">book</i>&nbsp;GYRA Start</button>&nbsp;&nbsp;
+                style="text-align: center">book</i>&nbsp;GYRA Start</button> &nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
             <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
@@ -42,28 +42,31 @@
   <br><br>
   <div class="row" style="margin-top: -45px;">
 <div class="col-3">
-  <div class="shadow p-3 mb-5 rounded border" style="margin-top: -35px; background-color: #c3a171;">
+  <div class="shadow p-3 mb-5 rounded border sticky-top" data-spy="affix" style="margin-top: -35px; background-color: #c3a171;">
     <h5 class="text-light font-weight-bold">Setups To Go</h5>
-    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupQuick(); switchCpuOn()" type="button">Quick Setup</button>
-    <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType();setupCpu(); switchCpuOn()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
-    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType();setupGpu(); switchCpuOff()" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType(); setupQuick(); switchCpuOn(); " type="button">Quick Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold"  (click)="clearSetupType(); setupCpu(); switchCpuOn();" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">CPU-only Setup</button>
+    <button class="btn btn-dark btn-block text-left font-weight-bold" (click)="clearSetupType(); setupGpu(); switchCpuOff(); " type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="true" aria-controls="poolWallet plotDirectory">GPU-only Setup</button>
     <br>
     <h5 class="text-light font-weight-bold">Expert Setup</h5>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark</button>
-    <button class="btn btn-dark btn-block text-left" (click)="setupExpert()" type="button"  data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers</button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show1 = !show1" type="button"  data-toggle="collapse" data-target="#poolWallet" aria-expanded="false" aria-controls="poolWallet">Pool & Wallet&nbsp;&nbsp;<i *ngIf="show1 && setupType  === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show2 = !show2" type="button"  data-toggle="collapse" data-target="#plotDirectory" aria-expanded="false" aria-controls="plotDirectory">Plot Files&nbsp;&nbsp;<i *ngIf="show2 && setupType  === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show3 = !show3" type="button"  data-toggle="collapse" data-target="#accountSettings" aria-expanded="false" aria-controls="accountSettings">Account Settings&nbsp;&nbsp;<i *ngIf="show3 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show4 = !show4" type="button"  data-toggle="collapse" data-target="#miningSettings" aria-expanded="false" aria-controls="miningSettings">Mining Settings&nbsp;&nbsp;<i *ngIf="show4 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show5 = !show5" type="button"  data-toggle="collapse" data-target="#minerSettings" aria-expanded="false" aria-controls="minerSettings">Miner Settings&nbsp;&nbsp;<i *ngIf="show5 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show6 = !show6" type="button"  data-toggle="collapse" data-target="#cpuSettings" aria-expanded="false" aria-controls="cpuSettings">CPU Settings&nbsp;&nbsp;<i *ngIf="show6 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show7 = !show7" type="button"  data-toggle="collapse" data-target="#gpuSettings" aria-expanded="false" aria-controls="gpuSettings">GPU Settings&nbsp;&nbsp;<i *ngIf="show7 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show8 = !show8" type="button"  data-toggle="collapse" data-target="#loggingSettings" aria-expanded="false" aria-controls="loggingSettings">Logging Settings&nbsp;&nbsp;<i *ngIf="show8 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show9 = !show9" type="button"  data-toggle="collapse" data-target="#displaySettings" aria-expanded="false" aria-controls="displaySettings">Display & Benchmark&nbsp;&nbsp;<i *ngIf="show9 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
+    <button class="btn btn-dark btn-block text-left" (click)="setupExpert(); show10 = !show10" type="button"  data-toggle="collapse" data-target="#additionalHeaders" aria-expanded="false" aria-controls="additionalHeaders">Extra Headers&nbsp;&nbsp;<i *ngIf="show10 && setupType === 'expert'" class="material-icons small text-muted">visibility_off</i></button>
     <br><kbd class="float-right text-light small font-weight-light">&copy; 2019 FeydLabs</kbd><br>
   </div>
 <!-- Structure End -->
-
 </div>
+<!--Vert nav-->
+
+<!--Vert nav end-->
+
     <div class="col-9" style="margin-top: -35px;">
       <div class="row" id="startGyra" [hidden]="setupType">
         <div class="col">
