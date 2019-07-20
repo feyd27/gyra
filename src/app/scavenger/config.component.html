@@ -24,7 +24,7 @@
     <div class="col-3">&nbsp;</div>
     <!-- Structure Start-->
     <div class="col-9"> <div class="shadow p-3 mb-5 rounded border"  style="margin-top: -35px; background-color: #65bb3e;">
-            <button type="button" active (click)="clearSetupType()" class="btn btn-dark font-weight-bolder active"data-toggle="tooltip" data-placement="top" title="Click to reset the view"><i class="material-icons small text-success"
+            <button type="button" active (click)="clearSetupType(); resetShow();" class="btn btn-dark font-weight-bolder active"data-toggle="tooltip" data-placement="top" title="Click to reset the view"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button> &nbsp;&nbsp;
             <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
