@@ -188,8 +188,11 @@
       <div [ngClass]="{'col-12': formDocumentation.display !== 'true', 'col-6': formDocumentation.display === 'true'}">
       <br>
       <label for="url">Pool or wallet URL:</label>
-      <p><input id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
+      <p><input list="pools" id="url" formControlName="url" type="url" placeholder="http(s)://poolurl.org:port"
         class="form-control col-12" (blur)="logValidationErrors(); getGuiSettings()">
+      <datalist id="pools">
+        <option *ngFor="let pool of pools" value={{pool.poolUrl}}>{{pool.poolName}}</option>
+      </datalist>
       </p>
       <div class="text-danger  font-weight-bold" *ngIf="formErrors.url && url.touched && (formErrors.display == 'true')">
           <p><i class="material-icons small" style="text-align: left">error</i>
@@ -1069,11 +1072,11 @@
             <div class="modal-footer">
               <button type="button" class="btn-sm btn-outline-dark" data-dismiss="modal">Close</button>
             </div>
-
+            <!-- Modal end -->
           </div>
         </div>
       </div>
-      <!-- Modal end -->
+
 
 
 
