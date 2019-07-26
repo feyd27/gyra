@@ -374,15 +374,15 @@ export class ConfigComponent implements OnInit {
         hdd_wake_up_after: [240, [Validators.required, Validators.pattern(regnumber)]]
       }),
       cpu_settings: this.fb.group({
-        cpu_threads: ['0', [Validators.required, Validators.pattern(regnumber)]],
-        cpu_worker_task_count: ['4', [Validators.required, Validators.pattern(regnumber)]], // 0=GPU only
+        cpu_threads: [0, [Validators.required, Validators.pattern(regnumber)]],
+        cpu_worker_task_count: [4, [Validators.required, Validators.pattern(regnumber)]], // 0=GPU only
         cpu_nonces_per_cache: ['65536', [Validators.required, Validators.pattern(regnumber)]],
         cpu_thread_pinning: ['false', [Validators.required]],
         memory_usage: [''],
       }),
       gpu_settings: this.fb.group({
-        gpu_threads: ['0', [Validators.required, Validators.pattern(regnumber)]], // 0=GPU off
-        gpu_worker_task_count: ['0', [Validators.required, Validators.pattern(regnumber)]], // 0= CPU only
+        gpu_threads: [0, [Validators.required, Validators.pattern(regnumber)]], // 0=GPU off
+        gpu_worker_task_count: [0, [Validators.required, Validators.pattern(regnumber)]], // 0= CPU only
         gpu_platform: ['0', [Validators.required, Validators.pattern(regnumber)]],
         gpu_device: ['0', [Validators.required, Validators.pattern(regnumber)]],
         gpu_nonces_per_cache: ['262144', [Validators.pattern(regnumber)]],
@@ -512,7 +512,7 @@ export class ConfigComponent implements OnInit {
 
   // Getters end
 
-  //pick pool
+
   // get gui settings on value change
 
   getGuiSettings() {
@@ -549,7 +549,7 @@ export class ConfigComponent implements OnInit {
 
   urlInfo() {
     const urlInfo = this.configForm.get('url').value as string;
-    if (urlInfo == '') {
+    if (urlInfo === '') {
       this.formWarning.url = 'Providing the URL is mandatory for benchmark and mining configuration.';
     } else {
       this.formWarning.url = '';
@@ -560,7 +560,7 @@ export class ConfigComponent implements OnInit {
   plotNumberInfo() {
   const plotNoArr = this.configForm.get('plot_dirs') as FormArray;
   const plotNo = plotNoArr.length;
-  if (plotNo == 0) {
+  if (plotNo === 0) {
       this.formWarning.plot_dirs = 'Plot directory settings have to be provided for benchmark and mining.';
   } else {
     this.formWarning.plot_dirs = '';
@@ -569,7 +569,7 @@ export class ConfigComponent implements OnInit {
  // HDD settings info messages
  hddNumberInfo() {
    const hddNo = this.miner_settings.get('hdd_reader_thread_count').value as number;
-   if (hddNo == 0) {
+   if (hddNo === 0) {
      this.formInfo.hdd_reader_thread_count = 'Set to the number of disks.';
    } else {
     this.formInfo.hdd_reader_thread_count = '';
@@ -629,7 +629,7 @@ export class ConfigComponent implements OnInit {
   gpuWorkerInfo() {
     const gpuWorkersInfo = this.gpu_settings.get('gpu_worker_task_count').value as number;
     const gpuThreadsInfo = this.gpu_settings.get('gpu_threads').value as number;
-    if ((gpuWorkersInfo == 0) || (gpuThreadsInfo == 0)) {
+    if ((gpuWorkersInfo === 0) || (gpuThreadsInfo === 0)) {
       this.formInfo.gpu_worker_task_count = 'GPU mining is off.';
     } else {
       this.formInfo.gpu_worker_task_count = 'GPU mining is on.';
@@ -959,6 +959,7 @@ logfileSize() {
     if (accountPassphrase.length === 0) {
       let accountPassphraseYaml = '';
     } else {
+    // tslint:disable-next-line: no-shadowed-variable
     let accountPassphraseYaml = '\r\naccount_id_to_secret_phrase:\r\n';
     for (let i = 0; i < (accountPassphrase.length); i++) {
        const accountIDYaml = accountPassphrase.at(i).get('account_id').value as string;
@@ -990,6 +991,7 @@ logfileSize() {
     this.configYaml.d_target_deadline = targetDeadline;
     // account ID + target deathline
     const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
+    // tslint:disable-next-line: prefer-const
     let accountDeadlineYaml = '';
     let accountDeadlineYamlHtml = '';
     if (accountDeadline.length === 0) {
@@ -1015,11 +1017,14 @@ logfileSize() {
     this.configYaml.h_send_proxy_details = sendProxyDetails;
     // Additional headers
     const additionalHeader = this.configForm.get('additional_headers') as FormArray;
+    // tslint:disable-next-line: prefer-const
     let additionalHeaderYaml = '';
     let additionalHeaderYamlHtml = '';
     if (additionalHeader.length === 0) {
+      // tslint:disable-next-line: prefer-const
       let additionalHeaderYaml = '';
     } else {
+    // tslint:disable-next-line: no-shadowed-variable
     let additionalHeaderYaml = '\r\n' + '\r\nadditional_headers:\r\n';
     for (let i = 0; i < (additionalHeader.length); i++) {
        const headerKeyYaml = additionalHeader.at(i).get('header_key').value as string;
@@ -1100,6 +1105,7 @@ exportConfig(): void {
   configYaml = 'url: ' + '\'' + urlYaml + '\'' + '\r\n';
   // account id + passphrase
   const accountPassphrase = this.configForm.get('account_id_to_secret_phrase') as FormArray;
+  // tslint:disable-next-line: prefer-const
   let accountPassphraseYaml = '';
   if (accountPassphrase.length === 0) {
     let accountPassphraseYaml = '';
@@ -1134,6 +1140,7 @@ exportConfig(): void {
   configYaml += '\r\ntarget_deadline: ' + targetDeadline;
   // account ID + target deathline
   const accountDeadline = this.configForm.get('account_id_to_target_deadline') as FormArray;
+  // tslint:disable-next-line: prefer-const
   let accountDeadlineYaml = '';
   if (accountDeadline.length === 0) {
     let accountDeadlineYaml = '';
@@ -1156,8 +1163,10 @@ exportConfig(): void {
   const additionalHeader = this.configForm.get('additional_headers') as FormArray;
   let additionalHeaderYaml = '';
   if (additionalHeader.length === 0) {
+
     let additionalHeaderYaml = '';
   } else {
+  // tslint:disable-next-line: no-shadowed-variable
   let additionalHeaderYaml = '\r\n' + '\r\nadditional_headers:\r\n';
   for (let i = 0; i < (additionalHeader.length); i++) {
      const headerKeyYaml = additionalHeader.at(i).get('header_key').value as string;
