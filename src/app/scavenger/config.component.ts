@@ -20,12 +20,12 @@ export class ConfigComponent implements OnInit {
     new PoolPicker (7, 'Pool.Burstcoin.RO 50-50', 'http://pool.burstcoin.ro:8080', 31536000),
     new PoolPicker (8, '0-100Pool.Burstcoin.RO 0-100', 'http://0-100pool.burstcoin.ro:8880', 16711252963),
     new PoolPicker (9, 'Foxy Pool 0-100', 'https://0-100-burst.foxypool.cf', 31536000),
-    new PoolPicker (10, 'Burst Neon 50-50', 'burstneon.com:2082', 63072000),
+    new PoolPicker (10, 'Burst Neon 50-50', 'http://burstneon.com:2082', 63072000),
     new PoolPicker (11, 'Burst Neon 0-100', 'http://burstneon.com:2052', 63113904),
     new PoolPicker (12, 'Burst Neon 20-80', 'http://burstneon.com:8080', 63113904),
     new PoolPicker (13, '100PB.Online 60-40', 'http://100pb.online:8124', 3153600),
     new PoolPicker (14, 'BurstCoin.ML 50-50', 'http://pool.burstcoin.ml:8080', 31536000),
-    new PoolPicker (15, 'One Hundred', 'http://solominer.ddns.net port:8080', 2592000),
+    new PoolPicker (15, 'One Hundred', 'http://solominer.ddns.net:8080', 2592000),
     new PoolPicker (16, 'FastPool.info', 'http://fastpool.info:8080', 8000000),
     ];
 
@@ -121,6 +121,9 @@ export class ConfigComponent implements OnInit {
     target_deadline: {
       pattern: 'The target deadline has to be a non-negative integer.',
     },
+    plot_size: {
+      pattern: 'The plot size has to be a non-negative integer.',
+    },
     account_id_dl: {
       required: 'The numeric account ID setting is required.',
       min: 'The numeric account ID canot be less than 0.',
@@ -203,6 +206,7 @@ export class ConfigComponent implements OnInit {
     gpu_mem_mapping: '',
     gpu_async: '',
     target_deadline: '',
+    plot_size: '',
     account_id_dl: '',
     target_deadline_dl: '',
     get_mining_info_interval: '',
@@ -243,6 +247,7 @@ export class ConfigComponent implements OnInit {
     gpu_mem_mapping: '',
     gpu_async: '',
     target_deadline: '',
+    plot_size: '',
     account_id_dl: '',
     target_deadline_dl: '',
     get_mining_info_interval: '',
@@ -282,6 +287,7 @@ export class ConfigComponent implements OnInit {
     gpu_mem_mapping: '',
     gpu_async: '',
     target_deadline: '',
+    plot_size: '',
     account_id_dl: '',
     target_deadline_dl: '',
     get_mining_info_interval: '',
@@ -391,6 +397,7 @@ export class ConfigComponent implements OnInit {
         memory_usage: [''],
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
+        plot_size: [0, [Validators.pattern(regnumber)]],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -509,10 +516,14 @@ export class ConfigComponent implements OnInit {
     return this.configForm.get('validator_messages');
   }
 
+// Getters end
 
-  // Getters end
-
-
+// copy to clipboard
+  copyInputMessage(inputElement) {
+    inputElement.select();
+    document.execCommand('copy');
+    inputElement.setSelectionRange(0, 0);
+  }
   // get gui settings on value change
 
   getGuiSettings() {
