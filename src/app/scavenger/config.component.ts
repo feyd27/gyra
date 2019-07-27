@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
 import { PoolPicker} from '../pool-picker';
+import { BurstApiService } from '../shared/burst-api.service';
+import { Blocks } from '../shared/Blocks';
+import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-config',
@@ -9,6 +12,8 @@ import { PoolPicker} from '../pool-picker';
   styleUrls: ['./config.component.css']
 })
 export class ConfigComponent implements OnInit {
+
+  Blocks: any = [];
 
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
@@ -345,25 +350,11 @@ export class ConfigComponent implements OnInit {
 
   setupType = '';
 
-  setupQuick() {
-    this.setupType = 'quick';
-  }
-  setupCpu() {
-    this.setupType = 'cpu';
-  }
-  setupGpu() {
-    this.setupType = 'gpu';
-  }
-  setupExpert() {
-    this.setupType = 'expert';
-  }
-  clearSetupType() {
-    this.setupType = '';
-  }
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, public burstApi: BurstApiService) { }
 
   ngOnInit() {
+
+    this.loadBlocks();
     // Custom validators
     const regnumber = '[0-9]*$';
     // tslint:disable-next-line:max-line-length
@@ -446,7 +437,6 @@ export class ConfigComponent implements OnInit {
   get setupTypeValue() {
     return this.configForm.get('setupType');
   }
-
   // Getters
   get url() {
     return this.configForm.get('url');
@@ -516,8 +506,47 @@ export class ConfigComponent implements OnInit {
     return this.configForm.get('validator_messages');
   }
 
+  get plot_size() {
+    return this.configForm.get('plot_size');
+  }
+
 // Getters end
 
+// load Blocks
+
+public loadBlocks() {
+  return this.burstApi.getBlocks().subscribe((data: {}) => {
+    this.Blocks = data;
+    console.log(data);
+  });
+}
+
+// net Diff
+
+netDiff() {
+  const baseTarget = this.Blocks.baseTarget;
+  const netDiff = 4398046511104 / 240 / baseTarget;
+  console.log('netDiff' + netDiff);
+  const plotSize = this.configForm.get('plot_size').value;
+  console.log('plot size' + plotSize);
+  const calcTargetDeadline = 720 * netDiff / plotSize;
+  console.log('calTDL' + calcTargetDeadline);
+}
+setupQuick() {
+  this.setupType = 'quick';
+}
+setupCpu() {
+  this.setupType = 'cpu';
+}
+setupGpu() {
+  this.setupType = 'gpu';
+}
+setupExpert() {
+  this.setupType = 'expert';
+}
+clearSetupType() {
+  this.setupType = '';
+}
 // copy to clipboard
   copyInputMessage(inputElement) {
     inputElement.select();
