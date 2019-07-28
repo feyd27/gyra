@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
 import { PoolPicker} from '../pool-picker';
+import { BurstApiService } from '../shared/burst-api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-config',
@@ -9,6 +11,10 @@ import { PoolPicker} from '../pool-picker';
   styleUrls: ['./config.component.css']
 })
 export class ConfigComponent implements OnInit {
+
+  Blocks: any = [];
+  interval: number = 1;
+  netDiff: number = 0;
 
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
@@ -345,25 +351,11 @@ export class ConfigComponent implements OnInit {
 
   setupType = '';
 
-  setupQuick() {
-    this.setupType = 'quick';
-  }
-  setupCpu() {
-    this.setupType = 'cpu';
-  }
-  setupGpu() {
-    this.setupType = 'gpu';
-  }
-  setupExpert() {
-    this.setupType = 'expert';
-  }
-  clearSetupType() {
-    this.setupType = '';
-  }
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, public burstApi: BurstApiService) { }
 
   ngOnInit() {
+
+    this.loadBlocks();
     // Custom validators
     const regnumber = '[0-9]*$';
     // tslint:disable-next-line:max-line-length
@@ -398,6 +390,8 @@ export class ConfigComponent implements OnInit {
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         plot_size: [0, [Validators.pattern(regnumber)]],
+        net_diff: [0],
+        calc_target_deadline: [0],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -446,7 +440,6 @@ export class ConfigComponent implements OnInit {
   get setupTypeValue() {
     return this.configForm.get('setupType');
   }
-
   // Getters
   get url() {
     return this.configForm.get('url');
@@ -516,8 +509,50 @@ export class ConfigComponent implements OnInit {
     return this.configForm.get('validator_messages');
   }
 
+  get plot_size() {
+    return this.configForm.get('plot_size');
+  }
+
 // Getters end
 
+// load Blocks
+
+public loadBlocks() {
+  this.interval = setInterval(() => {
+  return this.burstApi.getBlocks().subscribe((data: {}) => {
+    this.Blocks = data;
+    console.log(data);
+  });
+  }, 60000);
+ }
+
+// net Diff
+
+targetDeathlineCalc() {
+
+  const plotSize = this.configForm.get('plot_size').value;
+  const baseTarget = this.Blocks.baseTarget;
+  const netDiff = 4398046511104 / 240 / baseTarget;
+  console.log('netDiff' + netDiff);
+  console.log('plot size' + plotSize);
+  const calcTargetDeadline = 720 * netDiff / plotSize;
+  console.log('calTDL' + calcTargetDeadline);
+}
+setupQuick() {
+  this.setupType = 'quick';
+}
+setupCpu() {
+  this.setupType = 'cpu';
+}
+setupGpu() {
+  this.setupType = 'gpu';
+}
+setupExpert() {
+  this.setupType = 'expert';
+}
+clearSetupType() {
+  this.setupType = '';
+}
 // copy to clipboard
   copyInputMessage(inputElement) {
     inputElement.select();
