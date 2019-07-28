@@ -10,6 +10,17 @@ import { PoolPicker} from '../pool-picker';
 })
 export class ConfigComponent implements OnInit {
 
+<<<<<<< Updated upstream
+=======
+  Blocks: any = [];
+  interval = 1;
+  netDiff = 0;
+  targetDL: {
+    value: 0,
+    block: 0,
+  };
+
+>>>>>>> Stashed changes
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
     new PoolPicker (2, 'PoCC Pool 0-100', 'http://0-100-pool.burst.cryptoguru.org:8124', 31536000),
@@ -518,6 +529,48 @@ export class ConfigComponent implements OnInit {
 
 // Getters end
 
+<<<<<<< Updated upstream
+=======
+// load Blocks
+
+public loadBlocks() {
+  this.interval = setInterval(() => {
+  return this.burstApi.getBlocks().subscribe((data: {}) => {
+    this.Blocks = data;
+    console.log(data);
+  });
+  }, 60000);
+ }
+
+// net Diff
+
+targetDeathlineCalc() {
+  const plotSize = this.configForm.get('plot_size').value;
+  const baseTarget = this.Blocks.baseTarget;
+  const netDiff = 4398046511104 / 240 / baseTarget;
+  console.log('netDiff' + netDiff);
+  console.log('plot size' + plotSize);
+  const calcTargetDeadline = 720 * netDiff / plotSize;
+  console.log('calTDL' + calcTargetDeadline);
+  this.targetDL.value = calcTargetDeadline;
+  }
+
+setupQuick() {
+  this.setupType = 'quick';
+}
+setupCpu() {
+  this.setupType = 'cpu';
+}
+setupGpu() {
+  this.setupType = 'gpu';
+}
+setupExpert() {
+  this.setupType = 'expert';
+}
+clearSetupType() {
+  this.setupType = '';
+}
+>>>>>>> Stashed changes
 // copy to clipboard
   copyInputMessage(inputElement) {
     inputElement.select();
