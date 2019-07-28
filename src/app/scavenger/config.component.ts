@@ -16,10 +16,6 @@ export class ConfigComponent implements OnInit {
   interval = 1;
   netDiff = 0;
 
-  Blocks: any = [];
-  interval: number = 1;
-  netDiff: number = 0;
-
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
     new PoolPicker (2, 'PoCC Pool 0-100', 'http://0-100-pool.burst.cryptoguru.org:8124', 31536000),
@@ -517,11 +513,6 @@ export class ConfigComponent implements OnInit {
 
 // Getters end
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 4d749cdc3973397d23caa2df1640b1ba838883f0
 // load Blocks
 
 public loadBlocks() {
@@ -546,8 +537,6 @@ targetDeathlineCalc() {
   console.log('calTDL' + calcTargetDeadline);
   }
 
-}
-
 setupQuick() {
   this.setupType = 'quick';
 }
@@ -563,10 +552,7 @@ setupExpert() {
 clearSetupType() {
   this.setupType = '';
 }
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> 4d749cdc3973397d23caa2df1640b1ba838883f0
+
 // copy to clipboard
   copyInputMessage(inputElement) {
     inputElement.select();
