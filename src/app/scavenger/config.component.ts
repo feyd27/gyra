@@ -3,8 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractCon
 import { __values } from 'tslib';
 import { PoolPicker} from '../pool-picker';
 import { BurstApiService } from '../shared/burst-api.service';
-import { Blocks } from '../shared/Blocks';
-import { stringify } from 'querystring';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-config',
@@ -14,6 +13,8 @@ import { stringify } from 'querystring';
 export class ConfigComponent implements OnInit {
 
   Blocks: any = [];
+  interval: number = 1;
+  netDiff: number = 0;
 
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
@@ -389,6 +390,8 @@ export class ConfigComponent implements OnInit {
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         plot_size: [0, [Validators.pattern(regnumber)]],
+        net_diff: [0],
+        calc_target_deadline: [0],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -515,19 +518,22 @@ export class ConfigComponent implements OnInit {
 // load Blocks
 
 public loadBlocks() {
+  this.interval = setInterval(() => {
   return this.burstApi.getBlocks().subscribe((data: {}) => {
     this.Blocks = data;
     console.log(data);
   });
-}
+  }, 60000);
+ }
 
 // net Diff
 
-netDiff() {
+targetDeathlineCalc() {
+
+  const plotSize = this.configForm.get('plot_size').value;
   const baseTarget = this.Blocks.baseTarget;
   const netDiff = 4398046511104 / 240 / baseTarget;
   console.log('netDiff' + netDiff);
-  const plotSize = this.configForm.get('plot_size').value;
   console.log('plot size' + plotSize);
   const calcTargetDeadline = 720 * netDiff / plotSize;
   console.log('calTDL' + calcTargetDeadline);
