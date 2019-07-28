@@ -134,6 +134,7 @@ export class ConfigComponent implements OnInit {
     },
     plot_size: {
       pattern: 'The plot size has to be a non-negative integer.',
+      min: 'The plot size has to be non-zero.'
     },
     account_id_dl: {
       required: 'The numeric account ID setting is required.',
@@ -395,7 +396,7 @@ export class ConfigComponent implements OnInit {
         memory_usage: [''],
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
-        plot_size: [0, [Validators.pattern(regnumber)]],
+        plot_size: ['', [Validators.pattern(regnumber), Validators.min(1)]],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -547,10 +548,16 @@ targetDeathlineCalc() {
   }
   const netDiff = 4398046511104 / 240 / baseTarget;
   const calcTargetDeadline = 720 * netDiff / plotSize;
+  if (isNaN(calcTargetDeadline)) {
+    this.calculatedDL.value = 0;
+  } else {
+  this.calculatedDL.value = Math.round(calcTargetDeadline);
   console.log('netDiff' + netDiff);
   console.log('calTDL' + calcTargetDeadline);
   console.log('Base target' +  this.Blocks.baseTarget);
   console.log('plot size' + plotSize);
+  console.log('this.calculatedDL.value' + ' ' + this.calculatedDL.value);
+  }
   }
 
 setupQuick() {
@@ -940,6 +947,7 @@ logfileSize() {
         memory_usage: '',
       },
       target_deadline: '31536000',
+      plot_size:'',
       get_mining_info_interval: '3000',
       timeout: '5000',
       send_proxy_details: 'false',

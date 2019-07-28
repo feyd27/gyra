@@ -88,7 +88,8 @@
                   </h5>
                   <div class="card-body">
                     Gyra is a front-end tool, with no back-end. All of the data inserted into the configuration form
-                  is processed only by built-in form validators. None of it is stored or sent outside the form. Gyra makes no HTTP requests whatsoever.</div>
+                  is processed only by built-in form validators. None of it is stored or sent outside the form. Gyra makes HTTP GET requests every 30 seconds
+                  in order to obtain blockchain information from the Burst blockchain that is needed for the target deadline calculator.</div>
                     <div class="card-footer text-dark font-weight-bold"><i class="material-icons small">security</i>&nbsp;Your mining account information is absolutely safe.</div>
                   </div><br>
                <div class="card">
@@ -338,7 +339,8 @@
         <label class="col-form-label" for="plot_size">Enter plot size [TB]:&nbsp;</label>
         <input formControlName="plot_size" id="plot_size" type="text" placeholder="0"
           class="form-control col-3" (blur)="logValidationErrors(); targetDeathlineCalc()">&nbsp;&nbsp;
-        <input id="calculatedTargetDeadline" class="form-control col-3" type="text" placeholder="Target deadline" #userinput>&nbsp;&nbsp;
+        <input id="calculatedTargetDeadline" class="form-control col-3" type="text"
+        value="{{ calculatedDL.value }}" #userinput>&nbsp;&nbsp;
         <button class="btn-sm btn-secondary" (click)="copyInputMessage(userinput)" value="Copy">
             Copy</button>
         </div>
@@ -435,6 +437,11 @@
                   that the miner submits a deadline in every round.A good starting point for the setting can be obtained by using calculators
                   available at mining pool websites. The setting implies that any deadline found above the target value will not be sent to the pool/wallet.</li>
                   <div class="text-info" role="alert">Default value: <strong>31536000</strong>.</div>
+          <li><b>Target deadline calculator:</b> You can use the deadline calculator to calculate the estimated deadline for your plot(s). The deadline
+          calculator will connect to the Burst blockchain, obtain the blockheight and the base target needed for the calculation. Blockchain information is automatically
+          refreshed every 30 seconds. After you enter your plot size in TB (rounded to an integer value e.g. 10), click outside the form field and if the required information from the Burst blockchain is
+      available, the estimated target deadline will be shown. Use the "Copy" button to copy the value to the clipboard, and paste it into the configuration form.
+    The calculation can be repeated for each account ID (in case of multi-account mining).</li>
           <li><b>Multi-ID mining: </b>In case the configuration is prepared for multi-ID pool mining, pairs of account IDs and deadlines should be provided.
                   The target deadline estimation is done similarly as for single-ID mining, for each account ID and its' associated plot size.</li>
           <li><b>Get mining info interval: </b>An instruction to the miner on how frequently it should poll the wallet for information. The
@@ -1115,8 +1122,10 @@
         </div>
       </div>
 
+      <!--
 
       Form: <p>{{ configForm.value | json }}</p> <br>
         Warning: <p>{{ formWarning | json }}</p> <br>
         Error: <p>{{ formErrors | json }}</p>
         Setup Type: <p>{{ setupType }}</p>
+-->
