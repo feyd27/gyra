@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
 import { PoolPicker} from '../pool-picker';
+import { BurstApiService } from '../shared/burst-api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-config',
@@ -10,6 +12,7 @@ import { PoolPicker} from '../pool-picker';
 })
 export class ConfigComponent implements OnInit {
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
   Blocks: any = [];
@@ -21,6 +24,11 @@ export class ConfigComponent implements OnInit {
   };
 
 >>>>>>> Stashed changes
+=======
+  Blocks: any = [];
+  interval: number = 1;
+  netDiff: number = 0;
+
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
     new PoolPicker (2, 'PoCC Pool 0-100', 'http://0-100-pool.burst.cryptoguru.org:8124', 31536000),
@@ -356,25 +364,11 @@ export class ConfigComponent implements OnInit {
 
   setupType = '';
 
-  setupQuick() {
-    this.setupType = 'quick';
-  }
-  setupCpu() {
-    this.setupType = 'cpu';
-  }
-  setupGpu() {
-    this.setupType = 'gpu';
-  }
-  setupExpert() {
-    this.setupType = 'expert';
-  }
-  clearSetupType() {
-    this.setupType = '';
-  }
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, public burstApi: BurstApiService) { }
 
   ngOnInit() {
+
+    this.loadBlocks();
     // Custom validators
     const regnumber = '[0-9]*$';
     // tslint:disable-next-line:max-line-length
@@ -409,6 +403,8 @@ export class ConfigComponent implements OnInit {
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         plot_size: [0, [Validators.pattern(regnumber)]],
+        net_diff: [0],
+        calc_target_deadline: [0],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
@@ -457,7 +453,6 @@ export class ConfigComponent implements OnInit {
   get setupTypeValue() {
     return this.configForm.get('setupType');
   }
-
   // Getters
   get url() {
     return this.configForm.get('url');
@@ -527,10 +522,17 @@ export class ConfigComponent implements OnInit {
     return this.configForm.get('validator_messages');
   }
 
+  get plot_size() {
+    return this.configForm.get('plot_size');
+  }
+
 // Getters end
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 4d749cdc3973397d23caa2df1640b1ba838883f0
 // load Blocks
 
 public loadBlocks() {
@@ -545,6 +547,7 @@ public loadBlocks() {
 // net Diff
 
 targetDeathlineCalc() {
+
   const plotSize = this.configForm.get('plot_size').value;
   const baseTarget = this.Blocks.baseTarget;
   const netDiff = 4398046511104 / 240 / baseTarget;
@@ -552,8 +555,9 @@ targetDeathlineCalc() {
   console.log('plot size' + plotSize);
   const calcTargetDeadline = 720 * netDiff / plotSize;
   console.log('calTDL' + calcTargetDeadline);
-  this.targetDL.value = calcTargetDeadline;
   }
+
+}
 
 setupQuick() {
   this.setupType = 'quick';
@@ -570,7 +574,10 @@ setupExpert() {
 clearSetupType() {
   this.setupType = '';
 }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> 4d749cdc3973397d23caa2df1640b1ba838883f0
 // copy to clipboard
   copyInputMessage(inputElement) {
     inputElement.select();

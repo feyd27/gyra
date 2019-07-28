@@ -327,12 +327,18 @@
         <div class="card-body">
           <!--Deathline calculator-->
         <div class="alert alert-light border" style="padding: 10px">
+<<<<<<< HEAD
 <<<<<<< Updated upstream
           <h6 class="toast-header">&nbsp;&nbsp;Target deadline calculator</h6>
+=======
+          <h6 class="toast-header">&nbsp;&nbsp;Target deadline calculator&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-dark">Block: {{ Blocks.height }}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-dark">Base target: {{ Blocks.baseTarget }}</span>
+          </h6>
+>>>>>>> 4d749cdc3973397d23caa2df1640b1ba838883f0
         <div class="form-group row col-12">
         <label class="col-form-label" for="plot_size">Enter plot size [TB]:&nbsp;</label>
         <input formControlName="plot_size" id="plot_size" type="text" placeholder="0"
-          class="form-control col-3" (blur)="logValidationErrors()">&nbsp;&nbsp;
+          class="form-control col-3" (blur)="logValidationErrors(); targetDeathlineCalc()">&nbsp;&nbsp;
         <input id="calculatedTargetDeadline" class="form-control col-3" type="text" placeholder="Target deadline" #userinput>&nbsp;&nbsp;
 =======
           <h6 class="toast-header">&nbsp;&nbsp;Target deadline calculator&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-dark">Block: {{ Blocks.height }}</span>
