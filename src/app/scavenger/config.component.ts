@@ -48,6 +48,11 @@ export class ConfigComponent implements OnInit {
 
   configForm: FormGroup;
 
+  calculatedDL = {
+    value: 0,
+    block: 0,
+  };
+
   validationMessages = {
     url: {
       required: 'URL and port number are required.',
@@ -294,6 +299,7 @@ export class ConfigComponent implements OnInit {
     gpu_async: '',
     target_deadline: '',
     plot_size: '',
+    no_blockchain: '',
     account_id_dl: '',
     target_deadline_dl: '',
     get_mining_info_interval: '',
@@ -521,20 +527,30 @@ public loadBlocks() {
     this.Blocks = data;
     console.log(data);
   });
-  }, 60000);
+  }, 30000);
  }
 
 // net Diff
 
 targetDeathlineCalc() {
-
   const plotSize = this.configForm.get('plot_size').value;
+  if  ( plotSize < 1 ) {
+    this.formWarning.plot_size = 'The plot size has to be provided to calculate the target deadline.';
+  } else {
+    this.formWarning.plot_size = '';
+  }
   const baseTarget = this.Blocks.baseTarget;
+  if (!this.Blocks.baseTarget) {
+    this.formWarning.no_blockchain = 'No blockchain information';
+  } else {
+    this.formWarning.no_blockchain = '';
+  }
   const netDiff = 4398046511104 / 240 / baseTarget;
-  console.log('netDiff' + netDiff);
-  console.log('plot size' + plotSize);
   const calcTargetDeadline = 720 * netDiff / plotSize;
+  console.log('netDiff' + netDiff);
   console.log('calTDL' + calcTargetDeadline);
+  console.log('Base target' +  this.Blocks.baseTarget);
+  console.log('plot size' + plotSize);
   }
 
 setupQuick() {
@@ -587,8 +603,9 @@ clearSetupType() {
     } else {
       this.formDocumentation.display = 'false';
     }
-    console.log(this.formDocumentation.display);
-    console.log(this.formErrors.display);
+    console.log('documentation' + this.formDocumentation.display);
+    console.log('errors' + this.formErrors.display);
+    console.log('warning' + this.formWarning.display);
   }
 
   // URL settings info messages
@@ -1359,8 +1376,8 @@ deleteDeadline(i: number) {
 }
 // End form controls
   onSubmit(): void {
-    console.log(JSON.stringify(this.configForm.value));
-    console.log(this.configForm);
+  //  console.log(JSON.stringify(this.configForm.value));
+   // console.log(this.configForm);
   }
 
 }

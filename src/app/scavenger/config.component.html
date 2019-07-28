@@ -38,7 +38,7 @@
                 style="text-align: center">bolt</i>&nbsp;Start Scavenger</button>
             </div>
             </div>
-    </div>
+      </div>
   <br><br>
   <div class="row" style="margin-top: -45px;">
 <div class="col-3">
@@ -180,6 +180,7 @@
         click the button on the left side to show it.
         </div>
       </div>
+      <!--Pool and wallet-->
       <div [ngClass]="{'row show': setupType === 'quick' || setupType === 'cpu' || setupType === 'gpu' || setupType === 'expert' }"   id="poolWallet" [hidden]="!setupType" >
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -223,6 +224,7 @@
       </div>
         </div>
       </div>
+      <!--Plot directory-->
       <div [ngClass]="{'row show': setupType === 'quick' || setupType === 'cpu' || setupType === 'gpu' || setupType === 'expert'}"   id="plotDirectory" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -273,6 +275,7 @@
       </div>
       </div>
       </div>
+      <!--Account settings for solo mining-->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"   id="accountSettings" [hidden]="!setupType">
         <div class="col">
           <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -318,6 +321,7 @@
             </div>
           </div>
       </div>
+      <!-- Mining settings -->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="miningSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -338,11 +342,20 @@
         <button class="btn-sm btn-secondary" (click)="copyInputMessage(userinput)" value="Copy">
             Copy</button>
         </div>
+        <div class="text-warning font-weight-bold" *ngIf="formWarning.plot_size && (formWarning.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formWarning.plot_size }}</p>
+        </div>
+        <div class="text-warning font-weight-bold" *ngIf="formWarning.no_blockchain && (formWarning.display == 'true')">
+          <p><i class="material-icons small" style="text-align: left">error</i>
+        {{ formWarning.no_blockchain }}</p>
+        </div>
         <div class="text-danger font-weight-bold" *ngIf="formErrors.plot_size && (formErrors.display == 'true')">
             <p><i class="material-icons small" style="text-align: left">error</i>
           {{ formErrors.plot_size }}</p>
         </div>
-        </div>
+
+      </div>
         <!--Deathline calculator end-->
         <div class="form-group row">
         <label class="col-sm-2 col-form-label" for="target_deadline">Target deadline:</label>
@@ -438,6 +451,8 @@
         </div>
         </div>
       </div>
+
+      <!--Miner settings-->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="minerSettings" [hidden]="!setupType">
         <div class="col">
         <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -507,6 +522,7 @@
         </div>
         </div>
       </div>
+      <!--CPU Settings-->
       <div [ngClass]="{'row show': setupType === 'cpu' || setupType === 'expert', 'collapse' : setupType === 'gpu' || setupType === 'quick'}"   id="cpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -603,6 +619,7 @@
       </div>
       </div>
       </div>
+      <!--GPU settings-->
       <div [ngClass]="{'row show': setupType === 'gpu' || setupType === 'expert', 'collapse' : setupType === 'cpu' || setupType === 'quick'}"  id="gpuSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -745,6 +762,7 @@
       </div>
       </div>
       </div>
+      <!--Logging settings-->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="loggingSettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -888,6 +906,7 @@
       </div>
       </div>
       </div>
+      <!--Display and benchmark-->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="displaySettings" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -989,6 +1008,7 @@
       </div>
       </div>
       </div>
+      <!--Addiotnal headers-->
       <div [ngClass]="{'row show': setupType === 'expert' , 'collapse' : setupType === 'gpu' || setupType === 'quick' || setupType === 'cpu'}"  id="additionalHeaders" [hidden]="!setupType">
       <div class="col">
       <div class="shadow-sm p-3 mb-5 bg-light rounded border">
@@ -1032,12 +1052,10 @@
       </div>
       </div>
       </div>
+</form>
 
-    </form>
-    </div>
 
-  </div>
-</div>
+
 
   <nav class="navbar navbar-expand-sm bg-light navbar-light fixed-bottom border-top">
        <div [formGroup]="gui_settings">
@@ -1098,13 +1116,7 @@
       </div>
 
 
-
-
-
-
-<br> <br>
       Form: <p>{{ configForm.value | json }}</p> <br>
         Warning: <p>{{ formWarning | json }}</p> <br>
         Error: <p>{{ formErrors | json }}</p>
         Setup Type: <p>{{ setupType }}</p>
-        <br><br><br><br>
