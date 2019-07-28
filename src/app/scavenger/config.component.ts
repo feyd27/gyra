@@ -12,19 +12,10 @@ import { Observable } from 'rxjs';
 })
 export class ConfigComponent implements OnInit {
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
   Blocks: any = [];
   interval = 1;
   netDiff = 0;
-  targetDL: {
-    value: 0,
-    block: 0,
-  };
 
->>>>>>> Stashed changes
-=======
   Blocks: any = [];
   interval: number = 1;
   netDiff: number = 0;
@@ -403,8 +394,6 @@ export class ConfigComponent implements OnInit {
       }),
         target_deadline: ['31536000', [Validators.pattern(regnumber)]],
         plot_size: [0, [Validators.pattern(regnumber)]],
-        net_diff: [0],
-        calc_target_deadline: [0],
         account_id_to_target_deadline: this.fb.array([]),
         get_mining_info_interval: ['1000', [Validators.required, Validators.pattern(regnumber)]],
         timeout: ['5000', [Validators.required, Validators.pattern(regnumber)]],
