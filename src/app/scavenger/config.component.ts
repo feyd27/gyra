@@ -438,7 +438,7 @@ export class ConfigComponent implements OnInit {
       this.minersOff();
       this.logfileSize();
       this.getGuiSettings();
-      console.log(data);
+     // console.log(data);
     });
   }
   // Configuration form end
@@ -526,7 +526,7 @@ public loadBlocks() {
   this.interval = setInterval(() => {
   return this.burstApi.getBlocks().subscribe((data: {}) => {
     this.Blocks = data;
-    console.log(data);
+    // console.log(data);
   });
   }, 30000);
  }
@@ -552,11 +552,10 @@ targetDeathlineCalc() {
     this.calculatedDL.value = 0;
   } else {
   this.calculatedDL.value = Math.round(calcTargetDeadline);
-  console.log('netDiff' + netDiff);
-  console.log('calTDL' + calcTargetDeadline);
-  console.log('Base target' +  this.Blocks.baseTarget);
-  console.log('plot size' + plotSize);
-  console.log('this.calculatedDL.value' + ' ' + this.calculatedDL.value);
+ // console.log('netDiff' + netDiff);
+ // console.log('Base target' +  this.Blocks.baseTarget);
+ // console.log('plot size' + plotSize);
+ // console.log('this.calculatedDL.value' + ' ' + this.calculatedDL.value);
   }
   }
 
@@ -610,9 +609,9 @@ clearSetupType() {
     } else {
       this.formDocumentation.display = 'false';
     }
-    console.log('documentation' + this.formDocumentation.display);
-    console.log('errors' + this.formErrors.display);
-    console.log('warning' + this.formWarning.display);
+    // console.log('documentation' + this.formDocumentation.display);
+    // console.log('errors' + this.formErrors.display);
+    // console.log('warning' + this.formWarning.display);
   }
 
   // URL settings info messages
@@ -811,7 +810,7 @@ logfileSize() {
          }
        }
      } else {
-       console.log('Key = ' + key + ' Value = ' + abstractControl.value);
+      // console.log('Key = ' + key + ' Value = ' + abstractControl.value);
      }
    });
   }
