@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { __values } from 'tslib';
 import { PoolPicker} from '../pool-picker';
@@ -15,6 +15,8 @@ export class ConfigComponent implements OnInit {
   Blocks: any = [];
   interval = 1;
   netDiff = 0;
+
+  i: number = 0;
 
   pools = [
     new PoolPicker (1, 'Burst Team Pool 0-100', 'http://0-100.burstforum.net:8080', 12000000000),
@@ -35,16 +37,16 @@ export class ConfigComponent implements OnInit {
     new PoolPicker (16, 'FastPool.info', 'http://fastpool.info:8080', 8000000),
     ];
 
-  show1: false;
-  show2: false;
-  show3: false;
-  show4: false;
-  show5: false;
-  show6: false;
-  show7: false;
-  show8: false;
-  show9: false;
-  show10: false;
+  show1 = false;
+  show2 = false;
+  show3 = false;
+  show4 = false;
+  show5 = false;
+  show6 = false;
+  show7 = false;
+  show8 = false;
+  show9 = false;
+  show10 = false;
 
   configForm: FormGroup;
 

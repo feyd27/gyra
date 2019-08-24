@@ -26,7 +26,7 @@
     <div class="col-9"> <div class="shadow p-3 mb-5 rounded border"  style="margin-top: -35px; background-color: #65bb3e;">
             <button type="button" active (click)="clearSetupType(); resetShow();" class="btn btn-dark font-weight-bolder active"data-toggle="tooltip" data-placement="top" title="Click to reset the view"><i class="material-icons small text-success"
                 style="text-align: center">book</i>&nbsp;GYRA Start</button> &nbsp;&nbsp;
-            <button type="button" class="btn btn-dark" (click)="resetConfig(configForm)"><i class="material-icons text-success small"
+            <button type="button" class="btn btn-dark" (click)="resetConfig()"><i class="material-icons text-success small"
                 style="text-align: center">autorenew</i>&nbsp;Reset to defaults</button>&nbsp;&nbsp;
             <button [disabled]="configForm.invalid || formInfo.plot_dirs || formWarning.miners_off || formWarning.plot_dirs"
               type="button" class="btn btn-dark" data-toggle="modal" data-target="#previewConfig" (click)="previewConfig()"><i
@@ -312,7 +312,7 @@
             </div>
             </div>
             <button [disabled]="accountForms.invalid || configForm.invalid" type="button" class="btn btn-dark"
-              (click)="addAccount()">Add account</button>
+              (click)="addAccount(i)">Add account</button>
             </div>
             <div class="col-6 small" [hidden]="formDocumentation.display !== 'true'">
             <div class="text-danger font-weight-bold" role="alert">Mandatory setting for solo mining setup.</div>
@@ -1052,7 +1052,7 @@
       </div>
       </div>
       <button [disabled]="additionalHeaderForms.invalid || configForm.invalid" type="button"
-      class="btn btn-dark" (click)="addAdditionalHeader()">Add additional header</button>
+      class="btn btn-dark" (click)="addAdditionalHeader(i)">Add additional header</button>
       </div>
       </div>
       <div class="col-6" [hidden]="formDocumentation.display !== 'true'">
