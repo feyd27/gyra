@@ -30,11 +30,12 @@
     "ngx-bootstrap": "^3.2.0",
     "popper.js": "^1.14.7",
     "rxjs": "^6.5.2",
+    "serialize-javascript": "^5.0.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.13.9",
+    "@angular-devkit/build-angular": "^0.1100.4",
     "@angular/cli": "^7.3.8",
     "@angular/compiler-cli": "^7.2.9",
     "@angular/language-service": "~7.2.0",
