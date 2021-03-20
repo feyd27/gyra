@@ -10,7 +10,7 @@ import { retry, catchError } from 'rxjs/operators';
 export class BurstApiService {
 
   // API link
-  apiURL = 'https://wallet.burst-alliance.org:8125/burst?requestType=getMiningInfo';
+  apiURL = 'https://wallet.burstcoin.ro/burst?requestType=getMiningInfo';
 
   constructor(private http: HttpClient) { }
     /*========================================
