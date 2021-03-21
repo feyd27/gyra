@@ -921,6 +921,7 @@ logfileSize() {
     this.show8 = false;
     this.show9 = false;
     this.show10 = false;
+   // console.log(this.show1);
   }
 // Reset configuration to default values without triggering validators
   resetConfig() {
