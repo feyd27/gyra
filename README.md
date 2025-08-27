@@ -18,3 +18,5 @@ Run ng e2e to execute the end-to-end tests via Protractor.
 
 Further help
 To get more help on the Angular CLI use ng help or go check out the Angular CLI README.
+
+App available: https://gyra-for-scavenger.firebaseapp.com/config (update of blockchain integration pending)
